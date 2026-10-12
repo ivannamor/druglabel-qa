@@ -1,0 +1,4 @@
+# Normalize line endings to LF in the repo (code runs on Linux/Databricks).
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.bat text eol=crlf
