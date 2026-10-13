@@ -49,7 +49,17 @@ pip install -r requirements.txt
 copy .env.example .env          # then fill in keys
 ```
 
-LLM provider is set in `.env` (`LLM_PROVIDER=azure_openai | openai | anthropic`).
+## LLM providers
+
+Providers are config values in `.env`; switching is a one-line change.
+
+| Role | Demo setup (free) | Production target |
+|---|---|---|
+| Generation + KG extraction | GitHub Models (`openai/gpt-4.1-mini`) | Azure OpenAI (EU Data Zone deployment) |
+| LLM-as-judge | Gemini Flash (free tier) | Azure OpenAI, different model than the generator |
+| Embeddings | `BAAI/bge-small-en-v1.5` (open source, run on Databricks) | Same, or Azure OpenAI embeddings |
+
+Why: the project runs at zero cost, the judge comes from a different model family than the generator (reduces self-preference bias), and a pinned open-source embedding model keeps runs reproducible. Free tiers are rate-limited, so LLM responses are cached and evaluation may run over more than one day.
 
 ## Results
 
