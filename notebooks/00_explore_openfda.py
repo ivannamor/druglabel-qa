@@ -73,7 +73,7 @@ def run_counts() -> None:
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     print(f"\nTotal Rx labels: {sum(r['rx_labels'] for r in rows)}  ->  written to {OUT}")
