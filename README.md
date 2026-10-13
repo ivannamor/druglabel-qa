@@ -75,6 +75,15 @@ pip install -r requirements.txt
 copy .env.example .env          # then fill in keys
 ```
 
+### Databricks (Free Edition)
+
+1. Import `notebooks/02_ingest_bronze.py` into your workspace (Workspace → Import → File).
+2. Run its first cells (widgets, then "Setup and connectivity check"): they create schema `workspace.druglabel_qa` and volume `raw`, and check that openFDA is reachable.
+3. Upload `data/drug_list.csv` to the volume (Catalog → workspace → druglabel_qa → raw → Upload to this volume).
+4. Set the `git_commit` widget to the output of `git rev-parse --short HEAD`, then Run all.
+
+The notebook writes `workspace.druglabel_qa.bronze_labels` (one row per label, raw JSON unchanged) and prints the Delta version.
+
 ## LLM providers
 
 Providers are config values in `.env`; switching is a one-line change.
