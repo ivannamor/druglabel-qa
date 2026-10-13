@@ -1,4 +1,7 @@
-"""Exploration of the openFDA drug label API: the evidence behind data/drug_list.csv.
+"""First exploration of the openFDA drug label API, on a hand-picked candidate list.
+
+Superseded for the actual selection by 01_select_drugs.py (rule-based, WHO ATC + openFDA);
+kept because it documents label counts and the data-quality issues found first.
 
 For each candidate drug it records how many prescription labels exist, how many are
 single-ingredient, and which pharmacologic class FDA reports. Results are written to

@@ -1,29 +1,38 @@
-drug,drug_class,role,max_labels
-warfarin,Vitamin K antagonist,anticoagulant,10
-apixaban,Factor Xa inhibitor (oral),anticoagulant,10
-rivaroxaban,Factor Xa inhibitor (oral),anticoagulant,10
-edoxaban,Factor Xa inhibitor (oral),anticoagulant,10
-dabigatran,Direct thrombin inhibitor (oral),anticoagulant,10
-heparin,Heparin and related,anticoagulant,10
-enoxaparin,Heparin and related,anticoagulant,10
-dalteparin,Heparin and related,anticoagulant,10
-fondaparinux,Heparin and related,anticoagulant,10
-argatroban,Direct thrombin inhibitor (injectable),anticoagulant,10
-bivalirudin,Direct thrombin inhibitor (injectable),anticoagulant,10
-clopidogrel,P2Y12 inhibitor,antiplatelet,10
-prasugrel,P2Y12 inhibitor,antiplatelet,10
-ticagrelor,P2Y12 inhibitor,antiplatelet,10
-cilostazol,Other antiplatelet,antiplatelet,10
-dipyridamole,Other antiplatelet,antiplatelet,10
-phytonadione,Reversal agent,reversal,10
-protamine,Reversal agent,reversal,10
-idarucizumab,Reversal agent,reversal,10
-andexanet,Reversal agent,reversal,10
-amiodarone,Antiarrhythmic,interaction_partner,10
-dronedarone,Antiarrhythmic,interaction_partner,10
-digoxin,Cardiac glycoside,interaction_partner,10
-diltiazem,Calcium channel blocker,interaction_partner,10
-verapamil,Calcium channel blocker,interaction_partner,10
-simvastatin,Statin,interaction_partner,10
-atorvastatin,Statin,interaction_partner,10
-metoprolol,Beta-blocker,interaction_partner,10
+us_name,atc_code,atc_name,atc_group,atc_group_name,role,available_labels,max_labels,selection_reason
+warfarin,B01AA03,warfarin,B01AA,Vitamin K antagonists,anticoagulant,74,10,ATC B01A with Rx label on openFDA
+heparin,B01AB01,heparin,B01AB,Heparin group,anticoagulant,59,10,ATC B01A with Rx label on openFDA
+dalteparin,B01AB04,dalteparin,B01AB,Heparin group,anticoagulant,1,10,ATC B01A with Rx label on openFDA
+enoxaparin,B01AB05,enoxaparin,B01AB,Heparin group,anticoagulant,23,10,ATC B01A with Rx label on openFDA
+clopidogrel,B01AC04,clopidogrel,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,56,10,ATC B01A with Rx label on openFDA
+dipyridamole,B01AC07,dipyridamole,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,8,10,ATC B01A with Rx label on openFDA
+epoprostenol,B01AC09,epoprostenol,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,4,10,ATC B01A with Rx label on openFDA
+iloprost,B01AC11,iloprost,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,1,10,ATC B01A with Rx label on openFDA
+eptifibatide,B01AC16,eptifibatide,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,9,10,ATC B01A with Rx label on openFDA
+tirofiban,B01AC17,tirofiban,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,6,10,ATC B01A with Rx label on openFDA
+treprostinil,B01AC21,treprostinil,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,6,10,ATC B01A with Rx label on openFDA
+prasugrel,B01AC22,prasugrel,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,11,10,ATC B01A with Rx label on openFDA
+cilostazol,B01AC23,cilostazol,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,11,10,ATC B01A with Rx label on openFDA
+ticagrelor,B01AC24,ticagrelor,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,33,10,ATC B01A with Rx label on openFDA
+cangrelor,B01AC25,cangrelor,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,2,10,ATC B01A with Rx label on openFDA
+selexipag,B01AC27,selexipag,B01AC,Platelet aggregation inhibitors excl. heparin,antiplatelet,1,10,ATC B01A with Rx label on openFDA
+alteplase,B01AD02,alteplase,B01AD,Enzymes,thrombolytic,1,10,ATC B01A with Rx label on openFDA
+argatroban,B01AE03,argatroban,B01AE,Direct thrombin inhibitors,anticoagulant,16,10,ATC B01A with Rx label on openFDA
+bivalirudin,B01AE06,bivalirudin,B01AE,Direct thrombin inhibitors,anticoagulant,15,10,ATC B01A with Rx label on openFDA
+dabigatran etexilate,B01AE07,dabigatran etexilate,B01AE,Direct thrombin inhibitors,anticoagulant,21,10,ATC B01A with Rx label on openFDA
+rivaroxaban,B01AF01,rivaroxaban,B01AF,Direct factor Xa inhibitors,anticoagulant,27,10,ATC B01A with Rx label on openFDA
+apixaban,B01AF02,apixaban,B01AF,Direct factor Xa inhibitors,anticoagulant,8,10,ATC B01A with Rx label on openFDA
+edoxaban,B01AF03,edoxaban,B01AF,Direct factor Xa inhibitors,anticoagulant,1,10,ATC B01A with Rx label on openFDA
+defibrotide,B01AX01,defibrotide,B01AX,Other antithrombotic agents,other_antithrombotic,1,10,ATC B01A with Rx label on openFDA
+fondaparinux,B01AX05,fondaparinux,B01AX,Other antithrombotic agents,other_antithrombotic,7,10,ATC B01A with Rx label on openFDA
+protamine,V03AB14,protamine,V03AB,Antidotes,reversal,5,10,ATC V03AB; indication mentions anticoagulant reversal
+idarucizumab,V03AB37,idarucizumab,V03AB,Antidotes,reversal,1,10,ATC V03AB; indication mentions anticoagulant reversal
+andexanet,V03AB38,andexanet alfa,V03AB,Antidotes,reversal,1,10,ATC V03AB; indication mentions anticoagulant reversal
+phytonadione,B02BA01,phytomenadione,B02BA,Vitamin K,reversal,34,10,ATC B02BA; indication mentions anticoagulant reversal
+digoxin,C01AA05,digoxin,C01AA,Digitalis glycosides,interaction_partner,43,10,ATC C; in drug_interactions of 3 core drugs
+amiodarone,C01BD01,amiodarone,C01BD,"Antiarrhythmics, class III",interaction_partner,51,10,ATC C; in drug_interactions of 2 core drugs
+ibuprofen,C01EB16,ibuprofen,C01EB,Other cardiac preparations,interaction_partner,235,10,ATC C; in drug_interactions of 2 core drugs
+bosentan,C02KX01,bosentan,C02KX,Antihypertensives for pulmonary arterial hypertension,interaction_partner,8,10,ATC C; in drug_interactions of 2 core drugs
+verapamil,C08DA01,verapamil,C08DA,Phenylalkylamine derivatives,interaction_partner,92,10,ATC C; in drug_interactions of 3 core drugs
+diltiazem,C08DB01,diltiazem,C08DB,Benzothiazepine derivatives,interaction_partner,113,10,ATC C; in drug_interactions of 3 core drugs
+atorvastatin,C10AA05,atorvastatin,C10AA,HMG CoA reductase inhibitors,interaction_partner,245,10,ATC C; in drug_interactions of 2 core drugs
+gemfibrozil,C10AB04,gemfibrozil,C10AB,Fibrates,interaction_partner,43,10,ATC C; in drug_interactions of 2 core drugs

@@ -1,0 +1,25 @@
+us_name,atc_code,atc_group_name,core_drugs_mentioning,mentioned_by
+digoxin,C01AA05,Digitalis glycosides,3,epoprostenol; prasugrel; ticagrelor
+verapamil,C08DA01,Phenylalkylamine derivatives,3,dabigatran etexilate; prasugrel; warfarin
+diltiazem,C08DB01,Benzothiazepine derivatives,3,cilostazol; prasugrel; warfarin
+amiodarone,C01BD01,"Antiarrhythmics, class III",2,dabigatran etexilate; warfarin
+ibuprofen,C01EB16,Other cardiac preparations,2,heparin; warfarin
+bosentan,C02KX01,Antihypertensives for pulmonary arterial hypertension,2,treprostinil; warfarin
+atorvastatin,C10AA05,HMG CoA reductase inhibitors,2,prasugrel; warfarin
+gemfibrozil,C10AB04,Fibrates,2,selexipag; treprostinil
+quinidine,C01BA01,"Antiarrhythmics, class Ia",1,dabigatran etexilate
+mexiletine,C01BB02,"Antiarrhythmics, class Ib",1,warfarin
+propafenone,C01BC03,"Antiarrhythmics, class Ic",1,warfarin
+dronedarone,C01BD07,"Antiarrhythmics, class III",1,dabigatran etexilate
+nitroglycerin,C01DA02,Organic nitrates,1,heparin
+adenosine,C01EB10,Other cardiac preparations,1,dipyridamole
+ranolazine,C01EB18,Other cardiac preparations,1,warfarin
+regadenoson,C01EB21,Other cardiac preparations,1,dipyridamole
+furosemide,C03CA01,"Sulfonamides, plain",1,epoprostenol
+conivaptan,C03XA02,Vasopressin antagonists,1,warfarin
+propranolol,C07AA05,"Beta blocking agents, non-selective",1,warfarin
+amlodipine,C08CA01,Dihydropyridine derivatives,1,warfarin
+simvastatin,C10AA01,HMG CoA reductase inhibitors,1,ticagrelor
+lovastatin,C10AA02,HMG CoA reductase inhibitors,1,ticagrelor
+fluvastatin,C10AA04,HMG CoA reductase inhibitors,1,warfarin
+rosuvastatin,C10AA07,HMG CoA reductase inhibitors,1,ticagrelor

@@ -1,0 +1,437 @@
+atc_code,atc_name,atc_group,atc_group_name,us_name,who_atc_index_updated,retrieved_at
+B01AA03,warfarin,B01AA,Vitamin K antagonists,warfarin,2026-01-20,2026-10-13T21:37:41+00:00
+B01AB01,heparin,B01AB,Heparin group,heparin,2026-01-20,2026-10-13T21:37:41+00:00
+B01AB04,dalteparin,B01AB,Heparin group,dalteparin,2026-01-20,2026-10-13T21:37:41+00:00
+B01AB05,enoxaparin,B01AB,Heparin group,enoxaparin,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC04,clopidogrel,B01AC,Platelet aggregation inhibitors excl. heparin,clopidogrel,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC07,dipyridamole,B01AC,Platelet aggregation inhibitors excl. heparin,dipyridamole,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC09,epoprostenol,B01AC,Platelet aggregation inhibitors excl. heparin,epoprostenol,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC11,iloprost,B01AC,Platelet aggregation inhibitors excl. heparin,iloprost,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC16,eptifibatide,B01AC,Platelet aggregation inhibitors excl. heparin,eptifibatide,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC17,tirofiban,B01AC,Platelet aggregation inhibitors excl. heparin,tirofiban,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC21,treprostinil,B01AC,Platelet aggregation inhibitors excl. heparin,treprostinil,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC22,prasugrel,B01AC,Platelet aggregation inhibitors excl. heparin,prasugrel,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC23,cilostazol,B01AC,Platelet aggregation inhibitors excl. heparin,cilostazol,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC24,ticagrelor,B01AC,Platelet aggregation inhibitors excl. heparin,ticagrelor,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC25,cangrelor,B01AC,Platelet aggregation inhibitors excl. heparin,cangrelor,2026-01-20,2026-10-13T21:37:41+00:00
+B01AC27,selexipag,B01AC,Platelet aggregation inhibitors excl. heparin,selexipag,2026-01-20,2026-10-13T21:37:41+00:00
+B01AD02,alteplase,B01AD,Enzymes,alteplase,2026-01-20,2026-10-13T21:37:41+00:00
+B01AE03,argatroban,B01AE,Direct thrombin inhibitors,argatroban,2026-01-20,2026-10-13T21:37:41+00:00
+B01AE06,bivalirudin,B01AE,Direct thrombin inhibitors,bivalirudin,2026-01-20,2026-10-13T21:37:41+00:00
+B01AE07,dabigatran etexilate,B01AE,Direct thrombin inhibitors,dabigatran etexilate,2026-01-20,2026-10-13T21:37:41+00:00
+B01AF01,rivaroxaban,B01AF,Direct factor Xa inhibitors,rivaroxaban,2026-01-20,2026-10-13T21:37:41+00:00
+B01AF02,apixaban,B01AF,Direct factor Xa inhibitors,apixaban,2026-01-20,2026-10-13T21:37:41+00:00
+B01AF03,edoxaban,B01AF,Direct factor Xa inhibitors,edoxaban,2026-01-20,2026-10-13T21:37:41+00:00
+B01AX01,defibrotide,B01AX,Other antithrombotic agents,defibrotide,2026-01-20,2026-10-13T21:37:41+00:00
+B01AX05,fondaparinux,B01AX,Other antithrombotic agents,fondaparinux,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB01,ipecacuanha,V03AB,Antidotes,ipecacuanha,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB02,nalorphine,V03AB,Antidotes,nalorphine,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB03,edetates,V03AB,Antidotes,edetates,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB04,pralidoxime,V03AB,Antidotes,pralidoxime,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB06,thiosulfate,V03AB,Antidotes,thiosulfate,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB08,sodium nitrite,V03AB,Antidotes,sodium nitrite,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB09,dimercaprol,V03AB,Antidotes,dimercaprol,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB13,obidoxime,V03AB,Antidotes,obidoxime,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB14,protamine,V03AB,Antidotes,protamine,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB15,naloxone,V03AB,Antidotes,naloxone,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB16,ethanol,V03AB,Antidotes,ethanol,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB17,methylthioninium chloride,V03AB,Antidotes,methylthioninium chloride,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB18,potassium permanganate,V03AB,Antidotes,potassium permanganate,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB19,physostigmine,V03AB,Antidotes,physostigmine,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB20,copper sulfate,V03AB,Antidotes,copper sulfate,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB21,potassium iodide,V03AB,Antidotes,potassium iodide,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB22,amyl nitrite,V03AB,Antidotes,amyl nitrite,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB23,acetylcysteine,V03AB,Antidotes,acetylcysteine,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB24,digitalis antitoxin,V03AB,Antidotes,digitalis antitoxin,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB25,flumazenil,V03AB,Antidotes,flumazenil,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB26,methionine,V03AB,Antidotes,methionine,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB27,4-dimethylaminophenol,V03AB,Antidotes,4-dimethylaminophenol,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB29,cholinesterase,V03AB,Antidotes,cholinesterase,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB31,prussian blue,V03AB,Antidotes,prussian blue,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB32,glutathione,V03AB,Antidotes,glutathione,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB33,hydroxocobalamin,V03AB,Antidotes,hydroxocobalamin,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB34,fomepizole,V03AB,Antidotes,fomepizole,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB35,sugammadex,V03AB,Antidotes,sugammadex,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB36,phentolamine,V03AB,Antidotes,phentolamine,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB37,idarucizumab,V03AB,Antidotes,idarucizumab,2026-01-20,2026-10-13T21:37:41+00:00
+V03AB38,andexanet alfa,V03AB,Antidotes,andexanet,2026-01-20,2026-10-13T21:37:41+00:00
+B02BA01,phytomenadione,B02BA,Vitamin K,phytonadione,2026-01-20,2026-10-13T21:37:41+00:00
+B02BA02,menadione,B02BA,Vitamin K,menadione,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA01,acetyldigitoxin,C01AA,Digitalis glycosides,acetyldigitoxin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA02,acetyldigoxin,C01AA,Digitalis glycosides,acetyldigoxin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA03,digitalis leaves,C01AA,Digitalis glycosides,digitalis leaves,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA04,digitoxin,C01AA,Digitalis glycosides,digitoxin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA05,digoxin,C01AA,Digitalis glycosides,digoxin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA06,lanatoside C,C01AA,Digitalis glycosides,lanatoside C,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA07,deslanoside,C01AA,Digitalis glycosides,deslanoside,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA08,metildigoxin,C01AA,Digitalis glycosides,metildigoxin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AA09,gitoformate,C01AA,Digitalis glycosides,gitoformate,2026-01-20,2026-10-13T21:37:41+00:00
+C01AB01,proscillaridin,C01AB,Scilla glycosides,proscillaridin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AC01,g-strophanthin,C01AC,Strophanthus glycosides,g-strophanthin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AC03,cymarin,C01AC,Strophanthus glycosides,cymarin,2026-01-20,2026-10-13T21:37:41+00:00
+C01AX02,peruvoside,C01AX,Other cardiac glycosides,peruvoside,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA01,quinidine,C01BA,"Antiarrhythmics, class Ia",quinidine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA02,procainamide,C01BA,"Antiarrhythmics, class Ia",procainamide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA03,disopyramide,C01BA,"Antiarrhythmics, class Ia",disopyramide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA04,sparteine,C01BA,"Antiarrhythmics, class Ia",sparteine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA05,ajmaline,C01BA,"Antiarrhythmics, class Ia",ajmaline,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA08,prajmaline,C01BA,"Antiarrhythmics, class Ia",prajmaline,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA12,lorajmine,C01BA,"Antiarrhythmics, class Ia",lorajmine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BA13,hydroquinidine,C01BA,"Antiarrhythmics, class Ia",hydroquinidine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BB01,lidocaine,C01BB,"Antiarrhythmics, class Ib",lidocaine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BB02,mexiletine,C01BB,"Antiarrhythmics, class Ib",mexiletine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BB03,tocainide,C01BB,"Antiarrhythmics, class Ib",tocainide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BB04,aprindine,C01BB,"Antiarrhythmics, class Ib",aprindine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BC03,propafenone,C01BC,"Antiarrhythmics, class Ic",propafenone,2026-01-20,2026-10-13T21:37:41+00:00
+C01BC04,flecainide,C01BC,"Antiarrhythmics, class Ic",flecainide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BC07,lorcainide,C01BC,"Antiarrhythmics, class Ic",lorcainide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BC08,encainide,C01BC,"Antiarrhythmics, class Ic",encainide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BC09,ethacizine,C01BC,"Antiarrhythmics, class Ic",ethacizine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BD01,amiodarone,C01BD,"Antiarrhythmics, class III",amiodarone,2026-01-20,2026-10-13T21:37:41+00:00
+C01BD02,bretylium tosilate,C01BD,"Antiarrhythmics, class III",bretylium tosilate,2026-01-20,2026-10-13T21:37:41+00:00
+C01BD03,bunaftine,C01BD,"Antiarrhythmics, class III",bunaftine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BD04,dofetilide,C01BD,"Antiarrhythmics, class III",dofetilide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BD05,ibutilide,C01BD,"Antiarrhythmics, class III",ibutilide,2026-01-20,2026-10-13T21:37:41+00:00
+C01BD06,tedisamil,C01BD,"Antiarrhythmics, class III",tedisamil,2026-01-20,2026-10-13T21:37:41+00:00
+C01BD07,dronedarone,C01BD,"Antiarrhythmics, class III",dronedarone,2026-01-20,2026-10-13T21:37:41+00:00
+C01BG01,moracizine,C01BG,"Other antiarrhythmics, class I and III",moracizine,2026-01-20,2026-10-13T21:37:41+00:00
+C01BG07,cibenzoline,C01BG,"Other antiarrhythmics, class I and III",cibenzoline,2026-01-20,2026-10-13T21:37:41+00:00
+C01BG11,vernakalant,C01BG,"Other antiarrhythmics, class I and III",vernakalant,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA01,etilefrine,C01CA,Adrenergic and dopaminergic agents,etilefrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA02,isoprenaline,C01CA,Adrenergic and dopaminergic agents,isoprenaline,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA03,norepinephrine,C01CA,Adrenergic and dopaminergic agents,norepinephrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA04,dopamine,C01CA,Adrenergic and dopaminergic agents,dopamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA05,norfenefrine,C01CA,Adrenergic and dopaminergic agents,norfenefrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA06,phenylephrine,C01CA,Adrenergic and dopaminergic agents,phenylephrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA07,dobutamine,C01CA,Adrenergic and dopaminergic agents,dobutamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA08,oxedrine,C01CA,Adrenergic and dopaminergic agents,oxedrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA09,metaraminol,C01CA,Adrenergic and dopaminergic agents,metaraminol,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA10,methoxamine,C01CA,Adrenergic and dopaminergic agents,methoxamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA11,mephentermine,C01CA,Adrenergic and dopaminergic agents,mephentermine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA12,dimetofrine,C01CA,Adrenergic and dopaminergic agents,dimetofrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA13,prenalterol,C01CA,Adrenergic and dopaminergic agents,prenalterol,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA14,dopexamine,C01CA,Adrenergic and dopaminergic agents,dopexamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA15,gepefrine,C01CA,Adrenergic and dopaminergic agents,gepefrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA16,ibopamine,C01CA,Adrenergic and dopaminergic agents,ibopamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA17,midodrine,C01CA,Adrenergic and dopaminergic agents,midodrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA18,octopamine,C01CA,Adrenergic and dopaminergic agents,octopamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA19,fenoldopam,C01CA,Adrenergic and dopaminergic agents,fenoldopam,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA21,cafedrine,C01CA,Adrenergic and dopaminergic agents,cafedrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA22,arbutamine,C01CA,Adrenergic and dopaminergic agents,arbutamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA23,theodrenaline,C01CA,Adrenergic and dopaminergic agents,theodrenaline,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA24,epinephrine,C01CA,Adrenergic and dopaminergic agents,epinephrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA25,amezinium metilsulfate,C01CA,Adrenergic and dopaminergic agents,amezinium metilsulfate,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA26,ephedrine,C01CA,Adrenergic and dopaminergic agents,ephedrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA27,droxidopa,C01CA,Adrenergic and dopaminergic agents,droxidopa,2026-01-20,2026-10-13T21:37:41+00:00
+C01CA28,centhaquine,C01CA,Adrenergic and dopaminergic agents,centhaquine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CE01,amrinone,C01CE,Phosphodiesterase inhibitors,amrinone,2026-01-20,2026-10-13T21:37:41+00:00
+C01CE02,milrinone,C01CE,Phosphodiesterase inhibitors,milrinone,2026-01-20,2026-10-13T21:37:41+00:00
+C01CE03,enoximone,C01CE,Phosphodiesterase inhibitors,enoximone,2026-01-20,2026-10-13T21:37:41+00:00
+C01CE04,bucladesine,C01CE,Phosphodiesterase inhibitors,bucladesine,2026-01-20,2026-10-13T21:37:41+00:00
+C01CX06,angiotensinamide,C01CX,Other cardiac stimulants,angiotensinamide,2026-01-20,2026-10-13T21:37:41+00:00
+C01CX07,xamoterol,C01CX,Other cardiac stimulants,xamoterol,2026-01-20,2026-10-13T21:37:41+00:00
+C01CX08,levosimendan,C01CX,Other cardiac stimulants,levosimendan,2026-01-20,2026-10-13T21:37:41+00:00
+C01CX09,angiotensin II,C01CX,Other cardiac stimulants,angiotensin II,2026-01-20,2026-10-13T21:37:41+00:00
+C01CX10,omecamtiv mecarbil,C01CX,Other cardiac stimulants,omecamtiv mecarbil,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA02,glyceryl trinitrate,C01DA,Organic nitrates,nitroglycerin,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA04,methylpropylpropanediol dinitrate,C01DA,Organic nitrates,methylpropylpropanediol dinitrate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA05,pentaerithrityl tetranitrate,C01DA,Organic nitrates,pentaerithrityl tetranitrate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA07,propatylnitrate,C01DA,Organic nitrates,propatylnitrate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA08,isosorbide dinitrate,C01DA,Organic nitrates,isosorbide dinitrate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA09,trolnitrate,C01DA,Organic nitrates,trolnitrate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA13,eritrityl tetranitrate,C01DA,Organic nitrates,eritrityl tetranitrate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA14,isosorbide mononitrate,C01DA,Organic nitrates,isosorbide mononitrate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DA38,tenitramine,C01DA,Organic nitrates,tenitramine,2026-01-20,2026-10-13T21:37:41+00:00
+C01DB01,flosequinan,C01DB,Quinolone vasodilators,flosequinan,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX01,itramin tosilate,C01DX,Other vasodilators used in cardiac diseases,itramin tosilate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX02,prenylamine,C01DX,Other vasodilators used in cardiac diseases,prenylamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX03,oxyfedrine,C01DX,Other vasodilators used in cardiac diseases,oxyfedrine,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX04,benziodarone,C01DX,Other vasodilators used in cardiac diseases,benziodarone,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX05,carbocromen,C01DX,Other vasodilators used in cardiac diseases,carbocromen,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX06,hexobendine,C01DX,Other vasodilators used in cardiac diseases,hexobendine,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX07,etafenone,C01DX,Other vasodilators used in cardiac diseases,etafenone,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX08,heptaminol,C01DX,Other vasodilators used in cardiac diseases,heptaminol,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX09,imolamine,C01DX,Other vasodilators used in cardiac diseases,imolamine,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX10,dilazep,C01DX,Other vasodilators used in cardiac diseases,dilazep,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX11,trapidil,C01DX,Other vasodilators used in cardiac diseases,trapidil,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX12,molsidomine,C01DX,Other vasodilators used in cardiac diseases,molsidomine,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX13,efloxate,C01DX,Other vasodilators used in cardiac diseases,efloxate,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX14,cinepazet,C01DX,Other vasodilators used in cardiac diseases,cinepazet,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX15,cloridarol,C01DX,Other vasodilators used in cardiac diseases,cloridarol,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX16,nicorandil,C01DX,Other vasodilators used in cardiac diseases,nicorandil,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX18,linsidomine,C01DX,Other vasodilators used in cardiac diseases,linsidomine,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX19,nesiritide,C01DX,Other vasodilators used in cardiac diseases,nesiritide,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX21,serelaxin,C01DX,Other vasodilators used in cardiac diseases,serelaxin,2026-01-20,2026-10-13T21:37:41+00:00
+C01DX22,vericiguat,C01DX,Other vasodilators used in cardiac diseases,vericiguat,2026-01-20,2026-10-13T21:37:41+00:00
+C01EA01,alprostadil,C01EA,Prostaglandins,alprostadil,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB02,camphora,C01EB,Other cardiac preparations,camphora,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB03,indometacin,C01EB,Other cardiac preparations,indometacin,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB04,crataegus glycosides,C01EB,Other cardiac preparations,crataegus glycosides,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB05,creatinolfosfate,C01EB,Other cardiac preparations,creatinolfosfate,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB06,fosfocreatine,C01EB,Other cardiac preparations,fosfocreatine,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB07,"fructose 1,6-diphosphate",C01EB,Other cardiac preparations,"fructose 1,6-diphosphate",2026-01-20,2026-10-13T21:37:41+00:00
+C01EB09,ubidecarenone,C01EB,Other cardiac preparations,ubidecarenone,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB10,adenosine,C01EB,Other cardiac preparations,adenosine,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB11,tiracizine,C01EB,Other cardiac preparations,tiracizine,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB13,acadesine,C01EB,Other cardiac preparations,acadesine,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB15,trimetazidine,C01EB,Other cardiac preparations,trimetazidine,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB16,ibuprofen,C01EB,Other cardiac preparations,ibuprofen,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB17,ivabradine,C01EB,Other cardiac preparations,ivabradine,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB18,ranolazine,C01EB,Other cardiac preparations,ranolazine,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB21,regadenoson,C01EB,Other cardiac preparations,regadenoson,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB22,meldonium,C01EB,Other cardiac preparations,meldonium,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB23,tiazotic acid,C01EB,Other cardiac preparations,tiazotic acid,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB24,mavacamten,C01EB,Other cardiac preparations,mavacamten,2026-01-20,2026-10-13T21:37:41+00:00
+C01EB25,acoramidis,C01EB,Other cardiac preparations,acoramidis,2026-01-20,2026-10-13T21:37:41+00:00
+C02AA01,rescinnamine,C02AA,Rauwolfia alkaloids,rescinnamine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AA02,reserpine,C02AA,Rauwolfia alkaloids,reserpine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AA04,"rauwolfia alkaloids, whole root",C02AA,Rauwolfia alkaloids,"rauwolfia alkaloids, whole root",2026-01-20,2026-10-13T21:37:41+00:00
+C02AA05,deserpidine,C02AA,Rauwolfia alkaloids,deserpidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AA06,methoserpidine,C02AA,Rauwolfia alkaloids,methoserpidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AA07,bietaserpine,C02AA,Rauwolfia alkaloids,bietaserpine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AB01,methyldopa (levorotatory),C02AB,Methyldopa,methyldopa (levorotatory),2026-01-20,2026-10-13T21:37:41+00:00
+C02AB02,methyldopa (racemic),C02AB,Methyldopa,methyldopa (racemic),2026-01-20,2026-10-13T21:37:41+00:00
+C02AC01,clonidine,C02AC,Imidazoline receptor agonists,clonidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AC02,guanfacine,C02AC,Imidazoline receptor agonists,guanfacine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AC04,tolonidine,C02AC,Imidazoline receptor agonists,tolonidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AC05,moxonidine,C02AC,Imidazoline receptor agonists,moxonidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02AC06,rilmenidine,C02AC,Imidazoline receptor agonists,rilmenidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02BA01,trimetaphan,C02BA,Sulfonium derivatives,trimetaphan,2026-01-20,2026-10-13T21:37:41+00:00
+C02BB01,mecamylamine,C02BB,Secondary and tertiary amines,mecamylamine,2026-01-20,2026-10-13T21:37:41+00:00
+C02CA01,prazosin,C02CA,Alpha-adrenoreceptor antagonists,prazosin,2026-01-20,2026-10-13T21:37:41+00:00
+C02CA02,indoramin,C02CA,Alpha-adrenoreceptor antagonists,indoramin,2026-01-20,2026-10-13T21:37:41+00:00
+C02CA03,trimazosin,C02CA,Alpha-adrenoreceptor antagonists,trimazosin,2026-01-20,2026-10-13T21:37:41+00:00
+C02CA04,doxazosin,C02CA,Alpha-adrenoreceptor antagonists,doxazosin,2026-01-20,2026-10-13T21:37:41+00:00
+C02CA06,urapidil,C02CA,Alpha-adrenoreceptor antagonists,urapidil,2026-01-20,2026-10-13T21:37:41+00:00
+C02CC01,betanidine,C02CC,Guanidine derivatives,betanidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02CC02,guanethidine,C02CC,Guanidine derivatives,guanethidine,2026-01-20,2026-10-13T21:37:41+00:00
+C02CC03,guanoxan,C02CC,Guanidine derivatives,guanoxan,2026-01-20,2026-10-13T21:37:41+00:00
+C02CC04,debrisoquine,C02CC,Guanidine derivatives,debrisoquine,2026-01-20,2026-10-13T21:37:41+00:00
+C02CC05,guanoclor,C02CC,Guanidine derivatives,guanoclor,2026-01-20,2026-10-13T21:37:41+00:00
+C02CC06,guanazodine,C02CC,Guanidine derivatives,guanazodine,2026-01-20,2026-10-13T21:37:41+00:00
+C02CC07,guanoxabenz,C02CC,Guanidine derivatives,guanoxabenz,2026-01-20,2026-10-13T21:37:41+00:00
+C02DA01,diazoxide,C02DA,Thiazide derivatives,diazoxide,2026-01-20,2026-10-13T21:37:41+00:00
+C02DB01,dihydralazine,C02DB,Hydrazinophthalazine derivatives,dihydralazine,2026-01-20,2026-10-13T21:37:41+00:00
+C02DB02,hydralazine,C02DB,Hydrazinophthalazine derivatives,hydralazine,2026-01-20,2026-10-13T21:37:41+00:00
+C02DB03,endralazine,C02DB,Hydrazinophthalazine derivatives,endralazine,2026-01-20,2026-10-13T21:37:41+00:00
+C02DB04,cadralazine,C02DB,Hydrazinophthalazine derivatives,cadralazine,2026-01-20,2026-10-13T21:37:41+00:00
+C02DC01,minoxidil,C02DC,Pyrimidine derivatives,minoxidil,2026-01-20,2026-10-13T21:37:41+00:00
+C02DD01,nitroprusside,C02DD,Nitroferricyanide derivatives,nitroprusside,2026-01-20,2026-10-13T21:37:41+00:00
+C02DG01,pinacidil,C02DG,Guanidine derivatives,pinacidil,2026-01-20,2026-10-13T21:37:41+00:00
+C02KA01,veratrum,C02KA,"Alkaloids, excl. rauwolfia",veratrum,2026-01-20,2026-10-13T21:37:41+00:00
+C02KB01,metirosine,C02KB,Tyrosine hydroxylase inhibitors,metirosine,2026-01-20,2026-10-13T21:37:41+00:00
+C02KC01,pargyline,C02KC,MAO inhibitors,pargyline,2026-01-20,2026-10-13T21:37:41+00:00
+C02KD01,ketanserin,C02KD,Serotonin antagonists,ketanserin,2026-01-20,2026-10-13T21:37:41+00:00
+C02KN01,aprocitentan,C02KN,Other antihypertensives,aprocitentan,2026-01-20,2026-10-13T21:37:41+00:00
+C02KN02,baxdrostat,C02KN,Other antihypertensives,baxdrostat,2026-01-20,2026-10-13T21:37:41+00:00
+C02KX01,bosentan,C02KX,Antihypertensives for pulmonary arterial hypertension,bosentan,2026-01-20,2026-10-13T21:37:41+00:00
+C02KX02,ambrisentan,C02KX,Antihypertensives for pulmonary arterial hypertension,ambrisentan,2026-01-20,2026-10-13T21:37:41+00:00
+C02KX03,sitaxentan,C02KX,Antihypertensives for pulmonary arterial hypertension,sitaxentan,2026-01-20,2026-10-13T21:37:41+00:00
+C02KX04,macitentan,C02KX,Antihypertensives for pulmonary arterial hypertension,macitentan,2026-01-20,2026-10-13T21:37:41+00:00
+C02KX05,riociguat,C02KX,Antihypertensives for pulmonary arterial hypertension,riociguat,2026-01-20,2026-10-13T21:37:41+00:00
+C02KX06,sotatercept,C02KX,Antihypertensives for pulmonary arterial hypertension,sotatercept,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA01,bendroflumethiazide,C03AA,"Thiazides, plain",bendroflumethiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA02,hydroflumethiazide,C03AA,"Thiazides, plain",hydroflumethiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA03,hydrochlorothiazide,C03AA,"Thiazides, plain",hydrochlorothiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA04,chlorothiazide,C03AA,"Thiazides, plain",chlorothiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA05,polythiazide,C03AA,"Thiazides, plain",polythiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA06,trichlormethiazide,C03AA,"Thiazides, plain",trichlormethiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA07,cyclopenthiazide,C03AA,"Thiazides, plain",cyclopenthiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA08,methyclothiazide,C03AA,"Thiazides, plain",methyclothiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA09,cyclothiazide,C03AA,"Thiazides, plain",cyclothiazide,2026-01-20,2026-10-13T21:37:41+00:00
+C03AA13,mebutizide,C03AA,"Thiazides, plain",mebutizide,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA02,quinethazone,C03BA,"Sulfonamides, plain",quinethazone,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA03,clopamide,C03BA,"Sulfonamides, plain",clopamide,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA04,chlortalidone,C03BA,"Sulfonamides, plain",chlortalidone,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA05,mefruside,C03BA,"Sulfonamides, plain",mefruside,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA07,clofenamide,C03BA,"Sulfonamides, plain",clofenamide,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA08,metolazone,C03BA,"Sulfonamides, plain",metolazone,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA09,meticrane,C03BA,"Sulfonamides, plain",meticrane,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA10,xipamide,C03BA,"Sulfonamides, plain",xipamide,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA11,indapamide,C03BA,"Sulfonamides, plain",indapamide,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA12,clorexolone,C03BA,"Sulfonamides, plain",clorexolone,2026-01-20,2026-10-13T21:37:41+00:00
+C03BA13,fenquizone,C03BA,"Sulfonamides, plain",fenquizone,2026-01-20,2026-10-13T21:37:41+00:00
+C03BC01,mersalyl,C03BC,Mercurial diuretics,mersalyl,2026-01-20,2026-10-13T21:37:41+00:00
+C03BD01,theobromine,C03BD,Xanthine derivatives,theobromine,2026-01-20,2026-10-13T21:37:41+00:00
+C03BX03,cicletanine,C03BX,Other low-ceiling diuretics,cicletanine,2026-01-20,2026-10-13T21:37:41+00:00
+C03CA01,furosemide,C03CA,"Sulfonamides, plain",furosemide,2026-01-20,2026-10-13T21:37:41+00:00
+C03CA02,bumetanide,C03CA,"Sulfonamides, plain",bumetanide,2026-01-20,2026-10-13T21:37:41+00:00
+C03CA03,piretanide,C03CA,"Sulfonamides, plain",piretanide,2026-01-20,2026-10-13T21:37:41+00:00
+C03CA04,torasemide,C03CA,"Sulfonamides, plain",torasemide,2026-01-20,2026-10-13T21:37:41+00:00
+C03CC01,etacrynic acid,C03CC,Aryloxyacetic acid derivatives,etacrynic acid,2026-01-20,2026-10-13T21:37:41+00:00
+C03CC02,tienilic acid,C03CC,Aryloxyacetic acid derivatives,tienilic acid,2026-01-20,2026-10-13T21:37:41+00:00
+C03CD01,muzolimine,C03CD,Pyrazolone derivatives,muzolimine,2026-01-20,2026-10-13T21:37:41+00:00
+C03CX01,etozolin,C03CX,Other high-ceiling diuretics,etozolin,2026-01-20,2026-10-13T21:37:41+00:00
+C03DA01,spironolactone,C03DA,Aldosterone antagonists,spironolactone,2026-01-20,2026-10-13T21:37:41+00:00
+C03DA02,potassium canrenoate,C03DA,Aldosterone antagonists,potassium canrenoate,2026-01-20,2026-10-13T21:37:41+00:00
+C03DA03,canrenone,C03DA,Aldosterone antagonists,canrenone,2026-01-20,2026-10-13T21:37:41+00:00
+C03DA04,eplerenone,C03DA,Aldosterone antagonists,eplerenone,2026-01-20,2026-10-13T21:37:41+00:00
+C03DA05,finerenone,C03DA,Aldosterone antagonists,finerenone,2026-01-20,2026-10-13T21:37:41+00:00
+C03DB01,amiloride,C03DB,Other potassium-sparing agents,amiloride,2026-01-20,2026-10-13T21:37:41+00:00
+C03DB02,triamterene,C03DB,Other potassium-sparing agents,triamterene,2026-01-20,2026-10-13T21:37:41+00:00
+C03XA01,tolvaptan,C03XA,Vasopressin antagonists,tolvaptan,2026-01-20,2026-10-13T21:37:41+00:00
+C03XA02,conivaptan,C03XA,Vasopressin antagonists,conivaptan,2026-01-20,2026-10-13T21:37:41+00:00
+C04AA01,isoxsuprine,C04AA,2-amino-1-phenylethanol derivatives,isoxsuprine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AA02,buphenine,C04AA,2-amino-1-phenylethanol derivatives,buphenine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AA31,bamethan,C04AA,2-amino-1-phenylethanol derivatives,bamethan,2026-01-20,2026-10-13T21:37:41+00:00
+C04AB01,phentolamine,C04AB,Imidazoline derivatives,phentolamine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AB02,tolazoline,C04AB,Imidazoline derivatives,tolazoline,2026-01-20,2026-10-13T21:37:41+00:00
+C04AC01,nicotinic acid,C04AC,Nicotinic acid and derivatives,nicotinic acid,2026-01-20,2026-10-13T21:37:41+00:00
+C04AC02,nicotinyl alcohol (pyridylcarbinol),C04AC,Nicotinic acid and derivatives,nicotinyl alcohol (pyridylcarbinol),2026-01-20,2026-10-13T21:37:41+00:00
+C04AC03,inositol nicotinate,C04AC,Nicotinic acid and derivatives,inositol nicotinate,2026-01-20,2026-10-13T21:37:41+00:00
+C04AC07,ciclonicate,C04AC,Nicotinic acid and derivatives,ciclonicate,2026-01-20,2026-10-13T21:37:41+00:00
+C04AD01,pentifylline,C04AD,Purine derivatives,pentifylline,2026-01-20,2026-10-13T21:37:41+00:00
+C04AD02,xantinol nicotinate,C04AD,Purine derivatives,xantinol nicotinate,2026-01-20,2026-10-13T21:37:41+00:00
+C04AD03,pentoxifylline,C04AD,Purine derivatives,pentoxifylline,2026-01-20,2026-10-13T21:37:41+00:00
+C04AD04,etofylline nicotinate,C04AD,Purine derivatives,etofylline nicotinate,2026-01-20,2026-10-13T21:37:41+00:00
+C04AE01,ergoloid mesylates,C04AE,Ergot alkaloids,ergoloid mesylates,2026-01-20,2026-10-13T21:37:41+00:00
+C04AE02,nicergoline,C04AE,Ergot alkaloids,nicergoline,2026-01-20,2026-10-13T21:37:41+00:00
+C04AE04,dihydroergocristine,C04AE,Ergot alkaloids,dihydroergocristine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AF01,kallidinogenase,C04AF,Enzymes,kallidinogenase,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX01,cyclandelate,C04AX,Other peripheral vasodilators,cyclandelate,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX02,phenoxybenzamine,C04AX,Other peripheral vasodilators,phenoxybenzamine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX07,vincamine,C04AX,Other peripheral vasodilators,vincamine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX10,moxisylyte,C04AX,Other peripheral vasodilators,moxisylyte,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX11,bencyclane,C04AX,Other peripheral vasodilators,bencyclane,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX17,vinburnine,C04AX,Other peripheral vasodilators,vinburnine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX19,suloctidil,C04AX,Other peripheral vasodilators,suloctidil,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX20,buflomedil,C04AX,Other peripheral vasodilators,buflomedil,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX21,naftidrofuryl,C04AX,Other peripheral vasodilators,naftidrofuryl,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX23,butalamine,C04AX,Other peripheral vasodilators,butalamine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX24,visnadine,C04AX,Other peripheral vasodilators,visnadine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX26,cetiedil,C04AX,Other peripheral vasodilators,cetiedil,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX27,cinepazide,C04AX,Other peripheral vasodilators,cinepazide,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX28,ifenprodil,C04AX,Other peripheral vasodilators,ifenprodil,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX30,azapetine,C04AX,Other peripheral vasodilators,azapetine,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX32,fasudil,C04AX,Other peripheral vasodilators,fasudil,2026-01-20,2026-10-13T21:37:41+00:00
+C04AX33,clazosentan,C04AX,Other peripheral vasodilators,clazosentan,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA01,alprenolol,C07AA,"Beta blocking agents, non-selective",alprenolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA02,oxprenolol,C07AA,"Beta blocking agents, non-selective",oxprenolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA03,pindolol,C07AA,"Beta blocking agents, non-selective",pindolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA05,propranolol,C07AA,"Beta blocking agents, non-selective",propranolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA06,timolol,C07AA,"Beta blocking agents, non-selective",timolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA07,sotalol,C07AA,"Beta blocking agents, non-selective",sotalol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA12,nadolol,C07AA,"Beta blocking agents, non-selective",nadolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA14,mepindolol,C07AA,"Beta blocking agents, non-selective",mepindolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA15,carteolol,C07AA,"Beta blocking agents, non-selective",carteolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA16,tertatolol,C07AA,"Beta blocking agents, non-selective",tertatolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA17,bopindolol,C07AA,"Beta blocking agents, non-selective",bopindolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA19,bupranolol,C07AA,"Beta blocking agents, non-selective",bupranolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA23,penbutolol,C07AA,"Beta blocking agents, non-selective",penbutolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AA27,cloranolol,C07AA,"Beta blocking agents, non-selective",cloranolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB01,practolol,C07AB,"Beta blocking agents, selective",practolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB02,metoprolol,C07AB,"Beta blocking agents, selective",metoprolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB03,atenolol,C07AB,"Beta blocking agents, selective",atenolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB04,acebutolol,C07AB,"Beta blocking agents, selective",acebutolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB05,betaxolol,C07AB,"Beta blocking agents, selective",betaxolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB06,bevantolol,C07AB,"Beta blocking agents, selective",bevantolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB07,bisoprolol,C07AB,"Beta blocking agents, selective",bisoprolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB08,celiprolol,C07AB,"Beta blocking agents, selective",celiprolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB09,esmolol,C07AB,"Beta blocking agents, selective",esmolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB10,epanolol,C07AB,"Beta blocking agents, selective",epanolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB11,s-atenolol,C07AB,"Beta blocking agents, selective",s-atenolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB12,nebivolol,C07AB,"Beta blocking agents, selective",nebivolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB13,talinolol,C07AB,"Beta blocking agents, selective",talinolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AB14,landiolol,C07AB,"Beta blocking agents, selective",landiolol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AG01,labetalol,C07AG,Alpha and beta blocking agents,labetalol,2026-01-20,2026-10-13T21:37:41+00:00
+C07AG02,carvedilol,C07AG,Alpha and beta blocking agents,carvedilol,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA01,amlodipine,C08CA,Dihydropyridine derivatives,amlodipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA02,felodipine,C08CA,Dihydropyridine derivatives,felodipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA03,isradipine,C08CA,Dihydropyridine derivatives,isradipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA04,nicardipine,C08CA,Dihydropyridine derivatives,nicardipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA05,nifedipine,C08CA,Dihydropyridine derivatives,nifedipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA06,nimodipine,C08CA,Dihydropyridine derivatives,nimodipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA07,nisoldipine,C08CA,Dihydropyridine derivatives,nisoldipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA08,nitrendipine,C08CA,Dihydropyridine derivatives,nitrendipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA09,lacidipine,C08CA,Dihydropyridine derivatives,lacidipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA10,nilvadipine,C08CA,Dihydropyridine derivatives,nilvadipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA11,manidipine,C08CA,Dihydropyridine derivatives,manidipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA12,barnidipine,C08CA,Dihydropyridine derivatives,barnidipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA13,lercanidipine,C08CA,Dihydropyridine derivatives,lercanidipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA14,cilnidipine,C08CA,Dihydropyridine derivatives,cilnidipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA15,benidipine,C08CA,Dihydropyridine derivatives,benidipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA16,clevidipine,C08CA,Dihydropyridine derivatives,clevidipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CA17,levamlodipine,C08CA,Dihydropyridine derivatives,levamlodipine,2026-01-20,2026-10-13T21:37:41+00:00
+C08CX01,mibefradil,C08CX,Other selective calcium channel blockers with mainly vascular effects,mibefradil,2026-01-20,2026-10-13T21:37:41+00:00
+C08DA01,verapamil,C08DA,Phenylalkylamine derivatives,verapamil,2026-01-20,2026-10-13T21:37:41+00:00
+C08DA02,gallopamil,C08DA,Phenylalkylamine derivatives,gallopamil,2026-01-20,2026-10-13T21:37:41+00:00
+C08DA03,etripamil,C08DA,Phenylalkylamine derivatives,etripamil,2026-01-20,2026-10-13T21:37:41+00:00
+C08DB01,diltiazem,C08DB,Benzothiazepine derivatives,diltiazem,2026-01-20,2026-10-13T21:37:41+00:00
+C08EA01,fendiline,C08EA,Phenylalkylamine derivatives,fendiline,2026-01-20,2026-10-13T21:37:41+00:00
+C08EA02,bepridil,C08EA,Phenylalkylamine derivatives,bepridil,2026-01-20,2026-10-13T21:37:41+00:00
+C08EX01,lidoflazine,C08EX,Other non-selective calcium channel blockers,lidoflazine,2026-01-20,2026-10-13T21:37:41+00:00
+C08EX02,perhexiline,C08EX,Other non-selective calcium channel blockers,perhexiline,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA01,captopril,C09AA,"ACE inhibitors, plain",captopril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA02,enalapril,C09AA,"ACE inhibitors, plain",enalapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA03,lisinopril,C09AA,"ACE inhibitors, plain",lisinopril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA04,perindopril,C09AA,"ACE inhibitors, plain",perindopril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA05,ramipril,C09AA,"ACE inhibitors, plain",ramipril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA06,quinapril,C09AA,"ACE inhibitors, plain",quinapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA07,benazepril,C09AA,"ACE inhibitors, plain",benazepril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA08,cilazapril,C09AA,"ACE inhibitors, plain",cilazapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA09,fosinopril,C09AA,"ACE inhibitors, plain",fosinopril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA10,trandolapril,C09AA,"ACE inhibitors, plain",trandolapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA11,spirapril,C09AA,"ACE inhibitors, plain",spirapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA12,delapril,C09AA,"ACE inhibitors, plain",delapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA13,moexipril,C09AA,"ACE inhibitors, plain",moexipril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA14,temocapril,C09AA,"ACE inhibitors, plain",temocapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA15,zofenopril,C09AA,"ACE inhibitors, plain",zofenopril,2026-01-20,2026-10-13T21:37:41+00:00
+C09AA16,imidapril,C09AA,"ACE inhibitors, plain",imidapril,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA01,losartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",losartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA02,eprosartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",eprosartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA03,valsartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",valsartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA04,irbesartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",irbesartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA05,tasosartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",tasosartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA06,candesartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",candesartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA07,telmisartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",telmisartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA08,olmesartan medoxomil,C09CA,"Angiotensin II receptor blockers (ARBs), plain",olmesartan medoxomil,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA09,azilsartan medoxomil,C09CA,"Angiotensin II receptor blockers (ARBs), plain",azilsartan medoxomil,2026-01-20,2026-10-13T21:37:41+00:00
+C09CA10,fimasartan,C09CA,"Angiotensin II receptor blockers (ARBs), plain",fimasartan,2026-01-20,2026-10-13T21:37:41+00:00
+C09XA01,remikiren,C09XA,Renin-inhibitors,remikiren,2026-01-20,2026-10-13T21:37:41+00:00
+C09XA02,aliskiren,C09XA,Renin-inhibitors,aliskiren,2026-01-20,2026-10-13T21:37:41+00:00
+C09XX01,sparsentan,C09XX,Other agents acting on the renin-angiotensin system,sparsentan,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA01,simvastatin,C10AA,HMG CoA reductase inhibitors,simvastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA02,lovastatin,C10AA,HMG CoA reductase inhibitors,lovastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA03,pravastatin,C10AA,HMG CoA reductase inhibitors,pravastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA04,fluvastatin,C10AA,HMG CoA reductase inhibitors,fluvastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA05,atorvastatin,C10AA,HMG CoA reductase inhibitors,atorvastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA06,cerivastatin,C10AA,HMG CoA reductase inhibitors,cerivastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA07,rosuvastatin,C10AA,HMG CoA reductase inhibitors,rosuvastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AA08,pitavastatin,C10AA,HMG CoA reductase inhibitors,pitavastatin,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB01,clofibrate,C10AB,Fibrates,clofibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB02,bezafibrate,C10AB,Fibrates,bezafibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB03,aluminium clofibrate,C10AB,Fibrates,aluminium clofibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB04,gemfibrozil,C10AB,Fibrates,gemfibrozil,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB05,fenofibrate,C10AB,Fibrates,fenofibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB06,simfibrate,C10AB,Fibrates,simfibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB07,ronifibrate,C10AB,Fibrates,ronifibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB08,ciprofibrate,C10AB,Fibrates,ciprofibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB09,etofibrate,C10AB,Fibrates,etofibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB10,clofibride,C10AB,Fibrates,clofibride,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB11,choline fenofibrate,C10AB,Fibrates,choline fenofibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AB12,pemafibrate,C10AB,Fibrates,pemafibrate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AC01,colestyramine,C10AC,Bile acid sequestrants,cholestyramine,2026-01-20,2026-10-13T21:37:41+00:00
+C10AC02,colestipol,C10AC,Bile acid sequestrants,colestipol,2026-01-20,2026-10-13T21:37:41+00:00
+C10AC03,colextran,C10AC,Bile acid sequestrants,colextran,2026-01-20,2026-10-13T21:37:41+00:00
+C10AC04,colesevelam,C10AC,Bile acid sequestrants,colesevelam,2026-01-20,2026-10-13T21:37:41+00:00
+C10AD01,niceritrol,C10AD,Nicotinic acid and derivatives,niceritrol,2026-01-20,2026-10-13T21:37:41+00:00
+C10AD03,nicofuranose,C10AD,Nicotinic acid and derivatives,nicofuranose,2026-01-20,2026-10-13T21:37:41+00:00
+C10AD04,aluminium nicotinate,C10AD,Nicotinic acid and derivatives,aluminium nicotinate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AD06,acipimox,C10AD,Nicotinic acid and derivatives,acipimox,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX01,dextrothyroxine,C10AX,Other lipid modifying agents,dextrothyroxine,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX02,probucol,C10AX,Other lipid modifying agents,probucol,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX03,tiadenol,C10AX,Other lipid modifying agents,tiadenol,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX05,meglutol,C10AX,Other lipid modifying agents,meglutol,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX07,magnesium pyridoxal 5-phosphate glutamate,C10AX,Other lipid modifying agents,magnesium pyridoxal 5-phosphate glutamate,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX08,policosanol,C10AX,Other lipid modifying agents,policosanol,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX09,ezetimibe,C10AX,Other lipid modifying agents,ezetimibe,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX10,alipogene tiparvovec,C10AX,Other lipid modifying agents,alipogene tiparvovec,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX11,mipomersen,C10AX,Other lipid modifying agents,mipomersen,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX12,lomitapide,C10AX,Other lipid modifying agents,lomitapide,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX13,evolocumab,C10AX,Other lipid modifying agents,evolocumab,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX14,alirocumab,C10AX,Other lipid modifying agents,alirocumab,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX15,bempedoic acid,C10AX,Other lipid modifying agents,bempedoic acid,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX16,inclisiran,C10AX,Other lipid modifying agents,inclisiran,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX17,evinacumab,C10AX,Other lipid modifying agents,evinacumab,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX18,volanesorsen,C10AX,Other lipid modifying agents,volanesorsen,2026-01-20,2026-10-13T21:37:41+00:00
+C10AX19,lerodalcibep,C10AX,Other lipid modifying agents,lerodalcibep,2026-01-20,2026-10-13T21:37:41+00:00
