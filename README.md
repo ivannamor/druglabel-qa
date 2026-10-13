@@ -40,6 +40,19 @@ openFDA labels (JSON)
 | `prompts/` | Versioned prompt files |
 | `validation/` | URS, risk assessment, test protocol, traceability matrix, ALCOA+ |
 
+## Data selection
+
+Source: [openFDA drug label API](https://open.fda.gov/apis/drug/label/), prescription labels only.
+
+Scope is **anticoagulation and the drugs that interact with it**: 28 drugs in 13 classes (anticoagulants, antiplatelets, reversal agents, and interaction partners such as amiodarone, verapamil and statins), listed in [`data/drug_list.csv`](data/drug_list.csv). Per drug, at most 10 single-ingredient labels, most recent first (~224 labels).
+
+Why: one drug has up to hundreds of near-identical labels (one per manufacturer), which would flood retrieval with duplicates; combination products mix two drugs in one label (wrong-drug risk); recent labels reduce the outdated-label risk.
+
+Evidence: [`notebooks/00_explore_openfda.py`](notebooks/00_explore_openfda.py) produces [`data/exploration/label_counts.csv`](data/exploration/label_counts.csv) (label counts per candidate, with openFDA data date). Data-quality findings:
+- FDA's `pharm_class_epc` is missing for many drugs and wrong for some (e.g., verapamil tagged "ACE inhibitor" via a combination product), so drug classes are assigned manually in `drug_list.csv`.
+- Section field names don't always match content (e.g., a `labor_and_delivery` field containing "8.2 Lactation"), parent sections contain their subsections, and some fields hold raw HTML tables. Handled in the Silver step.
+- openFDA data changes daily: counts differ slightly between runs, so every ingest records the openFDA `last_updated` date.
+
 ## Setup
 
 ```bash

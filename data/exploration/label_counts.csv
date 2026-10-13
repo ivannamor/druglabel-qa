@@ -1,0 +1,35 @@
+candidate_group,drug,rx_labels,single_ingredient_labels,fda_pharm_class_epc,openfda_last_updated,retrieved_at
+anticoagulant,warfarin,74,74,,2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,apixaban,8,8,Factor Xa Inhibitor [EPC] (8),2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,rivaroxaban,27,27,Factor Xa Inhibitor [EPC] (27),2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,dabigatran,21,21,,2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,edoxaban,1,1,,2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,heparin,61,59,Anti-coagulant [EPC] (1); Unfractionated Heparin [EPC] (1),2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,enoxaparin,24,23,,2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,dalteparin,1,1,,2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,fondaparinux,7,7,,2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,argatroban,16,16,Anti-coagulant [EPC] (16); Direct Thrombin Inhibitor [EPC] (16),2026-10-13,2026-10-13T21:14:10+00:00
+anticoagulant,bivalirudin,15,15,Anti-coagulant [EPC] (15); Direct Thrombin Inhibitor [EPC] (15),2026-10-13,2026-10-13T21:14:10+00:00
+antiplatelet,clopidogrel,56,56,P2Y12 Platelet Inhibitor [EPC] (1),2026-10-13,2026-10-13T21:14:10+00:00
+antiplatelet,prasugrel,11,11,,2026-10-13,2026-10-13T21:14:10+00:00
+antiplatelet,ticagrelor,33,33,P2Y12 Platelet Inhibitor [EPC] (33),2026-10-13,2026-10-13T21:14:10+00:00
+antiplatelet,cilostazol,11,11,Phosphodiesterase 3 Inhibitor [EPC] (11),2026-10-13,2026-10-13T21:14:10+00:00
+antiplatelet,dipyridamole,17,8,Platelet Aggregation Inhibitor [EPC] (17); Nonsteroidal Anti-inflammatory Drug [EPC] (9),2026-10-13,2026-10-13T21:14:10+00:00
+antiplatelet,vorapaxar,0,0,,,2026-10-13T21:14:10+00:00
+reversal,idarucizumab,1,1,Humanized Monoclonal Antibody Fragment [EPC] (1),2026-10-13,2026-10-13T21:14:10+00:00
+reversal,andexanet,1,1,,2026-10-13,2026-10-13T21:14:10+00:00
+reversal,protamine,5,5,,2026-10-13,2026-10-13T21:14:10+00:00
+reversal,phytonadione,35,34,Vitamin K [EPC] (35); Warfarin Reversal Agent [EPC] (35); Provitamin D2 Compound [EPC] (1),2026-10-13,2026-10-13T21:14:10+00:00
+antiarrhythmic,amiodarone,51,51,,2026-10-13,2026-10-13T21:14:10+00:00
+antiarrhythmic,dronedarone,2,2,Antiarrhythmic [EPC] (2),2026-10-13,2026-10-13T21:14:10+00:00
+antiarrhythmic,digoxin,43,43,Cardiac Glycoside [EPC] (43),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,metoprolol,348,344,Thiazide Diuretic [EPC] (4),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,carvedilol,120,120,alpha-Adrenergic Blocker [EPC] (109); beta-Adrenergic Blocker [EPC] (109),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,diltiazem,113,113,,2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,verapamil,93,92,Angiotensin Converting Enzyme Inhibitor [EPC] (1),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,atorvastatin,259,245,HMG-CoA Reductase Inhibitor [EPC] (11),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,simvastatin,120,111,HMG-CoA Reductase Inhibitor [EPC] (120); Dietary Cholesterol Absorption Inhibitor [EPC] (9),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,rosuvastatin,168,168,HMG-CoA Reductase Inhibitor [EPC] (27),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,amlodipine,233,125,Angiotensin 2 Receptor Blocker [EPC] (20); Thiazide Diuretic [EPC] (20); Calcium Channel Blocker [EPC] (4),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,lisinopril,221,154,Thiazide Diuretic [EPC] (67),2026-10-13,2026-10-13T21:14:10+00:00
+other_cv,sacubitril,38,0,Angiotensin 2 Receptor Blocker [EPC] (38),2026-10-13,2026-10-13T21:14:10+00:00

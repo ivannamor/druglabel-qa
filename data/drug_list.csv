@@ -1,0 +1,29 @@
+drug,drug_class,role,max_labels
+warfarin,Vitamin K antagonist,anticoagulant,10
+apixaban,Factor Xa inhibitor (oral),anticoagulant,10
+rivaroxaban,Factor Xa inhibitor (oral),anticoagulant,10
+edoxaban,Factor Xa inhibitor (oral),anticoagulant,10
+dabigatran,Direct thrombin inhibitor (oral),anticoagulant,10
+heparin,Heparin and related,anticoagulant,10
+enoxaparin,Heparin and related,anticoagulant,10
+dalteparin,Heparin and related,anticoagulant,10
+fondaparinux,Heparin and related,anticoagulant,10
+argatroban,Direct thrombin inhibitor (injectable),anticoagulant,10
+bivalirudin,Direct thrombin inhibitor (injectable),anticoagulant,10
+clopidogrel,P2Y12 inhibitor,antiplatelet,10
+prasugrel,P2Y12 inhibitor,antiplatelet,10
+ticagrelor,P2Y12 inhibitor,antiplatelet,10
+cilostazol,Other antiplatelet,antiplatelet,10
+dipyridamole,Other antiplatelet,antiplatelet,10
+phytonadione,Reversal agent,reversal,10
+protamine,Reversal agent,reversal,10
+idarucizumab,Reversal agent,reversal,10
+andexanet,Reversal agent,reversal,10
+amiodarone,Antiarrhythmic,interaction_partner,10
+dronedarone,Antiarrhythmic,interaction_partner,10
+digoxin,Cardiac glycoside,interaction_partner,10
+diltiazem,Calcium channel blocker,interaction_partner,10
+verapamil,Calcium channel blocker,interaction_partner,10
+simvastatin,Statin,interaction_partner,10
+atorvastatin,Statin,interaction_partner,10
+metoprolol,Beta-blocker,interaction_partner,10
