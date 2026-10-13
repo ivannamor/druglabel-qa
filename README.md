@@ -55,11 +55,15 @@ Providers are config values in `.env`; switching is a one-line change.
 
 | Role | Demo setup (free) | Production target |
 |---|---|---|
-| Generation + KG extraction | GitHub Models (`openai/gpt-4.1-mini`) | Azure OpenAI (EU Data Zone deployment) |
-| LLM-as-judge | Gemini Flash (free tier) | Azure OpenAI, different model than the generator |
+| Generation + KG extraction | `gemma-4-31b-it` via Google AI Studio (free tier) | Azure OpenAI (EU Data Zone deployment) |
+| LLM-as-judge | `gemini-3.5-flash-lite`, fallback `gemini-3.1-flash-lite` (free tier) | Azure OpenAI, stronger model than the generator |
 | Embeddings | `BAAI/bge-small-en-v1.5` (open source, run on Databricks) | Same, or Azure OpenAI embeddings |
 
-Why: the project runs at zero cost, the judge comes from a different model family than the generator (reduces self-preference bias), and a pinned open-source embedding model keeps runs reproducible. Free tiers are rate-limited, so LLM responses are cached and evaluation may run over more than one day.
+Why: the project runs at zero cost through one OpenAI-compatible endpoint, and a pinned open-source embedding model keeps runs reproducible. Gemma has the highest free daily quota (bulk work); the judge is a different, stronger model.
+
+Known trade-offs:
+- Generator and judge come from the same vendor (open-weight Gemma vs proprietary Gemini), so the judge is not fully independent. It is validated against human labels on a sample before its scores are trusted.
+- Free tiers are rate-limited and occasionally overloaded (HTTP 503), so LLM responses are cached, calls retry with backoff, and evaluation may run over more than one day.
 
 ## Results
 
