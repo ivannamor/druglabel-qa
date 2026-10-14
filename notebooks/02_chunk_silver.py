@@ -156,6 +156,11 @@ def split_long(text: str) -> list[str]:
     return chunks
 
 
+def has_section_text(label: dict) -> bool:
+    """True if any kept section has text. Some openFDA labels hold only the package label."""
+    return any(" ".join(label.get(s, [])).strip() for s in SECTION_GROUPS)
+
+
 def chunk_label(label: dict) -> list[dict]:
     """All chunks of one openFDA label (parsed JSON), in label order."""
     out = []
@@ -189,9 +194,11 @@ def chunk_label(label: dict) -> list[dict]:
 
 import json
 
-rows = []
+rows, no_text = [], []
 for b in bronze.itertuples():
     label = json.loads(b.raw_json)
+    if not has_section_text(label):
+        no_text.append((b.label_id, b.drug, label.get("openfda", {}).get("manufacturer_name", ["?"])[0]))
     for chunk in chunk_label(label):
         rows.append({
             **chunk,
@@ -207,7 +214,10 @@ for b in bronze.itertuples():
             "n_chars": len(chunk["text"]),
             "bronze_ingest_run_id": b.ingest_run_id,
         })
-print(f"{len(rows)} chunks from {len(bronze)} labels")
+print(f"{len(rows)} chunks from {len(bronze) - len(no_text)} labels")
+print(f"{len(no_text)} labels excluded, no text in any kept section in openFDA:")
+for label_id, drug, manufacturer in no_text:
+    print(f"   {label_id}  {drug:<14} {manufacturer}")
 
 # COMMAND ----------
 
@@ -223,12 +233,14 @@ dupes = chunks["chunk_id"].duplicated().sum()
 assert dupes == 0, f"{dupes} duplicate chunk_ids"
 assert (chunks["n_chars"] > 0).all(), "empty chunks"
 assert chunks["n_chars"].max() <= MAX_CHARS, "chunk longer than MAX_CHARS"
+# Only labels that are empty in the source may lack chunks; anything else is a chunking bug.
 missing = set(bronze["label_id"]) - set(chunks["label_id"])
-assert not missing, f"{len(missing)} labels produced no chunks: {sorted(missing)[:5]}"
+bug = missing - {label_id for label_id, _, _ in no_text}
+assert not bug, f"{len(bug)} labels have section text but produced no chunks: {sorted(bug)[:5]}"
 
 # Not errors, but worth knowing: labels without a section the assistant relies on.
 for group in ["indications", "contraindications", "interactions"]:
-    without = set(bronze["label_id"]) - set(chunks.loc[chunks["section_group"] == group, "label_id"])
+    without = set(chunks["label_id"]) - set(chunks.loc[chunks["section_group"] == group, "label_id"])
     print(f"labels without {group:<18}: {len(without)}")
 
 # COMMAND ----------

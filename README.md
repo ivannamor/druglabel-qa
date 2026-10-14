@@ -66,6 +66,8 @@ Data-quality findings:
 - Aspirin has no single-ingredient prescription label (it is sold over the counter in the US), so it is not in the dataset despite being a key interaction partner.
 - Section field names don't always match content (e.g., a `labor_and_delivery` field containing "8.2 Lactation"), parent sections contain their subsections, and some fields hold raw HTML tables. Handled in the Silver step.
 - openFDA data changes daily: counts differ slightly between runs, so every ingest records the openFDA `last_updated` date.
+- Some labels have no clinical text in openFDA, only the package label and ingredient list (3 of 261 in the first run: 2 bosentan, 1 dipyridamole, all from one manufacturer). They stay in Bronze as received; Silver excludes them and lists them in its output.
+- In old-format labels drug interactions are a subsection of PRECAUTIONS, so they are chunked under `precautions` and those labels have no `interactions` chunks.
 
 ### Label sections used
 
