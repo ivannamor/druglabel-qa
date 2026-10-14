@@ -144,7 +144,7 @@ druglabel-qa/
 
 | Day | Work | Done when | Status |
 |---|---|---|---|
-| 1 | Repo, README plan, Databricks Free Edition, ingest 200–300 labels into bronze/silver | Chunks with metadata exist in a Delta table | ☐ |
+| 1 | Repo, README plan, Databricks Free Edition, ingest 200–300 labels into bronze/silver | Chunks with metadata exist in a Delta table | ☑ |
 | 2 | Embeddings, vector retrieval, first RAG answers, MLflow logging | One question answered with citations, run visible in MLflow | ☐ |
 | 3 | Relation extraction, Neo4j graph, graph + hybrid retrieval | A multi-hop question answered correctly via the graph | ☐ |
 | 4 | Langfuse tracing, golden set, evaluation runner | Results table for all three retrieval modes | ☐ |
