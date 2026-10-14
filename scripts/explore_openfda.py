@@ -1,6 +1,6 @@
 """First exploration of the openFDA drug label API, on a hand-picked candidate list.
 
-Superseded for the actual selection by 01_select_drugs.py (rule-based, WHO ATC + openFDA);
+Superseded for the actual selection by select_drugs.py (rule-based, WHO ATC + openFDA);
 kept because it documents label counts and the data-quality issues found first.
 
 For each candidate drug it records how many prescription labels exist, how many are
@@ -9,8 +9,8 @@ data/exploration/label_counts.csv together with the openFDA data date, so the se
 can be re-checked later.
 
 Usage (from repo root):
-    python notebooks/00_explore_openfda.py                   # counts -> CSV
-    python notebooks/00_explore_openfda.py --example apixaban  # print one label's structure
+    python scripts/explore_openfda.py                   # counts -> CSV
+    python scripts/explore_openfda.py --example apixaban  # print one label's structure
 """
 
 import argparse

@@ -112,6 +112,7 @@ druglabel-qa/
 ├── README.md              # goal, architecture, results table, limitations
 ├── CHANGELOG.md
 ├── notebooks/             # Databricks notebooks: ingest, chunk, embed
+├── scripts/               # local one-off scripts: data exploration, drug selection
 ├── src/
 │   ├── retrieval/         # vector, graph, hybrid
 │   ├── kg/                # extraction + Neo4j loading

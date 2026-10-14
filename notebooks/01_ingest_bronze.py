@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # 02 · Ingest openFDA labels → `bronze_labels`
+# MAGIC # 01 · Ingest openFDA labels → `bronze_labels`
 # MAGIC
 # MAGIC Downloads the labels selected in `data/drug_list.csv` and stores each one **unchanged** (raw JSON)
 # MAGIC in the Delta table `bronze_labels`, one row per label.

@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # 03 · Chunk label sections → `silver_chunks`
+# MAGIC # 02 · Chunk label sections → `silver_chunks`
 # MAGIC
 # MAGIC Reads `bronze_labels` **at a pinned Delta version**, keeps the clinically relevant sections,
 # MAGIC cleans them and splits them into chunks. One row per chunk, with

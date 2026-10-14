@@ -12,7 +12,7 @@ Rules
    threshold is low.
 Each selected drug contributes at most MAX_LABELS single-ingredient labels, most recent first.
 
-Outputs (from repo root: python notebooks/01_select_drugs.py)
+Outputs (from repo root: python scripts/select_drugs.py)
 - data/drug_list.csv                        the selection, with the reason for each drug
 - data/exploration/atc_snapshot.csv         ATC codes used, with the WHO index update date
 - data/exploration/interaction_mentions.csv how many core drugs mention each ATC C substance
