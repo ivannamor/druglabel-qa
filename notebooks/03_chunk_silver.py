@@ -76,8 +76,16 @@ SECTION_GROUPS = {
     "pediatric_use": "specific_populations",
     "geriatric_use": "specific_populations",
     "overdosage": "overdosage",
+    "description": "product",
+    "clinical_pharmacology": "pharmacology",
     "mechanism_of_action": "pharmacology",
+    "pharmacodynamics": "pharmacology",
+    "pharmacokinetics": "pharmacology",
+    "how_supplied": "product",
+    "storage_and_handling": "product",
 }
+# Not used (see README "Label sections used"): clinical_studies, patient-facing text
+# (spl_medguide, information_for_patients), nonclinical toxicology, package label, recent changes.
 
 # openFDA also exposes subsections as their own fields (e.g. `pregnancy` repeats 8.1 of
 # USE IN SPECIFIC POPULATIONS). When the parent is present we keep only the parent: no duplicate
@@ -88,6 +96,16 @@ PARENTS = {
     "pediatric_use": ("use_in_specific_populations", "precautions"),
     "geriatric_use": ("use_in_specific_populations", "precautions"),
     "drug_interactions": ("precautions",),  # old format: Drug Interactions is a subsection of PRECAUTIONS
+    "mechanism_of_action": ("clinical_pharmacology",),
+    "pharmacodynamics": ("clinical_pharmacology",),
+    "pharmacokinetics": ("clinical_pharmacology",),
+    "storage_and_handling": ("how_supplied",),
+}
+
+# Section titles that differ from the field name.
+TITLES = {
+    "warnings_and_cautions": r"warnings\s+(?:and|&)\s+precautions",
+    "how_supplied": r"how\s+supplied(?:\s*/\s*storage\s+(?:and|&)\s+handling)?",
 }
 
 SENTENCE_END = re.compile(r"(?<=[.!?])\s+(?=[A-Z(\[])")
@@ -95,9 +113,8 @@ SENTENCE_END = re.compile(r"(?<=[.!?])\s+(?=[A-Z(\[])")
 
 def strip_header(section: str, text: str) -> tuple[str | None, str]:
     """Remove the leading section title (e.g. '5 WARNINGS AND PRECAUTIONS'); return (section number, body)."""
-    title = "warnings_and_precautions" if section == "warnings_and_cautions" else section
-    words = [r"(?:and|&)" if w == "and" else w for w in title.split("_")]
-    header = re.compile(r"^(?:(\d{1,2})(?:\.\d{1,2})?\s+)?" + r"\s+".join(words) + r"\b\s*:?\s*", re.I)
+    title = TITLES.get(section) or r"\s+".join(r"(?:and|&)" if w == "and" else w for w in section.split("_"))
+    header = re.compile(r"^(?:(\d{1,2})(?:\.\d{1,2})?\s+)?" + title + r"\b\s*:?\s*", re.I)
     m = header.match(text)
     return (m.group(1), text[m.end():]) if m else (None, text)
 

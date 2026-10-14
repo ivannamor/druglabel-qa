@@ -66,6 +66,36 @@ Data-quality findings:
 - Section field names don't always match content (e.g., a `labor_and_delivery` field containing "8.2 Lactation"), parent sections contain their subsections, and some fields hold raw HTML tables. Handled in the Silver step.
 - openFDA data changes daily: counts differ slightly between runs, so every ingest records the openFDA `last_updated` date.
 
+### Label sections used
+
+The Silver step ([`03_chunk_silver.py`](notebooks/03_chunk_silver.py)) keeps the sections a medical information team is asked about, and drops the rest.
+
+| Used | Why |
+|---|---|
+| Boxed warning, warnings and precautions (old format: warnings, precautions) | Safety questions |
+| Indications, contraindications | Core scope questions |
+| Dosage and administration, dosage forms and strengths | Label dosing (patient-specific advice is still declined) |
+| Adverse reactions, drug interactions, use in specific populations, overdosage | Pharmacovigilance and safety questions |
+| Clinical pharmacology (mechanism, pharmacodynamics, pharmacokinetics) | Explains interactions (CYP3A4, P-gp), half-life, renal/hepatic effects |
+| Description, how supplied / storage | Inactive ingredients (allergies), strengths, storage: frequent medical information questions |
+
+| Not used | Why |
+|---|---|
+| Clinical studies | Efficacy trial details: long, mostly flattened tables, out of scope for this version (see Limitations) |
+| Medication guide, patient counseling information | Restate the warnings in patient language: duplicates that crowd retrieval |
+| Nonclinical toxicology, carcinogenesis | Animal data, not asked by the target users |
+| Package label, recent major changes, unclassified sections | Packaging text, change notices and miscellaneous text with no stable meaning |
+| `*_table` fields | Raw HTML; the same content is usually in the section text |
+
+openFDA also exposes subsections as their own fields (e.g. `pregnancy` repeats 8.1 of "use in specific populations"). When the parent section is present only the parent is kept: no duplicate chunks, and in old-format labels these child fields are sometimes filled with the wrong subsection.
+
+### Chunking and retrieval design
+
+- **Chunks:** split at numbered subsections ("5.2 Bleeding", modern labels only), then long pieces at sentence boundaries into chunks of at most 1200 characters (~300 tokens, inside the 512-token limit of the embedding model), with up to 150 characters of sentence overlap. A subsection is kept whole when it fits (about 3 in 4 do); some reach 18,000 characters (adverse reaction tables), which would be truncated by the embedding model and are too long to cite.
+- **Small to big (planned):** retrieval matches on small chunks for precision, then passes the whole subsection, or the whole section when it is short, to the LLM so information split across chunks is not lost.
+- **Near-duplicates (planned):** up to 10 labels per drug are near-identical generics, so the top results can be the same passage several times. Duplicates are grouped by text similarity, and the most recent label is kept while the others are listed as also containing the passage. Similarity is computed on the text, not only on embeddings, because a small wording difference (a dose, a formulation) can matter clinically and must stay explainable.
+- **Parameters** (`top_k`, context expansion, duplicate threshold) are config values chosen from evaluation results, not by intuition.
+
 ## Setup
 
 ```bash
@@ -83,6 +113,8 @@ copy .env.example .env          # then fill in keys
 4. Set the `git_commit` widget to the output of `git rev-parse --short HEAD`, then Run all.
 
 The notebook writes `workspace.druglabel_qa.bronze_labels` (one row per label, raw JSON unchanged) and prints the Delta version.
+
+5. Import `notebooks/03_chunk_silver.py`, set `git_commit` and `bronze_version` (the Bronze Delta version to read), then Run all. It writes `workspace.druglabel_qa.silver_chunks` (one row per chunk).
 
 ## LLM providers
 
@@ -106,4 +138,5 @@ _To be added after the evaluation runs (Day 4)._
 
 ## Limitations
 
-_To be added._
+- Clinical studies sections are not indexed, so questions about trial results (e.g., efficacy in a named trial) are out of scope.
+- Old-format labels (before the 2006 Physician Labeling Rule) have no numbered subsections, so their chunks follow sentence windows only.
