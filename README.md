@@ -95,6 +95,8 @@ openFDA also exposes subsections as their own fields (e.g. `pregnancy` repeats 8
 ### Chunking and retrieval design
 
 - **Chunks:** split at numbered subsections ("5.2 Bleeding", modern labels only), then long pieces at sentence boundaries into chunks of at most 1200 characters (~300 tokens, inside the 512-token limit of the embedding model), with up to 150 characters of sentence overlap. A subsection is kept whole when it fits (about 3 in 4 do); some reach 18,000 characters (adverse reaction tables), which would be truncated by the embedding model and are too long to cite.
+- **Embeddings:** `BAAI/bge-small-en-v1.5` (ONNX build via `fastembed`, the same library at indexing time on Databricks and at query time locally). Each chunk is embedded with a context header (`drug (brand) · section · subsection`), because many passages never name the drug. In a small check (5 drugs, 8 questions) the header was as good as or better than plain text, and bge's query instruction prefix gave no gain, so questions are embedded as written. To be confirmed on the golden set.
+- **Vector search without a vector database:** ~14k chunks fit in memory, so retrieval is an exact cosine similarity in numpy (milliseconds). Databricks Vector Search is not used (Free Edition); the retriever is one module, so switching to it in production changes only that module.
 - **Small to big (planned):** retrieval matches on small chunks for precision, then passes the whole subsection, or the whole section when it is short, to the LLM so information split across chunks is not lost.
 - **Near-duplicates (planned):** up to 10 labels per drug are near-identical generics, so the top results can be the same passage several times. Duplicates are grouped by text similarity, and the most recent label is kept while the others are listed as also containing the passage. Similarity is computed on the text, not only on embeddings, because a small wording difference (a dose, a formulation) can matter clinically and must stay explainable.
 - **No hard filter on section:** in old-format labels interactions and specific populations sit inside PRECAUTIONS, so restricting an interaction question to `interactions` chunks would miss 56 of 258 labels. Section is used for ranking and reporting, not as a filter.
@@ -119,6 +121,7 @@ copy .env.example .env          # then fill in keys
 The notebook writes `workspace.druglabel_qa.bronze_labels` (one row per label, raw JSON unchanged) and prints the Delta version.
 
 5. Import `notebooks/02_chunk_silver.py`, set `git_commit` and `bronze_version` (the Bronze Delta version to read), then Run all. It writes `workspace.druglabel_qa.silver_chunks` (one row per chunk).
+6. Import `notebooks/03_embed_gold.py`, set `git_commit` and `silver_version`, then Run all. It installs `fastembed`, writes `workspace.druglabel_qa.gold_embeddings` and the snapshot `/Volumes/workspace/druglabel_qa/exports/gold_v{version}.parquet` used by the local retriever.
 
 ## LLM providers
 

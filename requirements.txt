@@ -1,3 +1,12 @@
 requests>=2.32
 pydantic>=2.7
 pydantic-settings>=2.3
+# Embeddings: pinned, the same version runs in notebooks/03_embed_gold.py (identical vectors)
+fastembed==0.9.0
+numpy>=1.26
+pandas>=2.2
+pyarrow>=16
+# LLM client (Gemini OpenAI-compatible endpoint, Azure OpenAI)
+openai>=1.40
+# MLflow tracking on Databricks (includes the Databricks SDK)
+mlflow-skinny>=2.16
