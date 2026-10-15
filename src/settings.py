@@ -59,6 +59,7 @@ class Settings(BaseSettings):
     # --- Retrieval ---
     retrieval_mode: Literal["vector", "graph", "hybrid"] = "vector"
     top_k: int = 5
+    dedup_threshold: float = 0.95  # same drug + same section + cosine >= this = one passage (see src/retrieval/vector.py)
 
 
 @lru_cache
