@@ -122,6 +122,7 @@ The notebook writes `workspace.druglabel_qa.bronze_labels` (one row per label, r
 
 5. Import `notebooks/02_chunk_silver.py`, set `git_commit` and `bronze_version` (the Bronze Delta version to read), then Run all. It writes `workspace.druglabel_qa.silver_chunks` (one row per chunk).
 6. Import `notebooks/03_embed_gold.py`, set `git_commit` and `silver_version`, then Run all. It installs `fastembed`, writes `workspace.druglabel_qa.gold_embeddings` and the snapshot `/Volumes/workspace/druglabel_qa/exports/gold_v{version}.parquet` used by the local retriever.
+7. Locally: set `DATABRICKS_HOST` and `DATABRICKS_TOKEN` (a personal access token: Settings → Developer → Access tokens) in `.env`, then run `python -m scripts.pull_gold`. It downloads the snapshot to `data/gold/` (git-ignored), checks its version and prints its sha256.
 
 ## LLM providers
 

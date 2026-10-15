@@ -6,6 +6,7 @@ Azure OpenAI is the production target; the demo runs on Google AI Studio's free 
 """
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 from pydantic import SecretStr
@@ -42,6 +43,18 @@ class Settings(BaseSettings):
 
     # --- Data ---
     openfda_api_key: SecretStr | None = None  # optional; raises the daily request limit
+
+    # --- Databricks (Gold snapshot download, MLflow tracking) ---
+    databricks_host: str | None = None  # https://<workspace>.cloud.databricks.com
+    databricks_token: SecretStr | None = None  # personal access token
+    databricks_catalog: str = "workspace"
+    databricks_schema: str = "druglabel_qa"
+    gold_version: int = 0  # Delta version of gold_embeddings whose snapshot the retriever uses
+
+    @property
+    def gold_snapshot_path(self) -> Path:
+        """Local copy of the Gold snapshot, downloaded by scripts/pull_gold.py."""
+        return Path(f"data/gold/gold_v{self.gold_version}.parquet")
 
     # --- Retrieval ---
     retrieval_mode: Literal["vector", "graph", "hybrid"] = "vector"

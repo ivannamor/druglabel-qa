@@ -9,6 +9,7 @@ venv/
 
 # Local data / outputs
 data/raw/
+data/gold/
 mlruns/
 *.log
 

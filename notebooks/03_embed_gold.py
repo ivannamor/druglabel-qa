@@ -158,13 +158,28 @@ gold = chunks.assign(
 spark.createDataFrame(gold).write.mode("overwrite").option("overwriteSchema", "true").saveAsTable(TABLE)
 version = spark.sql(f"DESCRIBE HISTORY {TABLE} LIMIT 1").collect()[0]["version"]
 
-# Snapshot for the local retriever, named after the Delta version it was written as.
-spark.sql(f"CREATE VOLUME IF NOT EXISTS {CATALOG}.{SCHEMA}.exports")
-export_path = f"{EXPORT_DIR}/gold_v{version}.parquet"
-gold.assign(embedding=list(vectors), gold_delta_version=version).to_parquet(export_path, index=False)
-
 print(f"Wrote {len(gold)} rows to {TABLE} | Delta version {version} | from silver v{SILVER_VERSION} | run {run_id}")
-print(f"Snapshot: {export_path}")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Snapshot for the local retriever: read back from the table version just written, so the file is an exact
+# MAGIC copy of it. After running the widgets cell, this cell can also be run on its own to re-export the latest version.
+
+# COMMAND ----------
+
+import numpy as np
+
+GOLD_VERSION = spark.sql(f"DESCRIBE HISTORY {TABLE} LIMIT 1").collect()[0]["version"]
+snapshot = spark.sql(f"SELECT * FROM {TABLE} VERSION AS OF {GOLD_VERSION}").toPandas()
+snapshot.attrs.clear()  # toPandas() attaches Spark query metrics here; pandas cannot write them to parquet
+snapshot["embedding"] = [np.asarray(v, dtype=np.float32) for v in snapshot["embedding"]]
+snapshot["gold_delta_version"] = GOLD_VERSION
+
+spark.sql(f"CREATE VOLUME IF NOT EXISTS {CATALOG}.{SCHEMA}.exports")
+export_path = f"{EXPORT_DIR}/gold_v{GOLD_VERSION}.parquet"
+snapshot.to_parquet(export_path, index=False)
+print(f"Snapshot: {export_path} ({len(snapshot)} rows, Delta version {GOLD_VERSION})")
 
 # COMMAND ----------
 
