@@ -48,9 +48,16 @@ def brand_map(drug_brands: dict[str, list[str]]) -> dict[str, str]:
     return mapping
 
 
+def normalize_text(text: str) -> str:
+    """Lowercase, single spaces, and enzyme names unified: labels use CYP3A and CYP3A4 interchangeably.
+    Applied to extracted names and to questions, so both sides of entity linking match."""
+    t = re.sub(r"\s+", " ", text).strip().lower()
+    return re.sub(r"\bcyp3a4(?:/5)?\b", "cyp3a", t)
+
+
 def normalize(name: str, brand_to_generic: dict[str, str] | None = None) -> str:
-    n = re.sub(r"\s+", " ", name).strip().lower()
-    n = re.sub(r"^(the|a|an) ", "", n).strip(" .,;:")
+    n = normalize_text(name)
+    n = re.sub(r"^(?:the|an?|any known|any) ", "", n).strip(" .,;:")
     n = SYNONYMS.get(n, n)
     # "severe hypersensitivity reaction to eliquis" -> "hypersensitivity": one node across drugs
     if re.match(r"^(known |severe |serious )*hypersensitivity( reaction)?s?( to .*)?$", n):

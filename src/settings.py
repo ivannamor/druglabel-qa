@@ -75,6 +75,7 @@ class Settings(BaseSettings):
     # --- Retrieval ---
     retrieval_mode: Literal["vector", "graph", "hybrid"] = "vector"
     top_k: int = 5
+    graph_max_passages: int = 8  # passages from graph edges (graph and hybrid modes)
     dedup_threshold: float = 0.95  # same drug + same section + cosine >= this = one passage (see src/retrieval/vector.py)
 
 

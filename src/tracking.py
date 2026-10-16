@@ -44,6 +44,8 @@ def config_params() -> dict[str, str | int | float]:
         "retrieval_mode": s.retrieval_mode,
         "top_k": s.top_k,
         "dedup_threshold": s.dedup_threshold,
+        "graph_max_passages": s.graph_max_passages,
+        "label_metadata_version": s.label_metadata_version,
         "embedding_model": s.embedding_model,
         "gold_delta_version": r.gold_version,
         "gold_snapshot_sha256": r.snapshot_sha256,

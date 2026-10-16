@@ -29,6 +29,8 @@ def log_answer(a: Answer, total_latency_s: float) -> str:
             "n_citations": len(a.citations),
             "n_invalid_citations": len(a.invalid_citations),
             "top_retrieval_score": a.retrieved[0].score if a.retrieved else 0.0,
+            "n_passages": len(a.retrieved),
+            "n_graph_facts": len(a.graph_facts),
         })
         mlflow.log_dict(asdict(a), "answer.json")  # question, answer, citations, retrieved passages, LLM usage
         mlflow.log_text(load_prompt(a.prompt_name)[0], f"prompts/{a.prompt_name}.md")

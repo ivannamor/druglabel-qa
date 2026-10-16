@@ -22,7 +22,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.generation.answer import format_passages, load_prompt
+from src.generation.answer import load_prompt
 from src.generation.llm import LLMError, complete
 from src.kg.normalize import brand_map, normalize
 from src.retrieval.vector import RetrievedChunk
@@ -53,6 +53,17 @@ def representative_labels(gold: pd.DataFrame, meta: pd.DataFrame) -> pd.DataFram
                            nda=labels["application_number"].fillna("").str.startswith("NDA"))
     return (labels.sort_values(["plr", "nda", "effective_time", "label_id"], ascending=False)
             .drop_duplicates(["drug", "route"]))
+
+
+def format_passages(chunks: list[RetrievedChunk]) -> str:
+    """Passages for the extraction prompt; kept separate from answer generation so that changes to the
+    answer prompt's passage format never alter extraction prompts (and their cached responses)."""
+    return "\n\n".join(
+        f"[{c.chunk_id}] {c.drug} · {c.section.replace('_', ' ')}"
+        f"{' · ' + c.subsection if c.subsection else ''} "
+        f"(label effective {c.effective_time[:4]}-{c.effective_time[4:6]}-{c.effective_time[6:]})\n{c.text}"
+        for c in chunks
+    )
 
 
 def squash(text: str) -> str:
