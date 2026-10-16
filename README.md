@@ -103,6 +103,24 @@ openFDA also exposes subsections as their own fields (e.g. `pregnancy` repeats 8
 - **No hard filter on section:** in old-format labels interactions and specific populations sit inside PRECAUTIONS, so restricting an interaction question to `interactions` chunks would miss 56 of 258 labels. Section is used for ranking and reporting, not as a filter.
 - **Parameters** (`top_k`, context expansion, `DEDUP_THRESHOLD`) are config values chosen from evaluation results, not by intuition.
 
+### Knowledge graph extraction
+
+[`src/kg/extract.py`](src/kg/extract.py) with prompt [`prompts/extract_v1.md`](prompts/extract_v1.md): one LLM call per label section, returning relations as JSON.
+
+| Section | Relation | Target node |
+|---|---|---|
+| Indications and usage | `INDICATED_FOR` | `Condition` |
+| Contraindications | `CONTRAINDICATED_IN` | `Condition` |
+| Adverse reactions | `HAS_ADVERSE_REACTION` | `AdverseEvent` (at most 40 per label, serious and most common first) |
+| Drug interactions (old format: precautions) | `INTERACTS_WITH` | `Drug` or `DrugClass` |
+
+- **Which labels:** one representative label per drug *and route of administration* (46 for 37 drugs), from `label_metadata`. Products of one drug can have different uses: dipyridamole tablets are an antiplatelet, dipyridamole injection a diagnostic agent for cardiac imaging. Within a route, generic labels copy the reference label, so extracting from all 258 labels would mostly repeat facts at several times the cost. Preference: modern format (PLR), then the reference product's label (NDA application), then the most recent.
+- **`DrugClass` nodes** extend the schema: modern labels name interactions by class ("strong CYP3A4 inhibitors", "NSAIDs") more often than by drug.
+- **Every relation is evidenced:** the LLM must return the chunk ID and a verbatim quote of 3–15 words. The quote must appear in one of the passages sent; if it is in a different passage than the one cited, the relation is attributed to the passage that contains it (`chunk_id_corrected`); otherwise it is rejected and kept in `rejected.jsonl` with the reason. Every edge stores `source_chunk_id`, `extraction_run_id` (the MLflow run), `label_id` and `route`.
+- **Normalization:** lowercase, articles and punctuation stripped, a small synonym table (hemorrhage → bleeding, NSAIDs → nonsteroidal anti-inflammatory drug), "hypersensitivity to <drug>" → hypersensitivity, and brand names mapped to dataset generic names (from label brand names plus a short list of well-known brands such as Plavix and Coumadin). No external ontology.
+- **Trial on 3 drugs / 6 labels:** 361 relations accepted; 9 rejected because the quote was found in no passage (2%), 20 duplicates after normalization. Requiring short contiguous quotes cut rejections of true facts: the model had been stitching quotes from non-adjacent words.
+- **Known limitation:** a diagnostic use is extracted as the condition itself (dipyridamole injection → `INDICATED_FOR` coronary artery disease, where the label says *for the evaluation of* it). Answers are not affected, because graph retrieval passes the source chunk text to the generator, but graph-only queries should read the edge evidence.
+
 ## Setup
 
 ```bash
