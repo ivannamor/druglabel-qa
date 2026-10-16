@@ -11,7 +11,8 @@ Per question it records the answer, status, citations, latency, tokens and cost,
 Repeats (`--repeats 3`) measure consistency; paraphrased items (`paraphrase_of`) measure robustness.
 
 Every configuration is one MLflow run (parameters, metrics, per-question results); LLM responses and
-verdicts are cached, so an interrupted run resumes where it stopped at no extra cost.
+verdicts are cached, so an interrupted run resumes where it stopped at no extra cost. Questions run in
+parallel (`--workers`, default 4); generator calls stay spaced by LLM_MIN_INTERVAL_S across threads.
 
 Usage (from repo root):
     python -m src.eval.run --modes vector,graph,hybrid --prompts answer_v1,answer_v2
@@ -23,6 +24,7 @@ import hashlib
 import json
 import time
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from functools import lru_cache
 from pathlib import Path
@@ -33,6 +35,7 @@ import pandas as pd
 from src.eval.judge import JUDGE_PROMPT_VERSION, correctness, faithfulness, judge
 from src.generation.answer import answer
 from src.generation.llm import cost_usd
+from src.retrieval.vector import get_retriever
 from src.settings import get_settings
 from src.tracing import langfuse, observe
 
@@ -146,14 +149,17 @@ def summarize(rows: pd.DataFrame) -> dict[str, float]:
     return {k: (round(float(v), 4) if v == v else None) for k, v in m.items()}  # v == v drops NaN
 
 
-def run_config(items: list[dict], mode: str, prompt: str, repeats: int, log: bool) -> dict:
+def run_config(items: list[dict], mode: str, prompt: str, repeats: int, log: bool, workers: int = 4) -> dict:
     s = get_settings()
     s.retrieval_mode, s.answer_prompt = mode, prompt  # settings are one shared object; set per configuration
-    rows = []
-    for r in range(1, repeats + 1):
-        for i, item in enumerate(items, 1):
-            rows.append(evaluate_item(item, r))
-            print(f"\r{mode}/{prompt} repeat {r}: {i}/{len(items)}", end="", flush=True)
+    corpus(), get_retriever()  # load shared resources once, before the worker threads start
+    jobs = [(item, r) for r in range(1, repeats + 1) for item in items]
+    rows, done = [], 0
+    with ThreadPoolExecutor(max_workers=workers) as pool:  # results come back in job order
+        for row in pool.map(lambda job: evaluate_item(*job), jobs):
+            rows.append(row)
+            done += 1
+            print(f"\r{mode}/{prompt}: {done}/{len(jobs)}", end="", flush=True)
     print()
     df = pd.DataFrame(rows)
     summary = summarize(df)
@@ -198,11 +204,12 @@ if __name__ == "__main__":
     p.add_argument("--prompts", default="answer_v1,answer_v2")
     p.add_argument("--repeats", type=int, default=1)
     p.add_argument("--limit", type=int, help="first N items only (smoke test)")
+    p.add_argument("--workers", type=int, default=4, help="questions evaluated in parallel")
     p.add_argument("--no-log", action="store_true", help="do not log to MLflow")
     args = p.parse_args()
     items = load_items(args.limit)
     print(f"{len(items)} items", dict(Counter(i["type"] for i in items)))
-    table = [run_config(items, m, pr, args.repeats, not args.no_log)
+    table = [run_config(items, m, pr, args.repeats, not args.no_log, args.workers)
              for m in args.modes.split(",") for pr in args.prompts.split(",")]
     result = pd.DataFrame(table).set_index("config")
     print(result.T.to_string())

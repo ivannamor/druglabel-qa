@@ -13,6 +13,7 @@ same answers. Calls are spaced by `llm_min_interval_s` to stay under the provide
 import hashlib
 import json
 import re
+import threading
 import time
 from dataclasses import asdict, dataclass
 from functools import lru_cache
@@ -30,6 +31,7 @@ RETRYABLE = (openai.InternalServerError, openai.RateLimitError, openai.APITimeou
 THOUGHT = re.compile(r"<thought>.*?(?:</thought>|$)\s*", re.S)  # Gemma's reasoning, also if cut off
 CACHE_DIR = Path("data/cache/llm")
 _last_call = 0.0  # time of the previous API call in this process, for request spacing
+_spacing = threading.Lock()
 
 # USD per 1M tokens (input, output). Anthropic: list prices as of 2026-10-06. OpenAI: platform.openai.com
 # pricing page. Used for cost in traces and evaluation results; cached responses cost nothing.
@@ -114,8 +116,9 @@ def complete(prompt: str, provider: LLMProvider, model: str, fallback_model: str
     errors = []
     for m in [model] + ([fallback_model] if fallback_model else []):
         for attempt in range(attempts):
-            time.sleep(max(0.0, _last_call + get_settings().llm_min_interval_s - time.time()))
-            start = _last_call = time.time()
+            with _spacing:  # one slot at a time, also when the evaluation runs questions in parallel
+                time.sleep(max(0.0, _last_call + get_settings().llm_min_interval_s - time.time()))
+                start = _last_call = time.time()
             try:
                 text, tokens_in, tokens_out = _call(provider, m, prompt, temperature, json_mode)
             except RETRYABLE as e:
