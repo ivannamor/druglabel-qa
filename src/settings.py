@@ -20,13 +20,15 @@ class Settings(BaseSettings):
 
     # --- LLM for answer generation and KG extraction ---
     llm_provider: LLMProvider = "gemini"
-    llm_model: str = "gemma-4-31b-it"  # Azure: deployment name; others: model name
+    llm_model: str = "gemini-3.1-flash-lite"  # Azure: deployment name; others: model name
+    llm_fallback_model: str | None = None  # optional; mixing models in one evaluation makes configs incomparable
     llm_temperature: float = 0.0
+    answer_prompt: str = "answer_v1"  # file in prompts/, versioned by name
 
     # --- LLM-as-judge: should be at least as capable as the generator ---
     judge_provider: LLMProvider = "gemini"
     judge_model: str = "gemini-3.5-flash-lite"
-    judge_fallback_model: str = "gemini-3.1-flash-lite"  # used when the judge model is overloaded
+    judge_fallback_model: str | None = None  # optional; must not be the generator model
 
     # --- Embeddings: a pinned open-source model keeps runs reproducible and free ---
     embedding_provider: Literal["local", "azure_openai", "openai"] = "local"

@@ -131,15 +131,18 @@ Providers are config values in `.env`; switching is a one-line change.
 
 | Role | Demo setup (free) | Production target |
 |---|---|---|
-| Generation + KG extraction | `gemma-4-31b-it` via Google AI Studio (free tier) | Azure OpenAI (EU Data Zone deployment) |
-| LLM-as-judge | `gemini-3.5-flash-lite`, fallback `gemini-3.1-flash-lite` (free tier) | Azure OpenAI, stronger model than the generator |
+| Generation + KG extraction | `gemini-3.1-flash-lite` via Google AI Studio (free tier) | Azure OpenAI (EU Data Zone deployment) |
+| LLM-as-judge | `gemini-3.5-flash-lite` (free tier): newer and more capable than the generator | Azure OpenAI, stronger model than the generator |
 | Embeddings | `BAAI/bge-small-en-v1.5` (open source, run on Databricks) | Same, or Azure OpenAI embeddings |
 
-Why: the project runs at zero cost through one OpenAI-compatible endpoint, and a pinned open-source embedding model keeps runs reproducible. Gemma has the highest free daily quota (bulk work); the judge is a different, stronger model.
+Why: the project runs at zero cost through one OpenAI-compatible endpoint, and a pinned open-source embedding model keeps runs reproducible. Each model has its own free quota (15 requests per minute, 500 per day), so generation and judging do not compete.
+
+Gemma (`gemma-4-31b-it`) was the first choice for its higher free quota, but was dropped on 2026-10-16 after measuring availability: the 31B model returned HTTP 500 on every call for over a day and the 26B variant on about half; in the same test both Flash-Lite models answered 8/8 in 1–1.5 s. A generator that fails half the time cannot support a reproducible evaluation. Runs record the model that actually answered, and no automatic fallback model is configured, because mixing models within one evaluation would make configurations incomparable.
 
 Known trade-offs:
-- Generator and judge come from the same vendor (open-weight Gemma vs proprietary Gemini), so the judge is not fully independent. It is validated against human labels on a sample before its scores are trusted.
-- Free tiers are rate-limited and occasionally overloaded (HTTP 503), so LLM responses are cached, calls retry with backoff, and evaluation may run over more than one day.
+- Generator and judge come from the same vendor and model family, so the judge is not fully independent. It is validated against human labels on a sample before its scores are trusted.
+- Free tiers are rate-limited, overloaded at times and not guaranteed ("actual capacity may vary"), so calls retry with backoff, evaluation will cache LLM responses (planned, Day 4), and may run over more than one day.
+- On Google's unpaid tier, prompts and responses may be used to improve Google's products and read by human reviewers; the terms say not to submit sensitive, confidential or personal information. This project sends only public FDA label text and test questions. Any use with real enquiries or patient data requires a paid, no-training deployment (the Azure target).
 
 ## Results
 
