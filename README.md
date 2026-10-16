@@ -174,6 +174,26 @@ Known trade-offs and safeguards:
 - Calls retry transient errors with backoff and are spaced to stay under rate limits; batch jobs cache responses, so a re-run costs nothing and resumes where it stopped.
 - Data: only public FDA label text and test questions are sent. Real enquiries or patient data would require a deployment with contractual data-protection terms (the Azure target).
 
+## Evaluation
+
+**Golden set** ([`data/golden_set.jsonl`](data/golden_set.jsonl), 71 items): 28 single-fact, 18 multi-hop and 11 unanswerable questions (6 outside the labels' scope, 5 patient-specific), plus 14 paraphrases of approved questions for robustness. Items were drafted by Claude Sonnet 5.5 (neither the generator nor the judge) from label passages, the knowledge graph and a keyword search of the labels ([`src/eval/golden.py`](src/eval/golden.py)), then reviewed one by one against their source passages following [`validation/golden_set_review.md`](validation/golden_set_review.md): of 60 drafts, 42 approved, 15 edited (mostly removing the answer's drug names from multi-hop questions) and 3 rejected as duplicates. The reviewer is not a clinician; a production golden set would also need review by a pharmacist or medical information specialist.
+
+**Runner** ([`src/eval/run.py`](src/eval/run.py)): every item in each configuration (retrieval mode × answer prompt), one MLflow run per configuration, one Langfuse trace per item with its scores.
+
+| Metric | How |
+|---|---|
+| Correctness | Judge: all key facts of the expected answer present and no contradiction = correct; some = partial |
+| Faithfulness | Judge: share of the answer's claims supported by the passage they cite |
+| Citation validity | Computed: no citation to a passage that was not retrieved (or a passage number that does not exist) |
+| Cites a gold passage | Computed: a cited passage is a gold passage or a copy of one (same drug and section, identical or near-identical text) |
+| Retrieval hit | Computed: a gold passage or a copy is among the retrieved passages |
+| Correct refusal / false refusal | Computed: unanswerable items refused with the expected token / answerable items refused |
+| Consistency | Same status and correctness across 3 repeats (fresh LLM calls, cached per repeat) |
+| Robustness | Paraphrase gets the same correctness as its original |
+| Latency, cost | Generator latency and token cost per question (judge cost not included) |
+
+**Judge validation, criterion fixed before any results:** the judge (`claude-haiku-5-5`, prompt `judge_v1`) is accepted if its correctness label (correct / partial / incorrect) agrees with a human grader on **at least 85%** of a random sample of 20 judged answers, graded blind to the judge's verdict. Otherwise the judge is switched to a stronger model and the evaluation re-judged (generator answers are cached).
+
 ## Results
 
 _To be added after the evaluation runs (Day 4)._

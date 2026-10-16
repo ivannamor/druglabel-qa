@@ -15,3 +15,5 @@ neo4j>=5.20
 certifi>=2024.2.2  # CA bundle for Neo4j Aura TLS (see src/kg/graph_db.py)
 # Answer judge (Anthropic, official SDK)
 anthropic>=1.15
+# Tracing
+langfuse>=5.0

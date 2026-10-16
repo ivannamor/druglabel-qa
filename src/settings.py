@@ -66,6 +66,11 @@ class Settings(BaseSettings):
     def label_metadata_path(self) -> Path:
         return Path(f"data/metadata/label_metadata_v{self.label_metadata_version}.parquet")
 
+    # --- Tracing (Langfuse Cloud, EU region) ---
+    langfuse_public_key: str | None = None
+    langfuse_secret_key: SecretStr | None = None
+    langfuse_host: str = "https://cloud.langfuse.com"
+
     # --- Knowledge graph (Neo4j AuraDB Free) ---
     neo4j_uri: str | None = None  # neo4j+s://<instance>.databases.neo4j.io
     neo4j_username: str = "neo4j"

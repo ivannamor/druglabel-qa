@@ -22,6 +22,7 @@ import anthropic
 import openai
 
 from src.settings import LLMProvider, get_settings
+from src.tracing import langfuse, observe
 
 RETRYABLE = (openai.InternalServerError, openai.RateLimitError, openai.APITimeoutError, openai.APIConnectionError,
              anthropic.InternalServerError, anthropic.RateLimitError, anthropic.APITimeoutError,
@@ -29,6 +30,21 @@ RETRYABLE = (openai.InternalServerError, openai.RateLimitError, openai.APITimeou
 THOUGHT = re.compile(r"<thought>.*?(?:</thought>|$)\s*", re.S)  # Gemma's reasoning, also if cut off
 CACHE_DIR = Path("data/cache/llm")
 _last_call = 0.0  # time of the previous API call in this process, for request spacing
+
+# USD per 1M tokens (input, output). Anthropic: list prices as of 2026-10-06. OpenAI: platform.openai.com
+# pricing page. Used for cost in traces and evaluation results; cached responses cost nothing.
+PRICES = {
+    "gpt-5.4-mini-2026-03-17": (0.75, 4.50),
+    "claude-haiku-5-5": (0.10, 0.50),
+    "claude-sonnet-5-5": (2.00, 10.00),
+}
+
+
+def cost_usd(model: str, input_tokens: int, output_tokens: int) -> float | None:
+    if model not in PRICES:
+        return None
+    price_in, price_out = PRICES[model]
+    return round((input_tokens * price_in + output_tokens * price_out) / 1e6, 6)
 
 
 @dataclass(frozen=True)
@@ -76,14 +92,23 @@ def _call(provider: LLMProvider, model: str, prompt: str, temperature: float, js
     return r.choices[0].message.content or "", r.usage.prompt_tokens, r.usage.completion_tokens
 
 
+@observe(name="llm", as_type="generation", capture_input=False, capture_output=False)
 def complete(prompt: str, provider: LLMProvider, model: str, fallback_model: str | None = None,
              temperature: float = 0.0, attempts: int = 5, json_mode: bool = False,
-             cache: bool = False) -> LLMResponse:
-    """Send one user message; retry transient errors with backoff, then try the fallback model."""
-    key = hashlib.sha256(json.dumps([provider, model, temperature, json_mode, prompt]).encode()).hexdigest()
+             cache: bool = False, cache_tag: str = "") -> LLMResponse:
+    """Send one user message; retry transient errors with backoff, then try the fallback model.
+
+    `cache_tag` separates cache entries of identical prompts, e.g. evaluation repeats ("r1", "r2"), so a
+    repeat is a fresh call rather than a copy of the first one.
+    """
+    key_parts = [provider, model, temperature, json_mode, prompt] + ([cache_tag] if cache_tag else [])
+    key = hashlib.sha256(json.dumps(key_parts).encode()).hexdigest()
     cached = CACHE_DIR / f"{key}.json"
     if cache and cached.exists():
-        return LLMResponse(**json.loads(cached.read_text(encoding="utf-8")))
+        response = LLMResponse(**json.loads(cached.read_text(encoding="utf-8")))
+        langfuse().update_current_generation(model=response.model, input=prompt, output=response.text,
+                                             metadata={"cached": True}, cost_details={"total": 0.0})
+        return response
 
     global _last_call
     errors = []
@@ -99,6 +124,11 @@ def complete(prompt: str, provider: LLMProvider, model: str, fallback_model: str
                 continue
             response = LLMResponse(THOUGHT.sub("", text).strip(), m, tokens_in, tokens_out,
                                    round(time.time() - start, 2))
+            cost = cost_usd(m, tokens_in, tokens_out)
+            langfuse().update_current_generation(
+                model=m, input=prompt, output=response.text, model_parameters={"temperature": temperature},
+                usage_details={"input": tokens_in, "output": tokens_out},
+                cost_details={"total": cost} if cost is not None else None, metadata={"provider": provider})
             if cache:
                 CACHE_DIR.mkdir(parents=True, exist_ok=True)
                 cached.write_text(json.dumps(asdict(response)), encoding="utf-8")
