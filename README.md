@@ -102,7 +102,7 @@ openFDA also exposes subsections as their own fields (e.g. `pregnancy` repeats 8
 - **Out-of-scope questions** cannot be detected from retrieval scores: a question about metformin (not in the dataset) scored 0.74, the same range as valid questions (0.73–0.85). Scope is checked on the drug named in the question instead (guardrails, planned).
 - **No hard filter on section:** in old-format labels interactions and specific populations sit inside PRECAUTIONS, so restricting an interaction question to `interactions` chunks would miss 56 of 258 labels. Section is used for ranking and reporting, not as a filter.
 - **Graph and hybrid retrieval** ([`src/retrieval/graph.py`](src/retrieval/graph.py), [`hybrid.py`](src/retrieval/hybrid.py), `RETRIEVAL_MODE=vector|graph|hybrid`): entities in the question are linked to graph nodes (and brand names to drugs), role words ("anticoagulants") filter drugs, keywords pick the relation type; the source chunks of the matching edges are the passages, so citations work the same in every mode. Hybrid puts graph passages first, then vector passages. Each passage tells the generator its route of administration and label date.
-- **First comparison** on "Which drugs in the dataset interact with strong CYP3A4 inhibitors?": vector retrieval found 2 drugs (its 5 passages covered 2 labels), graph retrieval 5 (apixaban, bosentan, cilostazol, rivaroxaban, ticagrelor), hybrid 4 in the answer with all 5 in the passages. In the graph answer the citation check flagged one corrupted chunk ID (the model mixed two IDs), which is why citations are verified rather than trusted.
+- **First comparison** on "Which drugs in the dataset interact with strong CYP3A4 inhibitors?": vector retrieval found 2 drugs (its 5 passages covered 2 labels), graph retrieval 5 (apixaban, bosentan, cilostazol, rivaroxaban, ticagrelor), hybrid 4 in the answer with all 5 in the passages. In the graph answer the citation check flagged one corrupted chunk ID (the model mixed two IDs), which is why citations are verified rather than trusted. It happened again in the logged run (bosentan's ID spliced with rivaroxaban's): copying 36-character IDs is a systematic weakness, so prompt v2 will number the passages [1], [2], … and map the numbers back to chunk IDs in code; the evaluation compares the two prompts.
 - **Parameters** (`top_k`, context expansion, `DEDUP_THRESHOLD`) are config values chosen from evaluation results, not by intuition.
 
 ### Knowledge graph extraction
@@ -182,7 +182,6 @@ _To be added after the evaluation runs (Day 4)._
 
 - Clinical studies sections are not indexed, so questions about trial results (e.g., efficacy in a named trial) are out of scope.
 - Old-format labels (before the 2006 Physician Labeling Rule) have no numbered subsections, so their chunks follow sentence windows only.
-
 
 ## How this project was built
 
