@@ -22,7 +22,7 @@ def init_tracking() -> str:
     os.environ["DATABRICKS_HOST"] = s.databricks_host
     os.environ["DATABRICKS_TOKEN"] = s.databricks_token.get_secret_value()
     mlflow.set_tracking_uri("databricks")
-    experiment = s.mlflow_experiment or f"/Users/{WorkspaceClient().current_user.me().user_name}/druglabel-qa"
+    experiment = s.mlflow_experiment or f"/Users/{WorkspaceClient().current_user.me().user_name}/druglabel-qa/druglabel-qa-runs"
     mlflow.set_experiment(experiment)
     return experiment
 
