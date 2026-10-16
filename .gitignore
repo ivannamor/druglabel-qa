@@ -10,6 +10,9 @@ venv/
 # Local data / outputs
 data/raw/
 data/gold/
+data/cache/
+data/kg/
+data/metadata/
 mlruns/
 *.log
 

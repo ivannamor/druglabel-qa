@@ -11,7 +11,7 @@
 # MAGIC citable label text.
 # MAGIC
 # MAGIC Outputs: the Delta table `gold_embeddings` and a parquet snapshot `exports/gold_v{version}.parquet` in the
-# MAGIC volume, which the local retrieval code downloads (`scripts/pull_gold.py`).
+# MAGIC volume, which the local retrieval code downloads (`scripts/pull_export.py gold`).
 # MAGIC
 # MAGIC Traceability columns on every row: `silver_delta_version`, `embed_run_id`, `embedded_at`,
 # MAGIC `embedding_model`, `embedding_source`, `fastembed_version` and `git_commit`.

@@ -123,7 +123,8 @@ The notebook writes `workspace.druglabel_qa.bronze_labels` (one row per label, r
 
 5. Import `notebooks/02_chunk_silver.py`, set `git_commit` and `bronze_version` (the Bronze Delta version to read), then Run all. It writes `workspace.druglabel_qa.silver_chunks` (one row per chunk).
 6. Import `notebooks/03_embed_gold.py`, set `git_commit` and `silver_version`, then Run all. It installs `fastembed`, writes `workspace.druglabel_qa.gold_embeddings` and the snapshot `/Volumes/workspace/druglabel_qa/exports/gold_v{version}.parquet` used by the local retriever.
-7. Locally: set `DATABRICKS_HOST` and `DATABRICKS_TOKEN` (a personal access token: Settings → Developer → Access tokens) in `.env`, then run `python -m scripts.pull_gold`. It downloads the snapshot to `data/gold/` (git-ignored), checks its version and prints its sha256.
+7. Locally: set `DATABRICKS_HOST` and `DATABRICKS_TOKEN` (a personal access token: Settings → Developer → Access tokens) in `.env`, then run `python -m scripts.pull_export gold`. It downloads the snapshot to `data/gold/` (git-ignored), checks its version and prints its sha256.
+8. Import `notebooks/04_label_metadata.py`, set `git_commit` and `bronze_version`, then Run all. It writes `workspace.druglabel_qa.label_metadata` (route, brand names, manufacturer, application number per label) and its snapshot; download it with `python -m scripts.pull_export label_metadata`.
 
 ### Ask a question
 
@@ -137,20 +138,20 @@ Retrieves the passages, generates a cited answer and logs an MLflow run in the D
 
 Providers are config values in `.env`; switching is a one-line change.
 
-| Role | Demo setup (free) | Production target |
+| Role | Demo setup | Production target |
 |---|---|---|
-| Generation + KG extraction | `gemini-3.1-flash-lite` via Google AI Studio (free tier) | Azure OpenAI (EU Data Zone deployment) |
-| LLM-as-judge | `gemini-3.5-flash-lite` (free tier): newer and more capable than the generator | Azure OpenAI, stronger model than the generator |
+| Generation + KG extraction | OpenAI `gpt-5.4-mini-2026-03-17` (dated snapshot, so the model cannot change under a run) | Azure OpenAI (EU Data Zone deployment) |
+| LLM-as-judge | Anthropic `claude-haiku-5-5` (another vendor than the generator) | A stronger model than the generator, e.g. Claude Sonnet / Opus |
 | Embeddings | `BAAI/bge-small-en-v1.5` (open source, run on Databricks) | Same, or Azure OpenAI embeddings |
 
-Why: the project runs at zero cost through one OpenAI-compatible endpoint, and a pinned open-source embedding model keeps runs reproducible. Each model has its own free quota (15 requests per minute, 500 per day), so generation and judging do not compete.
+**Judge choice.** Ideally the judge is a stronger model than the generator, so it can catch errors the generator would not notice. This project is a demo with a small budget, so it uses a cheaper judge (Claude Haiku 5.5, about $1 for the whole evaluation instead of about $20 for Claude Sonnet 5.5) and relies on two safeguards instead: the judge comes from a different vendor than the generator, so it does not share its blind spots, and it is kept only if it passes validation against human labels (agreement on a manually graded sample above a threshold set in advance). If it fails, the judge is switched to a stronger model with one line in `.env`; cached generator answers are reused.
 
-Gemma (`gemma-4-31b-it`) was the first choice for its higher free quota, but was dropped on 2026-10-16 after measuring availability: the 31B model returned HTTP 500 on every call for over a day and the 26B variant on about half; in the same test both Flash-Lite models answered 8/8 in 1–1.5 s. A generator that fails half the time cannot support a reproducible evaluation. Runs record the model that actually answered, and no automatic fallback model is configured, because mixing models within one evaluation would make configurations incomparable.
+**Why paid APIs.** The project first ran on Google AI Studio's free tier (Gemma, then Gemini Flash-Lite). Free capacity is not guaranteed ("actual capacity may vary"), and it showed: `gemma-4-31b-it` returned HTTP 500 on every call for over a day, and `gemini-3.1-flash-lite` went from 8/8 successful calls to 5/5 HTTP 503 ("high demand") the next day, which stalled the graph extraction. A generator that fails that often cannot support a reproducible evaluation, so the demo moved to paid APIs with small prepaid credits and auto-recharge off (spend capped by design). Expected total cost: a few dollars.
 
-Known trade-offs:
-- Generator and judge come from the same vendor and model family, so the judge is not fully independent. It is validated against human labels on a sample before its scores are trusted.
-- Free tiers are rate-limited, overloaded at times and not guaranteed ("actual capacity may vary"), so calls retry with backoff, evaluation will cache LLM responses (planned, Day 4), and may run over more than one day.
-- On Google's unpaid tier, prompts and responses may be used to improve Google's products and read by human reviewers; the terms say not to submit sensitive, confidential or personal information. This project sends only public FDA label text and test questions. Any use with real enquiries or patient data requires a paid, no-training deployment (the Azure target).
+Known trade-offs and safeguards:
+- Runs record the model that actually answered; no automatic fallback model is configured, because mixing models within one evaluation would make configurations incomparable.
+- Calls retry transient errors with backoff and are spaced to stay under rate limits; batch jobs cache responses, so a re-run costs nothing and resumes where it stopped.
+- Data: only public FDA label text and test questions are sent. Real enquiries or patient data would require a deployment with contractual data-protection terms (the Azure target).
 
 ## Results
 

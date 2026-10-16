@@ -1,7 +1,7 @@
 """Single source of configuration. Values come from environment variables / `.env`.
 
 Switching LLM provider is one line in `.env`, e.g. LLM_PROVIDER=azure_openai.
-Azure OpenAI is the production target; the demo runs on Google AI Studio's free tier
+Azure OpenAI is the production target; the demo uses OpenAI for generation and Anthropic for the judge
 (see README, "LLM providers").
 """
 
@@ -19,15 +19,16 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     # --- LLM for answer generation and KG extraction ---
-    llm_provider: LLMProvider = "gemini"
-    llm_model: str = "gemini-3.1-flash-lite"  # Azure: deployment name; others: model name
+    llm_provider: LLMProvider = "openai"
+    llm_model: str = "gpt-5.4-mini-2026-03-17"  # dated snapshot: a bare name can change under you
     llm_fallback_model: str | None = None  # optional; mixing models in one evaluation makes configs incomparable
     llm_temperature: float = 0.0
+    llm_min_interval_s: float = 1.5  # spacing between API calls (new Anthropic accounts: ~50 requests/min)
     answer_prompt: str = "answer_v1"  # file in prompts/, versioned by name
 
-    # --- LLM-as-judge: should be at least as capable as the generator ---
-    judge_provider: LLMProvider = "gemini"
-    judge_model: str = "gemini-3.5-flash-lite"
+    # --- LLM-as-judge: another vendor than the generator; kept only if it passes validation vs human labels ---
+    judge_provider: LLMProvider = "anthropic"
+    judge_model: str = "claude-haiku-5-5"
     judge_fallback_model: str | None = None  # optional; must not be the generator model
 
     # --- Embeddings: a pinned open-source model keeps runs reproducible and free ---
@@ -56,8 +57,20 @@ class Settings(BaseSettings):
 
     @property
     def gold_snapshot_path(self) -> Path:
-        """Local copy of the Gold snapshot, downloaded by scripts/pull_gold.py."""
+        """Local copy of the Gold snapshot, downloaded by scripts/pull_export.py."""
         return Path(f"data/gold/gold_v{self.gold_version}.parquet")
+
+    label_metadata_version: int = 0  # Delta version of label_metadata (route, brand, application number)
+
+    @property
+    def label_metadata_path(self) -> Path:
+        return Path(f"data/metadata/label_metadata_v{self.label_metadata_version}.parquet")
+
+    # --- Knowledge graph (Neo4j AuraDB Free) ---
+    neo4j_uri: str | None = None  # neo4j+s://<instance>.databases.neo4j.io
+    neo4j_username: str = "neo4j"
+    neo4j_password: SecretStr | None = None
+    neo4j_database: str = "neo4j"
 
     # --- Retrieval ---
     retrieval_mode: Literal["vector", "graph", "hybrid"] = "vector"
