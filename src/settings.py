@@ -52,6 +52,7 @@ class Settings(BaseSettings):
     databricks_catalog: str = "workspace"
     databricks_schema: str = "druglabel_qa"
     gold_version: int = 0  # Delta version of gold_embeddings whose snapshot the retriever uses
+    mlflow_experiment: str | None = None  # default: /Users/<your Databricks user>/druglabel-qa
 
     @property
     def gold_snapshot_path(self) -> Path:

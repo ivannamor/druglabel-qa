@@ -125,6 +125,14 @@ The notebook writes `workspace.druglabel_qa.bronze_labels` (one row per label, r
 6. Import `notebooks/03_embed_gold.py`, set `git_commit` and `silver_version`, then Run all. It installs `fastembed`, writes `workspace.druglabel_qa.gold_embeddings` and the snapshot `/Volumes/workspace/druglabel_qa/exports/gold_v{version}.parquet` used by the local retriever.
 7. Locally: set `DATABRICKS_HOST` and `DATABRICKS_TOKEN` (a personal access token: Settings → Developer → Access tokens) in `.env`, then run `python -m scripts.pull_gold`. It downloads the snapshot to `data/gold/` (git-ignored), checks its version and prints its sha256.
 
+### Ask a question
+
+```bash
+python -m src.ask "What is the antidote for dabigatran?"
+```
+
+Retrieves the passages, generates a cited answer and logs an MLflow run in the Databricks workspace (experiment `/Users/<you>/druglabel-qa`). Each run records the git commit (and whether there were uncommitted changes), model requested and model that answered, prompt name and sha256, retrieval parameters, Gold/Silver versions and the Gold snapshot sha256, latency, tokens and citation counts, plus the full answer with its retrieved passages (`answer.json`) and the prompt text. Without logging: `python -m src.generation.answer "…"`; retrieval only: `python -m src.retrieval.vector "…"`.
+
 ## LLM providers
 
 Providers are config values in `.env`; switching is a one-line change.

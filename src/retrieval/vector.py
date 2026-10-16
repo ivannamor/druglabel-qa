@@ -14,6 +14,7 @@ drug's own label. `n_labels` reports how many labels hold the passage, so nothin
 Usage (from repo root): python -m src.retrieval.vector "What are the contraindications of apixaban?"
 """
 
+import hashlib
 import sys
 from dataclasses import dataclass
 from functools import lru_cache
@@ -41,6 +42,7 @@ class RetrievedChunk:
 
 class VectorRetriever:
     def __init__(self, snapshot_path: Path, embedding_model: str) -> None:
+        self.snapshot_sha256 = hashlib.sha256(snapshot_path.read_bytes()).hexdigest()  # exact file used, for run logs
         gold = pd.read_parquet(snapshot_path)
         snapshot_model = gold["embedding_model"].iloc[0]
         if snapshot_model != embedding_model:  # questions and chunks must be embedded by the same model
@@ -56,6 +58,7 @@ class VectorRetriever:
         self.chunks = gold.drop(columns="embedding")
         self.model = TextEmbedding(embedding_model)
         self.gold_version = int(gold["gold_delta_version"].iloc[0])
+        self.silver_version = int(gold["silver_delta_version"].iloc[0])
 
     def search(self, question: str, top_k: int, dedup_threshold: float = 0.95) -> list[RetrievedChunk]:
         """The top_k distinct passages closest to the question, best first."""
