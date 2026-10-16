@@ -112,6 +112,8 @@ def search(question: str, max_passages: int) -> tuple[list[RetrievedChunk], list
                   e.source_chunk_id AS chunk_id, e.evidence AS evidence, matched
            ORDER BY matched DESC, drug, relation, target LIMIT 200""",
         names=names, relations=relations, roles=roles, database_=get_settings().neo4j_database)
+    if not records:  # entities linked but no edge matches (e.g. a drug outside the dataset): no graph passages
+        return [], []
     facts = [GraphFact(r["drug"], r["relation"], r["target"], r["route"], r["chunk_id"], r["evidence"])
              for r in records]
 
