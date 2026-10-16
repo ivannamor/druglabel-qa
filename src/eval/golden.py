@@ -237,7 +237,7 @@ def draft() -> None:
     for i, item in enumerate(items, 1):
         item.update({"id": f"GS-{i:03d}", "drafted_by": DRAFTER, "drafted_on": date.today().isoformat()})
     GOLDEN_DIR.mkdir(parents=True, exist_ok=True)
-    (GOLDEN_DIR / "draft.jsonl").write_text("".join(json.dumps(i) + "\n" for i in items), encoding="utf-8")
+    (GOLDEN_DIR / "draft.jsonl").write_text("".join(json.dumps(i) + "\n" for i in items), encoding="utf-8", newline="\n")
 
     write_review_sheet(items, chunks)
     counts = pd.Series([i["type"] for i in items]).value_counts().to_dict()
@@ -297,7 +297,7 @@ Question: {item['question']}""", Paraphrase)
         out.append({**item, "id": f"GS-P{k:02d}", "question": p.question, "paraphrase_of": item["id"],
                     "drafted_by": DRAFTER, "drafted_on": date.today().isoformat()})
         print(f"GS-P{k:02d} <- {item['id']}", flush=True)
-    (GOLDEN_DIR / "paraphrases_draft.jsonl").write_text("".join(json.dumps(i) + "\n" for i in out), encoding="utf-8")
+    (GOLDEN_DIR / "paraphrases_draft.jsonl").write_text("".join(json.dumps(i) + "\n" for i in out), encoding="utf-8", newline="\n")
 
 
 def add_paraphrases(ids: list[str], reviewer: str) -> None:
@@ -309,7 +309,7 @@ def add_paraphrases(ids: list[str], reviewer: str) -> None:
     golden = [i for i in golden if i["id"] not in drafts]  # re-running replaces earlier paraphrases
     golden += [{**drafts[i], "review": "approve", "reviewed_by": reviewer, "reviewed_on": date.today().isoformat(),
                 "review_notes": ""} for i in ids]
-    golden_path.write_text("".join(json.dumps(i) + "\n" for i in golden), encoding="utf-8")
+    golden_path.write_text("".join(json.dumps(i) + "\n" for i in golden), encoding="utf-8", newline="\n")
     print(f"{len(ids)} paraphrases added; golden set: {len(golden)} items")
 
 
@@ -327,7 +327,7 @@ def import_review(reviewer: str) -> None:
         item.update({"review": decision, "reviewed_by": reviewer, "reviewed_on": date.today().isoformat(),
                      "review_notes": row["notes"].strip()})
         approved.append(item)
-    Path("data/golden_set.jsonl").write_text("".join(json.dumps(i) + "\n" for i in approved), encoding="utf-8")
+    Path("data/golden_set.jsonl").write_text("".join(json.dumps(i) + "\n" for i in approved), encoding="utf-8", newline="\n")  # LF: same sha256 as the repo copy
     print(f"{len(approved)} approved items -> data/golden_set.jsonl",
           pd.Series([i["type"] for i in approved]).value_counts().to_dict())
 
