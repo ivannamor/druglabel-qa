@@ -151,6 +151,6 @@ druglabel-qa/
 | 3 | Relation extraction, Neo4j graph, graph + hybrid retrieval | A multi-hop question answered correctly via the graph | ☑ |
 | 4 | Langfuse tracing, golden set, evaluation runner | Results table for all three retrieval modes | ☑ |
 | 5 | Guardrails, HITL queue, validation pack | Traceability matrix links every requirement to a test and a run | ☑ |
-| 6 | README with diagram and results, one root cause analysis write-up | Repo public and presentable | ☐ |
+| 6 | README with diagram and results, one root cause analysis write-up | Repo public and presentable | ☑ |
 
 **If time runs short, cut in this order:** HITL queue → ALCOA+ mapping → robustness metric. **Never cut:** traceability matrix, evaluation table.

@@ -7,6 +7,8 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 ### Added
 - Root cause analysis of a false refusal (README "Root cause analysis"): GS-025 missed because the answer sentence sits at the end of a flattened table chunk. Keyword search (BM25 + rank fusion) and drug-filtered search were tested and rejected; the sentence alone ranks 1st. Corrective action planned for v1.1: table-aware chunking in Silver, with its downstream impact (Gold, graph, golden-set passage IDs, re-validation).
 
+- Repository published on GitHub (public), with tag `v1.0.0`.
+
 ### Changed
 - README reorganized for a first-time reader: summary and headline results first, Mermaid architecture diagram, then results, validation, guardrails, root cause analysis, evaluation method and design details; setup covers graph, evaluation and the release gate; limitations completed.
 
