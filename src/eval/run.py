@@ -163,7 +163,8 @@ def summarize(rows: pd.DataFrame) -> dict[str, float]:
     return {k: (round(float(v), 4) if v == v else None) for k, v in m.items()}  # v == v drops NaN
 
 
-def run_config(items: list[dict], mode: str, prompt: str, repeats: int, log: bool, workers: int = 4) -> dict:
+def run_config(items: list[dict], mode: str, prompt: str, repeats: int, log: bool, workers: int = 4,
+               run_type: str = "evaluation") -> dict:
     s = get_settings()
     s.retrieval_mode, s.answer_prompt = mode, prompt  # settings are one shared object; set per configuration
     corpus(), get_retriever()  # load shared resources once, before the worker threads start
@@ -181,14 +182,14 @@ def run_config(items: list[dict], mode: str, prompt: str, repeats: int, log: boo
     out = OUT_DIR / name
     out.mkdir(parents=True, exist_ok=True)
     df.to_json(out / "results.jsonl", orient="records", lines=True)
-    (out / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    if log:
-        log_mlflow(name, df, summary, out, mode, prompt, repeats)
+    (out / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8", newline="\n")
+    run_id = log_mlflow(name, df, summary, out, mode, prompt, repeats, run_type) if log else None
     langfuse().flush()
-    return {"config": name, **summary}
+    return {"config": name, **summary, "mlflow_run_id": run_id}
 
 
-def log_mlflow(name: str, df: pd.DataFrame, summary: dict, out: Path, mode: str, prompt: str, repeats: int) -> None:
+def log_mlflow(name: str, df: pd.DataFrame, summary: dict, out: Path, mode: str, prompt: str, repeats: int,
+               run_type: str = "evaluation") -> str:
     import mlflow
 
     from src.generation.answer import load_prompt
@@ -196,8 +197,8 @@ def log_mlflow(name: str, df: pd.DataFrame, summary: dict, out: Path, mode: str,
     init_tracking()
     commit, dirty = git_state()
     s = get_settings()
-    with mlflow.start_run(run_name=f"eval {name}"):
-        mlflow.set_tags({"run_type": "evaluation", "git_commit": commit, "git_dirty": str(dirty)})
+    with mlflow.start_run(run_name=f"{run_type} {name}") as run:
+        mlflow.set_tags({"run_type": run_type, "git_commit": commit, "git_dirty": str(dirty)})
         mlflow.log_params({**config_params(), "prompt_name": prompt, "prompt_sha256": load_prompt(prompt)[1],
                            "repeats": repeats, "judge_provider": s.judge_provider, "judge_model": s.judge_model,
                            "judge_prompt_version": JUDGE_PROMPT_VERSION,
@@ -205,6 +206,7 @@ def log_mlflow(name: str, df: pd.DataFrame, summary: dict, out: Path, mode: str,
                            "models_used": ",".join(sorted(df["model"].unique()))})
         mlflow.log_metrics({k: v for k, v in summary.items() if v is not None})
         mlflow.log_artifacts(str(out), "eval")
+    return run.info.run_id
 
 
 def load_items(limit: int | None) -> list[dict]:

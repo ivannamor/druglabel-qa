@@ -108,8 +108,10 @@ def complete(prompt: str, provider: LLMProvider, model: str, fallback_model: str
     cached = CACHE_DIR / f"{key}.json"
     if cache and cached.exists():
         response = LLMResponse(**json.loads(cached.read_text(encoding="utf-8")))
-        langfuse().update_current_generation(model=response.model, input=prompt, output=response.text,
-                                             metadata={"cached": True}, cost_details={"total": 0.0})
+        langfuse().update_current_generation(  # tokens of the original call; no cost now, it was served from cache
+            model=response.model, input=prompt, output=response.text, metadata={"cached": True},
+            usage_details={"input": response.input_tokens, "output": response.output_tokens},
+            cost_details={"total": 0.0})
         return response
 
     global _last_call
