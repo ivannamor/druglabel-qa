@@ -144,7 +144,7 @@ druglabel-qa/
 
 ## Plan and status
 
-| Day | Work | Done when | Status |
+| Phase | Work | Done when | Status |
 |---|---|---|---|
 | 1 | Repo, README plan, Databricks Free Edition, ingest 200–300 labels into bronze/silver | Chunks with metadata exist in a Delta table | ☑ |
 | 2 | Embeddings, vector retrieval, first RAG answers, MLflow logging | One question answered with citations, run visible in MLflow | ☑ |
@@ -153,4 +153,4 @@ druglabel-qa/
 | 5 | Guardrails, HITL queue, validation pack | Traceability matrix links every requirement to a test and a run | ☑ |
 | 6 | README with diagram and results, one root cause analysis write-up | Repo public and presentable | ☑ |
 
-**If time runs short, cut in this order:** HITL queue → ALCOA+ mapping → robustness metric. **Never cut:** traceability matrix, evaluation table.
+**If scope must be cut, cut in this order:** HITL queue → ALCOA+ mapping → robustness metric. **Never cut:** traceability matrix, evaluation table.
