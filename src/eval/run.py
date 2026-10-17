@@ -41,6 +41,7 @@ from src.generation.llm import cost_usd
 from src.retrieval.vector import get_retriever
 from src.settings import get_settings
 from src.tracing import langfuse, observe
+from src.tracking import git_state
 
 GOLDEN = Path("data/golden_set.jsonl")
 OUT_DIR = Path("data/eval")
@@ -167,6 +168,9 @@ def run_config(items: list[dict], mode: str, prompt: str, repeats: int, log: boo
                run_type: str = "evaluation") -> dict:
     s = get_settings()
     s.retrieval_mode, s.answer_prompt = mode, prompt  # settings are one shared object; set per configuration
+    # Record the code state before this run writes its outputs: they are tracked files, and rewriting them
+    # would otherwise make the run look as if it ran on uncommitted code.
+    git = git_state()
     corpus(), get_retriever()  # load shared resources once, before the worker threads start
     jobs = [(item, r) for r in range(1, repeats + 1) for item in items]
     rows, done = [], 0
@@ -183,19 +187,19 @@ def run_config(items: list[dict], mode: str, prompt: str, repeats: int, log: boo
     out.mkdir(parents=True, exist_ok=True)
     df.to_json(out / "results.jsonl", orient="records", lines=True)
     (out / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8", newline="\n")
-    run_id = log_mlflow(name, df, summary, out, mode, prompt, repeats, run_type) if log else None
+    run_id = log_mlflow(name, df, summary, out, mode, prompt, repeats, run_type, git) if log else None
     langfuse().flush()
     return {"config": name, **summary, "mlflow_run_id": run_id}
 
 
 def log_mlflow(name: str, df: pd.DataFrame, summary: dict, out: Path, mode: str, prompt: str, repeats: int,
-               run_type: str = "evaluation") -> str:
+               run_type: str = "evaluation", git: tuple[str, bool] | None = None) -> str:
     import mlflow
 
     from src.generation.answer import load_prompt
-    from src.tracking import config_params, git_state, init_tracking
+    from src.tracking import config_params, init_tracking
     init_tracking()
-    commit, dirty = git_state()
+    commit, dirty = git or git_state()
     s = get_settings()
     with mlflow.start_run(run_name=f"{run_type} {name}") as run:
         mlflow.set_tags({"run_type": run_type, "git_commit": commit, "git_dirty": str(dirty)})

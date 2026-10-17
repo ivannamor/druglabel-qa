@@ -1,0 +1,70 @@
+{
+  "release": "v1.0.0",
+  "git_commit": "d479ec2f95d3aeb37d762c377362cdafb459bcb7",
+  "status": "rejected",
+  "validation_run": "6c7290e49ec543b5892b9a543b43b073",
+  "tc01_run": "22f1403a0cbf4a85a9b2e35995df5275",
+  "validation_status": "rejected",
+  "approved_by": "",
+  "approval_date": "",
+  "results": {
+    "TC-02": {
+      "passed": true,
+      "detail": "2/2 tests passed"
+    },
+    "TC-03": {
+      "passed": true,
+      "detail": "2/2 tests passed"
+    },
+    "TC-04": {
+      "passed": true,
+      "detail": "6/6 tests passed"
+    },
+    "TC-05": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-06": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-08": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-09": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-01": {
+      "passed": true,
+      "mlflow_run_id": "22f1403a0cbf4a85a9b2e35995df5275",
+      "detail": "faithfulness=0.9738 (>= 0.95); citation_validity=1.0 (>= 0.99); cites_gold_rate=0.9493 (>= 0.9); retrieval_hit_rate=0.9783 (>= 0.9); correct_or_partial_rate=0.8333 (>= 0.75); released_incorrect_rate=0.0 (<= 0.05); correct_refusal_rate=1.0 (>= 0.95); false_refusal_rate=0.0217 (<= 0.1); consistency=0.831 (>= 0.75); robustness=0.8571 (>= 0.75)"
+    },
+    "TC-07": {
+      "passed": true,
+      "detail": "released=False reasons=['multi_drug'] review_id=04e70863-4df4-4892-a35a-92e05de5e6fd"
+    },
+    "TC-10": {
+      "passed": false,
+      "detail": "commit d479ec2, dirty=True, missing=[]"
+    },
+    "TC-11": {
+      "passed": true,
+      "detail": "213/213 answers traced; sampled generations 2, live generations 1"
+    },
+    "TC-12": {
+      "passed": true,
+      "mlflow_run_id": "3ab8b407b1a64d62af21c80a99fe1f32",
+      "detail": "agreement 0.9 on 20 answers, graded by Ivan Namor"
+    },
+    "TC-14": {
+      "passed": true,
+      "detail": "1 version(s) of bronze_labels: v0 CREATE OR REPLACE TABLE AS SELECT"
+    },
+    "TC-13": {
+      "passed": true,
+      "detail": "release rejected: approval withheld"
+    }
+  }
+}
