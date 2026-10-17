@@ -196,7 +196,36 @@ Known trade-offs and safeguards:
 
 ## Results
 
-_To be added after the evaluation runs (Day 4)._
+Golden set 1.1, 71 items (46 answerable, 11 unanswerable, 14 paraphrases). Rates for correctness, faithfulness and citations are over the 46 answerable originals; refusal rate over the 11 unanswerable. One run per configuration; per-question results in [`data/eval/`](data/eval/), one MLflow run per configuration.
+
+| Metric | vector v1 | vector v2 | graph v1 | graph v2 | hybrid v1 | **hybrid v2** |
+|---|---|---|---|---|---|---|
+| Correct (all key facts) | 28% | 30% | 26% | 30% | 39% | **41%** |
+| Correct or partial | 83% | 80% | 48% | 43% | 78% | **83%** |
+| Faithfulness | 94% | 95% | 93% | 94% | 93% | **97%** |
+| Citation validity | 96% | **100%** | 96% | **100%** | 93% | **100%** |
+| Cites a gold passage | 83% | 85% | 50% | 50% | 87% | **96%** |
+| Retrieval hit | 91% | 91% | 52% | 52% | **98%** | **98%** |
+| False refusals | 7% | 7% | 37% | 37% | **2%** | **2%** |
+| Correct refusals | 100% | 100% | 100% | 100% | 100% | 100% |
+| Multi-hop correct | 0% | 0% | 17% | **33%** | 28% | 28% |
+| Robustness (paraphrases) | 79% | 71% | 71% | 64% | 71% | **86%** |
+| Latency p50 | 1.16 s | 0.90 s | 1.00 s | 0.80 s | 1.04 s | 0.84 s |
+| Cost per question | $0.0015 | $0.0012 | $0.0015 | $0.0012 | $0.0025 | $0.0020 |
+
+Consistency over 3 repeats (hybrid): **83%** with prompt v2, 85% with v1 (same status and correctness in all three runs; the generator is not fully deterministic at temperature 0, and inconsistent items are mostly multi-hop).
+
+**Findings**
+- **Hybrid retrieval with prompt v2 is the released configuration.** It finds a gold passage for 98% of questions, cites one in 96% of answers, has 100% valid citations, 97% of claims supported by their cited passage, 2% false refusals and 100% correct refusals, at about $0.002 per question.
+- **Vector and graph retrieval are complementary.** Vector retrieval answers no multi-hop question fully (its 5 passages rarely span the labels involved); graph retrieval alone refuses 37% of answerable questions, because dosing or pharmacokinetics questions name no entity or relation it models. Combined, they do better than either on almost every metric.
+- **Prompt v2 fixed the citation failure it was written for:** numbering passages raised citation validity from 93–96% to 100% in every mode, with lower latency and cost.
+- **"Correct" is strict:** an answer that misses one key fact is "partial". With hybrid v2, 19 of the 46 answers are correct, 19 partial (mostly single-fact answers missing a detail), 7 incorrect and 1 a false refusal. All 7 incorrect answers are multi-hop: some miss a drug, and three state something wrong (denying an interaction its own cited passage describes, adding a drug not in the expected answer, attributing one drug's warning to another). Multi-hop answers are the main weakness and the first candidates for human review.
+- **Judge strictness:** in two multi-hop cases the judge's explanation describes only omissions but its label is "incorrect" rather than "partial", so judged multi-hop rates are slightly pessimistic and move by a question or two between runs.
+- **Limits:** 46 answerable questions is a small sample (one question = 2 points on overall rates, 6 points on multi-hop rates); single runs per configuration except the repeats above.
+
+**Judge validation:** 90% agreement (18/20) with blind human grades, above the 85% criterion fixed before the results; the two disagreements are one grade apart in opposite directions ([`result.json`](data/eval/judge_validation/result.json), MLflow run `3ab8b407b1a64d62af21c80a99fe1f32`).
+
+**Golden set 1.0 → 1.1:** the human grader found that 15 multi-hop questions edited during review (to remove the drug names that gave away the answer) still had expected answers written for the old wording ("Both qualify…"). Results on 1.0 were frozen in a commit, the answers rewritten to stand alone with the same facts (19 items with paraphrases, old text kept), the review procedure given a rule against it, and the evaluation re-run. Computed metrics did not change (same answers); judged multi-hop correctness moved by 1–2 questions of 18, mostly toward stricter verdicts now that the expected answer lists every drug explicitly. Comparison tables for both versions: [`comparison_r1_golden_v1.0.csv`](data/eval/comparison_r1_golden_v1.0.csv), [`comparison_r1.csv`](data/eval/comparison_r1.csv).
 
 ## Limitations
 

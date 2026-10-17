@@ -1,8 +1,8 @@
 {
   "questions": 71.0,
-  "correct_rate": 0.4348,
-  "correct_or_partial_rate": 0.8913,
-  "faithfulness": 0.9315,
+  "correct_rate": 0.3913,
+  "correct_or_partial_rate": 0.7826,
+  "faithfulness": 0.9333,
   "citation_validity": 0.9348,
   "cites_gold_rate": 0.8696,
   "retrieval_hit_rate": 0.9783,
@@ -13,6 +13,6 @@
   "cost_usd_total": 0.1778,
   "cost_usd_per_question": 0.0025,
   "correct_rate_single_fact": 0.4643,
-  "correct_rate_multi_hop": 0.3889,
-  "robustness": 0.8571
+  "correct_rate_multi_hop": 0.2778,
+  "robustness": 0.7143
 }

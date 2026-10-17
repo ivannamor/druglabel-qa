@@ -1,8 +1,8 @@
 {
   "questions": 71.0,
   "correct_rate": 0.2826,
-  "correct_or_partial_rate": 0.8478,
-  "faithfulness": 0.9512,
+  "correct_or_partial_rate": 0.8261,
+  "faithfulness": 0.9395,
   "citation_validity": 0.9565,
   "cites_gold_rate": 0.8261,
   "retrieval_hit_rate": 0.913,

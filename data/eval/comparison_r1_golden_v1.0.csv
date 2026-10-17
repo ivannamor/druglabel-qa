@@ -1,0 +1,7 @@
+config,questions,correct_rate,correct_or_partial_rate,faithfulness,citation_validity,cites_gold_rate,retrieval_hit_rate,false_refusal_rate,correct_refusal_rate,latency_p50_s,latency_p95_s,cost_usd_total,cost_usd_per_question,correct_rate_single_fact,correct_rate_multi_hop,robustness
+vector_answer_v1_r1,71.0,0.2826,0.8478,0.9512,0.9565,0.8261,0.913,0.0652,1.0,1.16,2.23,0.1091,0.0015,0.4643,0.0,0.7857
+vector_answer_v2_r1,71.0,0.3043,0.7826,0.9481,1.0,0.8478,0.913,0.0652,1.0,0.9,1.36,0.0844,0.0012,0.5,0.0,0.7143
+graph_answer_v1_r1,71.0,0.3043,0.5217,0.9347,0.9565,0.5,0.5217,0.3696,1.0,1.0,2.0,0.1082,0.0015,0.3214,0.2778,0.7857
+graph_answer_v2_r1,71.0,0.2826,0.4348,0.9454,1.0,0.5,0.5217,0.3696,1.0,0.8,1.38,0.0874,0.0012,0.2857,0.2778,0.7143
+hybrid_answer_v1_r1,71.0,0.4348,0.8913,0.9315,0.9348,0.8696,0.9783,0.0217,1.0,1.04,1.7,0.1778,0.0025,0.4643,0.3889,0.8571
+hybrid_answer_v2_r1,71.0,0.4348,0.8478,0.9722,1.0,0.9565,0.9783,0.0217,1.0,0.84,1.405,0.1423,0.002,0.5,0.3333,0.8571
