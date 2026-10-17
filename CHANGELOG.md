@@ -7,6 +7,9 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 ### Added
 - Root cause analysis of a false refusal (README "Root cause analysis"): GS-025 missed because the answer sentence sits at the end of a flattened table chunk. Keyword search (BM25 + rank fusion) and drug-filtered search were tested and rejected; the sentence alone ranks 1st. Corrective action planned for v1.1: table-aware chunking in Silver, with its downstream impact (Gold, graph, golden-set passage IDs, re-validation).
 
+### Changed
+- README reorganized for a first-time reader: summary and headline results first, Mermaid architecture diagram, then results, validation, guardrails, root cause analysis, evaluation method and design details; setup covers graph, evaluation and the release gate; limitations completed.
+
 ## [1.0.0] - 2026-10-17
 
 Released configuration: hybrid retrieval (vector + knowledge graph), prompt `answer_v2`, generator `gpt-5.4-mini-2026-03-17`, guardrails with human review queue, data Gold v0 / Silver v0 / Bronze v0. Validated by `src/validation/release.py`: 14/14 test cases passed against the approved acceptance criteria; MLflow validation run `bb6752ad8f7a4bf9ae3682c5b3532bf2` (TC-01 run `81b2b658988841ab8712f5bd2ab03be8`), approved by Ivan Namor on 2026-10-17, commit `33d507c`, traceability matrix `validation/traceability_matrix.csv`.

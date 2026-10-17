@@ -1,45 +1,135 @@
 # DrugLabel QA
 
-A question-answering assistant over official FDA drug labels (anticoagulants / cardiovascular), built for a GxP-style setting: every answer cites the exact label section it comes from, unsupported questions are refused, and low-confidence answers are routed to human review.
+A question-answering assistant over official FDA drug labels (anticoagulants, antiplatelets and the drugs that interact with them) for medical information and pharmacovigilance teams, built and validated the way a GxP-regulated team would: every answer cites the label passage it comes from, unsupported or out-of-scope questions are refused, and answers that fail automated checks go to a human review queue instead of the user.
 
-> **Status:** work in progress. See the plan below.
+**Release v1.0.0**, validated 2026-10-17: 14/14 test cases passed against acceptance criteria approved before the run.
+
+## At a glance
+
+| | |
+|---|---|
+| Data | 261 openFDA labels of 37 drugs selected by explicit rules (WHO ATC + openFDA) → 14,131 passages in Databricks Delta tables (Bronze → Silver → Gold, every layer versioned) |
+| Retrieval | Hybrid: exact vector search (bge-small) + knowledge graph in Neo4j (2,611 relations, each backed by a verbatim quote and its source passage) |
+| Generation | `gpt-5.4-mini-2026-03-17`, versioned prompts; citations checked against the retrieved passages |
+| Safety | Computed guardrails; held answers written to a Delta `review_queue` |
+| Evaluation | 71-item golden set reviewed by a human; LLM judge (Claude Haiku 5.5, another vendor) validated at 90% agreement with blind human grades |
+| Traceability | Every answer and run logged in MLflow (commit, prompt hash, data versions, model) and traced in Langfuse (latency, tokens, cost); requirements → tests → runs in a traceability matrix |
+
+**Headline results (released configuration, golden set):** 97% of claims supported by the passage they cite, 100% valid citations, gold passage found for 98% of questions, 100% correct refusals, 2% false refusals, and **no released answer judged incorrect**: every incorrect answer was held for review. Hybrid retrieval beat vector-only (0% fully correct multi-hop answers) and graph-only (37% false refusals). Details in [Results](#results).
+
+**Worth a look:** the [validation pack](validation/) and the first release run the gate **rejected** ([Validation](#validation)); a human reviewer's catch that became a golden-set correction ([Evaluation](#evaluation)); a [root cause analysis](#root-cause-analysis-a-false-refusal) where two plausible fixes were tested and rejected before the real cause was found.
 
 ## Architecture
 
-```
-openFDA labels (JSON)
-      │
-      ▼
-[Databricks] Bronze: raw JSON → Silver: sections + chunks → Gold: embeddings
-      │                                   │
-      │                                   ▼
-      │                     LLM extraction of entities/relations
-      │                                   │
-      ▼                                   ▼
- Vector retrieval                  [Neo4j] Knowledge graph
-      │                                   │
-      └──────────► Hybrid retriever ◄─────┘
-                         │
-                         ▼
-     Answer generation + guardrails (citations, refusal, scope)
-                         │
-           ┌─────────────┼──────────────┐
-           ▼             ▼              ▼
-     [Langfuse]      [MLflow]     Review queue (HITL)
+```mermaid
+flowchart TD
+    A[openFDA drug label API] --> B[(Bronze: raw JSON<br/>Delta, Databricks)]
+    B --> C[(Silver: sections and chunks)]
+    B --> M[(Label metadata: route, NDA/ANDA)]
+    C --> D[(Gold: embeddings)]
+    C --> E[LLM relation extraction<br/>verbatim quote per relation]
+    E --> F[(Neo4j knowledge graph)]
+    D --> G[Vector retrieval]
+    F --> H[Graph retrieval]
+    G --> I[Hybrid retriever]
+    H --> I
+    I --> J[Answer generation<br/>prompt v2, cited passages]
+    J --> K{Guardrails}
+    K -->|released| U[User]
+    K -->|held| Q[(review_queue<br/>human review)]
+    J -.-> L[Langfuse: traces, tokens, cost]
+    J -.-> R[MLflow: runs, prompts, data versions, approvals]
 ```
 
-## Repo layout
+Databricks Free Edition hosts the data layers, the review queue and MLflow; retrieval, generation and evaluation run locally against a parquet snapshot of Gold (no vector database needed at this size; see [Chunking and retrieval design](#chunking-and-retrieval-design)).
 
-| Path | Content |
+## Results
+
+Golden set 1.1, 71 items (46 answerable, 11 unanswerable, 14 paraphrases). Rates for correctness, faithfulness and citations are over the 46 answerable originals; refusal rate over the 11 unanswerable. One run per configuration; per-question results in [`data/eval/`](data/eval/), one MLflow run per configuration.
+
+| Metric | vector v1 | vector v2 | graph v1 | graph v2 | hybrid v1 | **hybrid v2** |
+|---|---|---|---|---|---|---|
+| Correct (all key facts) | 28% | 30% | 26% | 30% | 39% | **41%** |
+| Correct or partial | 83% | 80% | 48% | 43% | 78% | **83%** |
+| Faithfulness | 94% | 95% | 93% | 94% | 93% | **97%** |
+| Citation validity | 96% | **100%** | 96% | **100%** | 93% | **100%** |
+| Cites a gold passage | 83% | 85% | 50% | 50% | 87% | **96%** |
+| Retrieval hit | 91% | 91% | 52% | 52% | **98%** | **98%** |
+| False refusals | 7% | 7% | 37% | 37% | **2%** | **2%** |
+| Correct refusals | 100% | 100% | 100% | 100% | 100% | 100% |
+| Multi-hop correct | 0% | 0% | 17% | **33%** | 28% | 28% |
+| Robustness (paraphrases) | 79% | 71% | 71% | 64% | 71% | **86%** |
+| Latency p50 | 1.16 s | 0.90 s | 1.00 s | 0.80 s | 1.04 s | 0.84 s |
+| Cost per question | $0.0015 | $0.0012 | $0.0015 | $0.0012 | $0.0025 | $0.0020 |
+
+Consistency over 3 repeats (hybrid): **83%** with prompt v2, 85% with v1 (same status and correctness in all three runs; the generator is not fully deterministic at temperature 0, and inconsistent items are mostly multi-hop).
+
+**Findings**
+- **Hybrid retrieval with prompt v2 is the released configuration.** It finds a gold passage for 98% of questions, cites one in 96% of answers, has 100% valid citations, 97% of claims supported by their cited passage, 2% false refusals and 100% correct refusals, at about $0.002 per question.
+- **Vector and graph retrieval are complementary.** Vector retrieval answers no multi-hop question fully (its 5 passages rarely span the labels involved); graph retrieval alone refuses 37% of answerable questions, because dosing or pharmacokinetics questions name no entity or relation it models. Combined, they do better than either on almost every metric.
+- **Prompt v2 fixed the citation failure it was written for:** numbering passages raised citation validity from 93–96% to 100% in every mode, with lower latency and cost.
+- **"Correct" is strict:** an answer that misses one key fact is "partial". With hybrid v2, 19 of the 46 answers are correct, 19 partial (mostly single-fact answers missing a detail), 7 incorrect and 1 a false refusal. All 7 incorrect answers are multi-hop: some miss a drug, and three state something wrong (denying an interaction its own cited passage describes, adding a drug not in the expected answer, attributing one drug's warning to another). Multi-hop answers are the main weakness and the first candidates for human review.
+- **Judge strictness:** in two multi-hop cases the judge's explanation describes only omissions but its label is "incorrect" rather than "partial", so judged multi-hop rates are slightly pessimistic and move by a question or two between runs.
+- **Limits:** 46 answerable questions is a small sample (one question = 2 points on overall rates, 6 points on multi-hop rates); single runs per configuration except the repeats above.
+
+**Judge validation:** 90% agreement (18/20) with blind human grades, above the 85% criterion fixed before the results; the two disagreements are one grade apart in opposite directions ([`result.json`](data/eval/judge_validation/result.json), MLflow run `3ab8b407b1a64d62af21c80a99fe1f32`).
+
+**Golden set 1.0 → 1.1:** the human grader found that 15 multi-hop questions edited during review (to remove the drug names that gave away the answer) still had expected answers written for the old wording ("Both qualify…"). Results on 1.0 were frozen in a commit, the answers rewritten to stand alone with the same facts (19 items with paraphrases, old text kept), the review procedure given a rule against it, and the evaluation re-run. Computed metrics did not change (same answers); judged multi-hop correctness moved by 1–2 questions of 18, mostly toward stricter verdicts now that the expected answer lists every drug explicitly. Comparison tables for both versions: [`comparison_r1_golden_v1.0.csv`](data/eval/comparison_r1_golden_v1.0.csv), [`comparison_r1.csv`](data/eval/comparison_r1.csv).
+
+## Validation
+
+GxP-style validation pack in [`validation/`](validation/), approved before the formal run:
+[URS](validation/URS.md) (15 requirements), [risk assessment](validation/risk_assessment.md) (FMEA, 12 risks), [test protocol](validation/test_protocol.md) (14 test cases, criteria in [`acceptance_criteria.json`](validation/acceptance_criteria.json)), [ALCOA+ mapping](validation/alcoa_mapping.md), [golden set review procedure](validation/golden_set_review.md), and the generated [traceability matrix](validation/traceability_matrix.csv) (requirement → test → MLflow run → result).
+
+The release gate ([`src/validation/release.py`](src/validation/release.py)) refuses to run on uncommitted code, executes the protocol (unit and integration tests, golden-set evaluation of the release configuration with 3 repeats, review queue, reproducibility record, tracing, judge validation, raw-data history), and sets `validation_status=approved`, `approved_by`, `approval_date` on the MLflow runs only if every test passes.
+
+- **Run 1: rejected.** 13/14 passed; TC-10 found the evaluation run recorded as made on uncommitted code. The cause was real: the runner rewrote its tracked output files before reading the git state. Fixed, evidence kept ([`release_v1.0.0_rejected_run1.json`](validation/release_v1.0.0_rejected_run1.json)).
+- **Run 2: approved**, 14/14, commit `33d507c`, MLflow validation run `bb6752ad8f7a4bf9ae3682c5b3532bf2`, TC-01 run `81b2b658988841ab8712f5bd2ab03be8`: faithfulness 0.97, citation validity 1.00, gold passage cited 0.95, retrieval hit 0.98, correct or partial 0.83, released answers judged incorrect 0.00, correct refusals 1.00, false refusals 0.02, consistency 0.83, robustness 0.86. Git tag `v1.0.0`.
+
+## Guardrails and human review
+
+Every answer passes computed checks before it reaches a user ([`src/generation/guardrails.py`](src/generation/guardrails.py)). Refusals are released; an answer is **held for human review** and written to the Delta table `review_queue` ([`src/generation/hitl.py`](src/generation/hitl.py)) if it has no valid citation, an invalid citation, a sentence poorly grounded in the passage it cites, a citation to another drug's label for a single-drug question, draws on two or more drug labels (multi-hop answers were the weakest and least consistent in evaluation), or the question reads like a single-patient decision. The grounding threshold (0.6) was calibrated against the validated judge ([`guardrail_calibration.json`](data/eval/guardrail_calibration.json)): 0.7 held twice as many correct answers without catching more wrong ones. On the golden set, the release configuration releases an answer for 54% of answerable questions and holds the rest; **no released answer was judged incorrect**, and every answer the judge rated incorrect was held. The cost of that safety is review workload, mostly multi-hop answers.
+
+## Root cause analysis: a false refusal
+
+**Symptom.** Golden item GS-025, *"Does atorvastatin affect prothrombin time in patients who are on long-term warfarin therapy?"*, got `NOT_IN_LABELS` in every configuration. The atorvastatin label does answer it (section 12.3: *"Atorvastatin calcium had no clinically significant effect on prothrombin time when administered to patients receiving chronic warfarin treatment"*). A safe failure (a refusal, not a wrong answer), but a failure.
+
+**Trace.** The Langfuse trace of the evaluated answer (`0f407adea271f66c061d18d29554507a`) shows the `retrieve` span returning 12 passages: graph passages about amiodarone and argatroban interactions and atorvastatin contraindications and adverse reactions, and vector passages from atorvastatin, warfarin and argatroban. The gold passage was not among them; the `llm` generation then refused correctly given what it was shown. So the cause is upstream of generation.
+
+**Hypotheses, tested before changing anything.**
+
+| Hypothesis | Test | Result |
+|---|---|---|
+| Vector search ranks the passage just below the cut | Rank of the gold passage among 8,207 | 37th (score 0.773 vs 0.787 for the 1st): ranked too low, and scores are tightly packed |
+| A keyword search (BM25) would find the rare term "prothrombin time" | BM25 and reciprocal rank fusion with vector ranks | **Rejected:** BM25 rank 99, fused 29; the warfarin label repeats "prothrombin time" and wins. Fusion also left the other single-fact questions unchanged (25/32 gold passages in the top 5 either way) |
+| Restricting search to the labels of the drugs named in the question | Rank within atorvastatin and warfarin labels only | **Rejected:** still 28th |
+| The answer sentence is diluted by the chunk it sits in | The chunk is a flattened pharmacokinetics table (*"…ritonavir 100 mg BID b, 14 days 0.99 0.94 # See Section 7…"*) with the sentence at its end; the same sentence embedded without the table rows | **Confirmed:** ranks **1st** (score 0.898 alone, 0.864 with the table caption) |
+
+The graph did not help either: interactions were extracted only from drug-interaction sections, and this fact sits in clinical pharmacology; and the question says "affect", not "interact", so no relation type was inferred.
+
+**Root cause.** Chunking: table rows flattened into text dominate the embedding of a chunk, so a prose sentence inside it cannot be found by meaning. About 5% of chunks are table-heavy (more than a quarter of tokens numeric; 684 of 14,131, most in adverse reactions).
+
+**Corrective action (planned for v1.1, not in v1.0).** Table-aware chunking in Silver: split runs of table rows from prose sentences so each prose sentence lands in a prose chunk. It changes chunk IDs, so the change propagates: Silver → Gold embeddings → knowledge-graph extraction (edges reference chunk IDs) → golden-set gold passages (remapped by text) → full re-evaluation and a new release validation. **Interim control (in v1.0):** the failure mode is a refusal, not a fabricated answer; the guardrails hold any answer that is not grounded in a cited passage.
+
+## Evaluation
+
+**Golden set** ([`data/golden_set.jsonl`](data/golden_set.jsonl), 71 items): 28 single-fact, 18 multi-hop and 11 unanswerable questions (6 outside the labels' scope, 5 patient-specific), plus 14 paraphrases of approved questions for robustness. Items were drafted by Claude Sonnet 5.5 (neither the generator nor the judge) from label passages, the knowledge graph and a keyword search of the labels ([`src/eval/golden.py`](src/eval/golden.py)), then reviewed one by one against their source passages following [`validation/golden_set_review.md`](validation/golden_set_review.md): of 60 drafts, 42 approved, 15 edited (mostly removing the answer's drug names from multi-hop questions) and 3 rejected as duplicates. The reviewer is not a clinician; a production golden set would also need review by a pharmacist or medical information specialist.
+
+**Runner** ([`src/eval/run.py`](src/eval/run.py)): every item in each configuration (retrieval mode × answer prompt), one MLflow run per configuration, one Langfuse trace per item with its scores.
+
+| Metric | How |
 |---|---|
-| `notebooks/` | Databricks notebooks: ingest, chunk, embed |
-| `scripts/` | Local one-off scripts: openFDA exploration, rule-based drug selection |
-| `src/retrieval/` | Vector, graph, hybrid retrievers |
-| `src/kg/` | Relation extraction + Neo4j loading |
-| `src/generation/` | Prompts, guardrails, HITL routing |
-| `src/eval/` | Golden-set runner, metrics, LLM judge |
-| `prompts/` | Versioned prompt files |
-| `validation/` | URS, risk assessment, test protocol, traceability matrix, ALCOA+ |
+| Correctness | Judge: all key facts of the expected answer present and no contradiction = correct; some = partial |
+| Faithfulness | Judge: share of the answer's claims supported by the passage they cite |
+| Citation validity | Computed: no citation to a passage that was not retrieved (or a passage number that does not exist) |
+| Cites a gold passage | Computed: a cited passage is a gold passage or a copy of one (same drug and section, identical or near-identical text) |
+| Retrieval hit | Computed: a gold passage or a copy is among the retrieved passages |
+| Correct refusal / false refusal | Computed: unanswerable items refused with the expected token / answerable items refused |
+| Consistency | Same status and correctness across 3 repeats (fresh LLM calls, cached per repeat) |
+| Robustness | Paraphrase gets the same correctness as its original |
+| Latency, cost | Generator latency and token cost per question (judge cost not included) |
+
+**Judge validation, criterion fixed before any results:** the judge (`claude-haiku-5-5`, prompt `judge_v1`) is accepted if its correctness label (correct / partial / incorrect) agrees with a human grader on **at least 85%** of a random sample of 20 judged answers, graded blind to the judge's verdict. Otherwise the judge is switched to a stronger model and the evaluation re-judged (generator answers are cached).
 
 ## Data selection
 
@@ -124,6 +214,25 @@ openFDA also exposes subsections as their own fields (e.g. `pregnancy` repeats 8
 - **Normalization of drug classes matters:** the first full graph had 13 separate nodes for strong/moderate CYP3A(4) inhibitors and inducers, because labels write "CYP3A" and "CYP3A4" interchangeably and wrap classes in longer phrases. "CYP3A4" is now normalized to "CYP3A" (in node names and in questions), and graph retrieval also matches classes that contain all words of the class in the question ("strong cyp3a inhibitor" → "combined p-gp and strong cyp3a inhibitor"). Re-normalizing needs no new LLM calls: the extraction re-runs from cached responses.
 - **Known limitation:** a diagnostic use is extracted as the condition itself (dipyridamole injection → `INDICATED_FOR` coronary artery disease, where the label says *for the evaluation of* it). Answers are not affected, because graph retrieval passes the source chunk text to the generator, but graph-only queries should read the edge evidence.
 
+## LLM providers
+
+Providers are config values in `.env`; switching is a one-line change.
+
+| Role | Demo setup | Production target |
+|---|---|---|
+| Generation + KG extraction | OpenAI `gpt-5.4-mini-2026-03-17` (dated snapshot, so the model cannot change under a run) | Azure OpenAI (EU Data Zone deployment) |
+| LLM-as-judge | Anthropic `claude-haiku-5-5` (another vendor than the generator) | A stronger model than the generator, e.g. Claude Sonnet / Opus |
+| Embeddings | `BAAI/bge-small-en-v1.5` (open source, run on Databricks) | Same, or Azure OpenAI embeddings |
+
+**Judge choice.** Ideally the judge is a stronger model than the generator, so it can catch errors the generator would not notice. This project is a demo with a small budget, so it uses a cheaper judge (Claude Haiku 5.5, about $1 for the whole evaluation instead of about $20 for Claude Sonnet 5.5) and relies on two safeguards instead: the judge comes from a different vendor than the generator, so it does not share its blind spots, and it is kept only if it passes validation against human labels (agreement on a manually graded sample above a threshold set in advance). If it fails, the judge is switched to a stronger model with one line in `.env`; cached generator answers are reused.
+
+**Why paid APIs.** The project first ran on Google AI Studio's free tier (Gemma, then Gemini Flash-Lite). Free capacity is not guaranteed ("actual capacity may vary"), and it showed: `gemma-4-31b-it` returned HTTP 500 on every call for over a day, and `gemini-3.1-flash-lite` went from 8/8 successful calls to 5/5 HTTP 503 ("high demand") the next day, which stalled the graph extraction. A generator that fails that often cannot support a reproducible evaluation, so the demo moved to paid APIs with small prepaid credits and auto-recharge off (spend capped by design). Expected total cost: a few dollars.
+
+Known trade-offs and safeguards:
+- Runs record the model that actually answered; no automatic fallback model is configured, because mixing models within one evaluation would make configurations incomparable.
+- Calls retry transient errors with backoff and are spaced to stay under rate limits; batch jobs cache responses, so a re-run costs nothing and resumes where it stopped.
+- Data: only public FDA label text and test questions are sent. Real enquiries or patient data would require a deployment with contractual data-protection terms (the Azure target).
+
 ## Setup
 
 ```bash
@@ -155,117 +264,44 @@ python -m src.ask "What is the antidote for dabigatran?"
 
 Retrieves the passages, generates a cited answer and logs an MLflow run in the Databricks workspace (experiment `/Users/<you>/druglabel-qa/druglabel-qa-runs`, next to the imported notebooks). Each run records the git commit (and whether there were uncommitted changes), model requested and model that answered, prompt name and sha256, retrieval parameters, Gold/Silver versions and the Gold snapshot sha256, latency, tokens and citation counts, plus the full answer with its retrieved passages (`answer.json`) and the prompt text. Without logging: `python -m src.generation.answer "…"`; retrieval only: `python -m src.retrieval.vector "…"`.
 
-## LLM providers
+The released configuration is `RETRIEVAL_MODE=hybrid` and `ANSWER_PROMPT=answer_v2` in `.env`. With guardrails on, an answer that fails a check is printed as a draft and written to the review queue (`python -m src.generation.hitl` lists pending items).
 
-Providers are config values in `.env`; switching is a one-line change.
+### Knowledge graph, evaluation and validation
 
-| Role | Demo setup | Production target |
-|---|---|---|
-| Generation + KG extraction | OpenAI `gpt-5.4-mini-2026-03-17` (dated snapshot, so the model cannot change under a run) | Azure OpenAI (EU Data Zone deployment) |
-| LLM-as-judge | Anthropic `claude-haiku-5-5` (another vendor than the generator) | A stronger model than the generator, e.g. Claude Sonnet / Opus |
-| Embeddings | `BAAI/bge-small-en-v1.5` (open source, run on Databricks) | Same, or Azure OpenAI embeddings |
+```bash
+python -m src.kg.graph_db                      # check the Neo4j connection (NEO4J_* in .env)
+python -m src.kg.extract --log                 # extract relations (cached LLM calls), MLflow run
+python -m src.kg.load <extraction_run_id>      # replace the graph with that extraction run
+python -m pytest -q                            # unit tests; add -m integration for the API tests
+python -m src.eval.run --modes vector,graph,hybrid --prompts answer_v1,answer_v2
+python -m src.validation.release --approver "Name"   # release gate: test protocol, matrix, approval
+```
 
-**Judge choice.** Ideally the judge is a stronger model than the generator, so it can catch errors the generator would not notice. This project is a demo with a small budget, so it uses a cheaper judge (Claude Haiku 5.5, about $1 for the whole evaluation instead of about $20 for Claude Sonnet 5.5) and relies on two safeguards instead: the judge comes from a different vendor than the generator, so it does not share its blind spots, and it is kept only if it passes validation against human labels (agreement on a manually graded sample above a threshold set in advance). If it fails, the judge is switched to a stronger model with one line in `.env`; cached generator answers are reused.
+## Repo layout
 
-**Why paid APIs.** The project first ran on Google AI Studio's free tier (Gemma, then Gemini Flash-Lite). Free capacity is not guaranteed ("actual capacity may vary"), and it showed: `gemma-4-31b-it` returned HTTP 500 on every call for over a day, and `gemini-3.1-flash-lite` went from 8/8 successful calls to 5/5 HTTP 503 ("high demand") the next day, which stalled the graph extraction. A generator that fails that often cannot support a reproducible evaluation, so the demo moved to paid APIs with small prepaid credits and auto-recharge off (spend capped by design). Expected total cost: a few dollars.
-
-Known trade-offs and safeguards:
-- Runs record the model that actually answered; no automatic fallback model is configured, because mixing models within one evaluation would make configurations incomparable.
-- Calls retry transient errors with backoff and are spaced to stay under rate limits; batch jobs cache responses, so a re-run costs nothing and resumes where it stopped.
-- Data: only public FDA label text and test questions are sent. Real enquiries or patient data would require a deployment with contractual data-protection terms (the Azure target).
-
-## Evaluation
-
-**Golden set** ([`data/golden_set.jsonl`](data/golden_set.jsonl), 71 items): 28 single-fact, 18 multi-hop and 11 unanswerable questions (6 outside the labels' scope, 5 patient-specific), plus 14 paraphrases of approved questions for robustness. Items were drafted by Claude Sonnet 5.5 (neither the generator nor the judge) from label passages, the knowledge graph and a keyword search of the labels ([`src/eval/golden.py`](src/eval/golden.py)), then reviewed one by one against their source passages following [`validation/golden_set_review.md`](validation/golden_set_review.md): of 60 drafts, 42 approved, 15 edited (mostly removing the answer's drug names from multi-hop questions) and 3 rejected as duplicates. The reviewer is not a clinician; a production golden set would also need review by a pharmacist or medical information specialist.
-
-**Runner** ([`src/eval/run.py`](src/eval/run.py)): every item in each configuration (retrieval mode × answer prompt), one MLflow run per configuration, one Langfuse trace per item with its scores.
-
-| Metric | How |
+| Path | Content |
 |---|---|
-| Correctness | Judge: all key facts of the expected answer present and no contradiction = correct; some = partial |
-| Faithfulness | Judge: share of the answer's claims supported by the passage they cite |
-| Citation validity | Computed: no citation to a passage that was not retrieved (or a passage number that does not exist) |
-| Cites a gold passage | Computed: a cited passage is a gold passage or a copy of one (same drug and section, identical or near-identical text) |
-| Retrieval hit | Computed: a gold passage or a copy is among the retrieved passages |
-| Correct refusal / false refusal | Computed: unanswerable items refused with the expected token / answerable items refused |
-| Consistency | Same status and correctness across 3 repeats (fresh LLM calls, cached per repeat) |
-| Robustness | Paraphrase gets the same correctness as its original |
-| Latency, cost | Generator latency and token cost per question (judge cost not included) |
-
-**Judge validation, criterion fixed before any results:** the judge (`claude-haiku-5-5`, prompt `judge_v1`) is accepted if its correctness label (correct / partial / incorrect) agrees with a human grader on **at least 85%** of a random sample of 20 judged answers, graded blind to the judge's verdict. Otherwise the judge is switched to a stronger model and the evaluation re-judged (generator answers are cached).
-
-## Results
-
-Golden set 1.1, 71 items (46 answerable, 11 unanswerable, 14 paraphrases). Rates for correctness, faithfulness and citations are over the 46 answerable originals; refusal rate over the 11 unanswerable. One run per configuration; per-question results in [`data/eval/`](data/eval/), one MLflow run per configuration.
-
-| Metric | vector v1 | vector v2 | graph v1 | graph v2 | hybrid v1 | **hybrid v2** |
-|---|---|---|---|---|---|---|
-| Correct (all key facts) | 28% | 30% | 26% | 30% | 39% | **41%** |
-| Correct or partial | 83% | 80% | 48% | 43% | 78% | **83%** |
-| Faithfulness | 94% | 95% | 93% | 94% | 93% | **97%** |
-| Citation validity | 96% | **100%** | 96% | **100%** | 93% | **100%** |
-| Cites a gold passage | 83% | 85% | 50% | 50% | 87% | **96%** |
-| Retrieval hit | 91% | 91% | 52% | 52% | **98%** | **98%** |
-| False refusals | 7% | 7% | 37% | 37% | **2%** | **2%** |
-| Correct refusals | 100% | 100% | 100% | 100% | 100% | 100% |
-| Multi-hop correct | 0% | 0% | 17% | **33%** | 28% | 28% |
-| Robustness (paraphrases) | 79% | 71% | 71% | 64% | 71% | **86%** |
-| Latency p50 | 1.16 s | 0.90 s | 1.00 s | 0.80 s | 1.04 s | 0.84 s |
-| Cost per question | $0.0015 | $0.0012 | $0.0015 | $0.0012 | $0.0025 | $0.0020 |
-
-Consistency over 3 repeats (hybrid): **83%** with prompt v2, 85% with v1 (same status and correctness in all three runs; the generator is not fully deterministic at temperature 0, and inconsistent items are mostly multi-hop).
-
-**Findings**
-- **Hybrid retrieval with prompt v2 is the released configuration.** It finds a gold passage for 98% of questions, cites one in 96% of answers, has 100% valid citations, 97% of claims supported by their cited passage, 2% false refusals and 100% correct refusals, at about $0.002 per question.
-- **Vector and graph retrieval are complementary.** Vector retrieval answers no multi-hop question fully (its 5 passages rarely span the labels involved); graph retrieval alone refuses 37% of answerable questions, because dosing or pharmacokinetics questions name no entity or relation it models. Combined, they do better than either on almost every metric.
-- **Prompt v2 fixed the citation failure it was written for:** numbering passages raised citation validity from 93–96% to 100% in every mode, with lower latency and cost.
-- **"Correct" is strict:** an answer that misses one key fact is "partial". With hybrid v2, 19 of the 46 answers are correct, 19 partial (mostly single-fact answers missing a detail), 7 incorrect and 1 a false refusal. All 7 incorrect answers are multi-hop: some miss a drug, and three state something wrong (denying an interaction its own cited passage describes, adding a drug not in the expected answer, attributing one drug's warning to another). Multi-hop answers are the main weakness and the first candidates for human review.
-- **Judge strictness:** in two multi-hop cases the judge's explanation describes only omissions but its label is "incorrect" rather than "partial", so judged multi-hop rates are slightly pessimistic and move by a question or two between runs.
-- **Limits:** 46 answerable questions is a small sample (one question = 2 points on overall rates, 6 points on multi-hop rates); single runs per configuration except the repeats above.
-
-**Judge validation:** 90% agreement (18/20) with blind human grades, above the 85% criterion fixed before the results; the two disagreements are one grade apart in opposite directions ([`result.json`](data/eval/judge_validation/result.json), MLflow run `3ab8b407b1a64d62af21c80a99fe1f32`).
-
-**Golden set 1.0 → 1.1:** the human grader found that 15 multi-hop questions edited during review (to remove the drug names that gave away the answer) still had expected answers written for the old wording ("Both qualify…"). Results on 1.0 were frozen in a commit, the answers rewritten to stand alone with the same facts (19 items with paraphrases, old text kept), the review procedure given a rule against it, and the evaluation re-run. Computed metrics did not change (same answers); judged multi-hop correctness moved by 1–2 questions of 18, mostly toward stricter verdicts now that the expected answer lists every drug explicitly. Comparison tables for both versions: [`comparison_r1_golden_v1.0.csv`](data/eval/comparison_r1_golden_v1.0.csv), [`comparison_r1.csv`](data/eval/comparison_r1.csv).
-
-## Root cause analysis: a false refusal
-
-**Symptom.** Golden item GS-025, *"Does atorvastatin affect prothrombin time in patients who are on long-term warfarin therapy?"*, got `NOT_IN_LABELS` in every configuration. The atorvastatin label does answer it (section 12.3: *"Atorvastatin calcium had no clinically significant effect on prothrombin time when administered to patients receiving chronic warfarin treatment"*). A safe failure (a refusal, not a wrong answer), but a failure.
-
-**Trace.** The Langfuse trace of the evaluated answer (`0f407adea271f66c061d18d29554507a`) shows the `retrieve` span returning 12 passages: graph passages about amiodarone and argatroban interactions and atorvastatin contraindications and adverse reactions, and vector passages from atorvastatin, warfarin and argatroban. The gold passage was not among them; the `llm` generation then refused correctly given what it was shown. So the cause is upstream of generation.
-
-**Hypotheses, tested before changing anything.**
-
-| Hypothesis | Test | Result |
-|---|---|---|
-| Vector search ranks the passage just below the cut | Rank of the gold passage among 8,207 | 37th (score 0.773 vs 0.787 for the 1st): ranked too low, and scores are tightly packed |
-| A keyword search (BM25) would find the rare term "prothrombin time" | BM25 and reciprocal rank fusion with vector ranks | **Rejected:** BM25 rank 99, fused 29; the warfarin label repeats "prothrombin time" and wins. Fusion also left the other single-fact questions unchanged (25/32 gold passages in the top 5 either way) |
-| Restricting search to the labels of the drugs named in the question | Rank within atorvastatin and warfarin labels only | **Rejected:** still 28th |
-| The answer sentence is diluted by the chunk it sits in | The chunk is a flattened pharmacokinetics table (*"…ritonavir 100 mg BID b, 14 days 0.99 0.94 # See Section 7…"*) with the sentence at its end; the same sentence embedded without the table rows | **Confirmed:** ranks **1st** (score 0.898 alone, 0.864 with the table caption) |
-
-The graph did not help either: interactions were extracted only from drug-interaction sections, and this fact sits in clinical pharmacology; and the question says "affect", not "interact", so no relation type was inferred.
-
-**Root cause.** Chunking: table rows flattened into text dominate the embedding of a chunk, so a prose sentence inside it cannot be found by meaning. About 5% of chunks are table-heavy (more than a quarter of tokens numeric; 684 of 14,131, most in adverse reactions).
-
-**Corrective action (planned for v1.1, not in v1.0).** Table-aware chunking in Silver: split runs of table rows from prose sentences so each prose sentence lands in a prose chunk. It changes chunk IDs, so the change propagates: Silver → Gold embeddings → knowledge-graph extraction (edges reference chunk IDs) → golden-set gold passages (remapped by text) → full re-evaluation and a new release validation. **Interim control (in v1.0):** the failure mode is a refusal, not a fabricated answer; the guardrails hold any answer that is not grounded in a cited passage.
-
-## Guardrails and human review
-
-Every answer passes computed checks before it reaches a user ([`src/generation/guardrails.py`](src/generation/guardrails.py)). Refusals are released; an answer is **held for human review** and written to the Delta table `review_queue` ([`src/generation/hitl.py`](src/generation/hitl.py)) if it has no valid citation, an invalid citation, a sentence poorly grounded in the passage it cites, a citation to another drug's label for a single-drug question, draws on two or more drug labels (multi-hop answers were the weakest and least consistent in evaluation), or the question reads like a single-patient decision. The grounding threshold (0.6) was calibrated against the validated judge ([`guardrail_calibration.json`](data/eval/guardrail_calibration.json)): 0.7 held twice as many correct answers without catching more wrong ones. On the golden set, the release configuration releases an answer for 54% of answerable questions and holds the rest; **no released answer was judged incorrect**, and every answer the judge rated incorrect was held. The cost of that safety is review workload, mostly multi-hop answers.
-
-## Validation
-
-GxP-style validation pack in [`validation/`](validation/), approved before the formal run:
-[URS](validation/URS.md) (15 requirements), [risk assessment](validation/risk_assessment.md) (FMEA, 12 risks), [test protocol](validation/test_protocol.md) (14 test cases, criteria in [`acceptance_criteria.json`](validation/acceptance_criteria.json)), [ALCOA+ mapping](validation/alcoa_mapping.md), [golden set review procedure](validation/golden_set_review.md), and the generated [traceability matrix](validation/traceability_matrix.csv) (requirement → test → MLflow run → result).
-
-The release gate ([`src/validation/release.py`](src/validation/release.py)) refuses to run on uncommitted code, executes the protocol (unit and integration tests, golden-set evaluation of the release configuration with 3 repeats, review queue, reproducibility record, tracing, judge validation, raw-data history), and sets `validation_status=approved`, `approved_by`, `approval_date` on the MLflow runs only if every test passes.
-
-- **Run 1: rejected.** 13/14 passed; TC-10 found the evaluation run recorded as made on uncommitted code. The cause was real: the runner rewrote its tracked output files before reading the git state. Fixed, evidence kept ([`release_v1.0.0_rejected_run1.json`](validation/release_v1.0.0_rejected_run1.json)).
-- **Run 2: approved**, 14/14, commit `33d507c`, MLflow validation run `bb6752ad8f7a4bf9ae3682c5b3532bf2`, TC-01 run `81b2b658988841ab8712f5bd2ab03be8`: faithfulness 0.97, citation validity 1.00, gold passage cited 0.95, retrieval hit 0.98, correct or partial 0.83, released answers judged incorrect 0.00, correct refusals 1.00, false refusals 0.02, consistency 0.83, robustness 0.86. Git tag `v1.0.0`.
+| `notebooks/` | Databricks notebooks: ingest, chunk, embed |
+| `scripts/` | Local one-off scripts: openFDA exploration, rule-based drug selection |
+| `src/retrieval/` | Vector, graph, hybrid retrievers |
+| `src/kg/` | Relation extraction + Neo4j loading |
+| `src/generation/` | Prompts, guardrails, HITL routing |
+| `src/eval/` | Golden set tooling, evaluation runner, LLM judge and its validation, guardrail calibration |
+| `src/validation/` | Release gate: runs the test protocol, writes the traceability matrix, approves or rejects |
+| `tests/` | Unit and integration tests (pytest) |
+| `data/` | Drug list, golden set, evaluation results (data snapshots are downloaded, not committed) |
+| `prompts/` | Versioned prompt files |
+| `validation/` | URS, risk assessment, test protocol, traceability matrix, ALCOA+ |
 
 ## Limitations
 
 - Clinical studies sections are not indexed, so questions about trial results (e.g., efficacy in a named trial) are out of scope.
 - Old-format labels (before the 2006 Physician Labeling Rule) have no numbered subsections, so their chunks follow sentence windows only.
+- Flattened tables dominate about 5% of chunks and can hide prose sentences from retrieval ([root cause analysis](#root-cause-analysis-a-false-refusal)); table-aware chunking is planned for v1.1.
+- Multi-hop answers are the weakest (they can leave out a drug) and are therefore always held for human review: the price of safety is reviewer workload (43% of answerable questions held, 54% released, 2% refused).
+- The golden set is small (46 answerable questions, so one question moves a rate by 2 points) and was reviewed by a non-clinician against the label text; a production set needs a pharmacist or medical information specialist.
+- One therapeutic area, US labels only (openFDA), English only.
+- Built on free and low-cost tiers: Databricks Free Edition (serverless only, no managed Vector Search), Neo4j AuraDB Free, small prepaid LLM credits. Production would use a paid deployment with data-protection terms (Azure OpenAI target).
 
 ## How this project was built
 
