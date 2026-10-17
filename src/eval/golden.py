@@ -313,6 +313,53 @@ def add_paraphrases(ids: list[str], reviewer: str) -> None:
     print(f"{len(ids)} paraphrases added; golden set: {len(golden)} items")
 
 
+class StandaloneAnswer(BaseModel):
+    expected_answer: str
+
+
+REVISION_1_1 = ("Expected answers of multi-hop questions edited during review rewritten to stand alone: the edits "
+                "removed the drug names from the questions, but the answers still referred to them "
+                "('Both qualify', 'All three ...'). Same drugs and key facts.")
+
+
+def draft_revision_1_1() -> None:
+    """Golden set 1.1: standalone expected answers for the multi-hop questions edited in review."""
+    golden = [json.loads(line) for line in Path("data/golden_set.jsonl").read_text(encoding="utf-8").splitlines()]
+    out = []
+    for item in [i for i in golden if i["type"] == "multi_hop" and i["review"] == "edit"]:
+        r = ask(f"""This expected answer was written for an earlier version of the question that listed the
+drugs. Rewrite it so it answers the question below on its own: name every drug and keep every fact and
+detail, but remove phrases that assume the question listed the drugs ("Both qualify", "All three", "the
+listed drugs", "each of these"). Do not add or remove information.
+
+Question: {item['question']}
+Current expected answer: {item['expected_answer']}""", StandaloneAnswer)
+        if r is not None:
+            out.append({"id": item["id"], "question": item["question"], "old": item["expected_answer"],
+                        "new": r.expected_answer})
+            print(f"{item['id']} drafted", flush=True)
+    (GOLDEN_DIR / "revision_1_1_draft.jsonl").write_text(
+        "".join(json.dumps(i) + "\n" for i in out), encoding="utf-8", newline="\n")
+
+
+def apply_revision_1_1(ids: list[str], reviewer: str) -> None:
+    """Apply approved standalone answers to the items and to their paraphrases; keep the old answer."""
+    drafts = {d["id"]: d for d in map(json.loads, (GOLDEN_DIR / "revision_1_1_draft.jsonl").read_text(
+        encoding="utf-8").splitlines()) if d["id"] in ids}
+    path = Path("data/golden_set.jsonl")
+    golden = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    changed = 0
+    for item in golden:
+        source = item.get("paraphrase_of") or item["id"]
+        if source in drafts:
+            item.update({"expected_answer_v1_0": item["expected_answer"], "expected_answer": drafts[source]["new"],
+                         "golden_version": "1.1", "revision_note": REVISION_1_1,
+                         "revised_by": reviewer, "revised_on": date.today().isoformat()})
+            changed += 1
+    path.write_text("".join(json.dumps(i) + "\n" for i in golden), encoding="utf-8", newline="\n")
+    print(f"golden set 1.1: {changed} items revised ({len(drafts)} questions + their paraphrases)")
+
+
 def import_review(reviewer: str) -> None:
     drafts = {i["id"]: i for i in map(json.loads, (GOLDEN_DIR / "draft.jsonl").read_text(encoding="utf-8").splitlines())}
     approved = []
@@ -344,6 +391,10 @@ if __name__ == "__main__":
         import_review(reviewer=sys.argv[2] if len(sys.argv) > 2 else "Ivan Namor")
     elif command == "paraphrase":
         draft_paraphrases()
+    elif command == "revise-1.1":
+        draft_revision_1_1()
+    elif command == "apply-1.1":  # apply-1.1 GS-029,GS-030 "Reviewer Name"
+        apply_revision_1_1(sys.argv[2].split(","), reviewer=sys.argv[3] if len(sys.argv) > 3 else "Ivan Namor")
     elif command == "add-paraphrases":  # add-paraphrases GS-P01,GS-P02 "Reviewer Name"
         add_paraphrases(sys.argv[2].split(","), reviewer=sys.argv[3] if len(sys.argv) > 3 else "Ivan Namor")
     else:

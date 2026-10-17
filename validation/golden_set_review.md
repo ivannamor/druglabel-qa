@@ -51,6 +51,9 @@ passages state it. Plausible but unstated information is an error.
 | `edit` | A fixable error (a number, an extra sentence, drug names in a multi-hop question) | `edited_question` and/or `edited_expected_answer`; empty fields keep the draft |
 | `reject` | Unsupported or unclear answer, wrong category, near-duplicate | optional note |
 
+**When you edit the question, re-read the expected answer against the new question.** It must still answer
+the question as now asked (added in golden set 1.1, see below).
+
 When in doubt, reject: a smaller golden set of verified items is better than a larger one with errors.
 Use `notes` to record the reason for an edit or rejection.
 
@@ -59,3 +62,10 @@ Use `notes` to record the reason for an edit or rejection.
 `python -m src.eval.golden import` reads the review sheet, keeps approved and edited items, applies the
 edits, and writes `data/golden_set.jsonl` with reviewer and date. The drafts (`data/golden/draft.jsonl`)
 are kept for traceability.
+
+## Revisions
+
+| Version | Date | Change | Reviewer |
+|---|---|---|---|
+| 1.0 | 2026-10-17 | 60 drafts reviewed: 42 approved, 15 edited, 3 rejected; 14 paraphrases added (71 items) | Ivan Namor |
+| 1.1 | 2026-10-17 | Deviation found during judge validation: the 15 multi-hop questions edited in review (drug names removed) kept expected answers that assumed the names were in the question ("Both qualify", "All three ..."). Expected answers rewritten to stand alone (same drugs and key facts), applied to 19 items including paraphrases; the previous answer is kept in `expected_answer_v1_0`. Preventive action: the rule above. | Ivan Namor |
