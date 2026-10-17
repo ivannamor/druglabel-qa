@@ -1,0 +1,70 @@
+{
+  "release": "v1.0.0",
+  "git_commit": "33d507c3926d26e387894f4b1e000b319fc10fcd",
+  "status": "approved",
+  "validation_run": "bb6752ad8f7a4bf9ae3682c5b3532bf2",
+  "tc01_run": "81b2b658988841ab8712f5bd2ab03be8",
+  "validation_status": "approved",
+  "approved_by": "Ivan Namor",
+  "approval_date": "2026-10-17",
+  "results": {
+    "TC-02": {
+      "passed": true,
+      "detail": "2/2 tests passed"
+    },
+    "TC-03": {
+      "passed": true,
+      "detail": "2/2 tests passed"
+    },
+    "TC-04": {
+      "passed": true,
+      "detail": "6/6 tests passed"
+    },
+    "TC-05": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-06": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-08": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-09": {
+      "passed": true,
+      "detail": "1/1 tests passed"
+    },
+    "TC-01": {
+      "passed": true,
+      "mlflow_run_id": "81b2b658988841ab8712f5bd2ab03be8",
+      "detail": "faithfulness=0.9738 (>= 0.95); citation_validity=1.0 (>= 0.99); cites_gold_rate=0.9493 (>= 0.9); retrieval_hit_rate=0.9783 (>= 0.9); correct_or_partial_rate=0.8333 (>= 0.75); released_incorrect_rate=0.0 (<= 0.05); correct_refusal_rate=1.0 (>= 0.95); false_refusal_rate=0.0217 (<= 0.1); consistency=0.831 (>= 0.75); robustness=0.8571 (>= 0.75)"
+    },
+    "TC-07": {
+      "passed": true,
+      "detail": "released=False reasons=['multi_drug'] review_id=0f1f8821-cb83-4be5-b600-9dd4e311c04d"
+    },
+    "TC-10": {
+      "passed": true,
+      "detail": "commit 33d507c, dirty=False, missing=[]"
+    },
+    "TC-11": {
+      "passed": true,
+      "detail": "213/213 answers traced; sampled generations 2, live generations 1"
+    },
+    "TC-12": {
+      "passed": true,
+      "mlflow_run_id": "3ab8b407b1a64d62af21c80a99fe1f32",
+      "detail": "agreement 0.9 on 20 answers, graded by Ivan Namor"
+    },
+    "TC-14": {
+      "passed": true,
+      "detail": "1 version(s) of bronze_labels: v0 CREATE OR REPLACE TABLE AS SELECT"
+    },
+    "TC-13": {
+      "passed": true,
+      "detail": "approval set"
+    }
+  }
+}

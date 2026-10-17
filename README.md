@@ -227,6 +227,20 @@ Consistency over 3 repeats (hybrid): **83%** with prompt v2, 85% with v1 (same s
 
 **Golden set 1.0 → 1.1:** the human grader found that 15 multi-hop questions edited during review (to remove the drug names that gave away the answer) still had expected answers written for the old wording ("Both qualify…"). Results on 1.0 were frozen in a commit, the answers rewritten to stand alone with the same facts (19 items with paraphrases, old text kept), the review procedure given a rule against it, and the evaluation re-run. Computed metrics did not change (same answers); judged multi-hop correctness moved by 1–2 questions of 18, mostly toward stricter verdicts now that the expected answer lists every drug explicitly. Comparison tables for both versions: [`comparison_r1_golden_v1.0.csv`](data/eval/comparison_r1_golden_v1.0.csv), [`comparison_r1.csv`](data/eval/comparison_r1.csv).
 
+## Guardrails and human review
+
+Every answer passes computed checks before it reaches a user ([`src/generation/guardrails.py`](src/generation/guardrails.py)). Refusals are released; an answer is **held for human review** and written to the Delta table `review_queue` ([`src/generation/hitl.py`](src/generation/hitl.py)) if it has no valid citation, an invalid citation, a sentence poorly grounded in the passage it cites, a citation to another drug's label for a single-drug question, draws on two or more drug labels (multi-hop answers were the weakest and least consistent in evaluation), or the question reads like a single-patient decision. The grounding threshold (0.6) was calibrated against the validated judge ([`guardrail_calibration.json`](data/eval/guardrail_calibration.json)): 0.7 held twice as many correct answers without catching more wrong ones. On the golden set, the release configuration releases an answer for 54% of answerable questions and holds the rest; **no released answer was judged incorrect**, and every answer the judge rated incorrect was held. The cost of that safety is review workload, mostly multi-hop answers.
+
+## Validation
+
+GxP-style validation pack in [`validation/`](validation/), approved before the formal run:
+[URS](validation/URS.md) (15 requirements), [risk assessment](validation/risk_assessment.md) (FMEA, 12 risks), [test protocol](validation/test_protocol.md) (14 test cases, criteria in [`acceptance_criteria.json`](validation/acceptance_criteria.json)), [ALCOA+ mapping](validation/alcoa_mapping.md), [golden set review procedure](validation/golden_set_review.md), and the generated [traceability matrix](validation/traceability_matrix.csv) (requirement → test → MLflow run → result).
+
+The release gate ([`src/validation/release.py`](src/validation/release.py)) refuses to run on uncommitted code, executes the protocol (unit and integration tests, golden-set evaluation of the release configuration with 3 repeats, review queue, reproducibility record, tracing, judge validation, raw-data history), and sets `validation_status=approved`, `approved_by`, `approval_date` on the MLflow runs only if every test passes.
+
+- **Run 1: rejected.** 13/14 passed; TC-10 found the evaluation run recorded as made on uncommitted code. The cause was real: the runner rewrote its tracked output files before reading the git state. Fixed, evidence kept ([`release_v1.0.0_rejected_run1.json`](validation/release_v1.0.0_rejected_run1.json)).
+- **Run 2: approved**, 14/14, commit `33d507c`, MLflow validation run `bb6752ad8f7a4bf9ae3682c5b3532bf2`, TC-01 run `81b2b658988841ab8712f5bd2ab03be8`: faithfulness 0.97, citation validity 1.00, gold passage cited 0.95, retrieval hit 0.98, correct or partial 0.83, released answers judged incorrect 0.00, correct refusals 1.00, false refusals 0.02, consistency 0.83, robustness 0.86. Git tag `v1.0.0`.
+
 ## Limitations
 
 - Clinical studies sections are not indexed, so questions about trial results (e.g., efficacy in a named trial) are out of scope.

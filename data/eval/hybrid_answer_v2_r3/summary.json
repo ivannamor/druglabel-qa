@@ -7,6 +7,8 @@
   "cites_gold_rate": 0.9493,
   "retrieval_hit_rate": 0.9783,
   "false_refusal_rate": 0.0217,
+  "release_rate": 0.5362,
+  "released_incorrect_rate": 0.0,
   "correct_refusal_rate": 1.0,
   "latency_p50_s": 0.84,
   "latency_p95_s": 1.23,

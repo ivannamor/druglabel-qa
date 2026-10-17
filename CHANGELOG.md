@@ -4,6 +4,10 @@ All notable changes to this project. Format: [Keep a Changelog](https://keepacha
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-17
+
+Released configuration: hybrid retrieval (vector + knowledge graph), prompt `answer_v2`, generator `gpt-5.4-mini-2026-03-17`, guardrails with human review queue, data Gold v0 / Silver v0 / Bronze v0. Validated by `src/validation/release.py`: 14/14 test cases passed against the approved acceptance criteria; MLflow validation run `bb6752ad8f7a4bf9ae3682c5b3532bf2` (TC-01 run `81b2b658988841ab8712f5bd2ab03be8`), approved by Ivan Namor on 2026-10-17, commit `33d507c`, traceability matrix `validation/traceability_matrix.csv`.
+
 ### Added
 - Repo skeleton: settings module (`src/settings.py`), `.env.example`, folder structure.
 - Free-tier provider setup on Google AI Studio: `gemma-4-31b-it` for generation, `gemini-3.5-flash-lite` as judge (fallback `gemini-3.1-flash-lite`), local open-source embeddings. Azure OpenAI kept as a config option.
