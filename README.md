@@ -227,6 +227,27 @@ Consistency over 3 repeats (hybrid): **83%** with prompt v2, 85% with v1 (same s
 
 **Golden set 1.0 → 1.1:** the human grader found that 15 multi-hop questions edited during review (to remove the drug names that gave away the answer) still had expected answers written for the old wording ("Both qualify…"). Results on 1.0 were frozen in a commit, the answers rewritten to stand alone with the same facts (19 items with paraphrases, old text kept), the review procedure given a rule against it, and the evaluation re-run. Computed metrics did not change (same answers); judged multi-hop correctness moved by 1–2 questions of 18, mostly toward stricter verdicts now that the expected answer lists every drug explicitly. Comparison tables for both versions: [`comparison_r1_golden_v1.0.csv`](data/eval/comparison_r1_golden_v1.0.csv), [`comparison_r1.csv`](data/eval/comparison_r1.csv).
 
+## Root cause analysis: a false refusal
+
+**Symptom.** Golden item GS-025, *"Does atorvastatin affect prothrombin time in patients who are on long-term warfarin therapy?"*, got `NOT_IN_LABELS` in every configuration. The atorvastatin label does answer it (section 12.3: *"Atorvastatin calcium had no clinically significant effect on prothrombin time when administered to patients receiving chronic warfarin treatment"*). A safe failure (a refusal, not a wrong answer), but a failure.
+
+**Trace.** The Langfuse trace of the evaluated answer (`0f407adea271f66c061d18d29554507a`) shows the `retrieve` span returning 12 passages: graph passages about amiodarone and argatroban interactions and atorvastatin contraindications and adverse reactions, and vector passages from atorvastatin, warfarin and argatroban. The gold passage was not among them; the `llm` generation then refused correctly given what it was shown. So the cause is upstream of generation.
+
+**Hypotheses, tested before changing anything.**
+
+| Hypothesis | Test | Result |
+|---|---|---|
+| Vector search ranks the passage just below the cut | Rank of the gold passage among 8,207 | 37th (score 0.773 vs 0.787 for the 1st): ranked too low, and scores are tightly packed |
+| A keyword search (BM25) would find the rare term "prothrombin time" | BM25 and reciprocal rank fusion with vector ranks | **Rejected:** BM25 rank 99, fused 29; the warfarin label repeats "prothrombin time" and wins. Fusion also left the other single-fact questions unchanged (25/32 gold passages in the top 5 either way) |
+| Restricting search to the labels of the drugs named in the question | Rank within atorvastatin and warfarin labels only | **Rejected:** still 28th |
+| The answer sentence is diluted by the chunk it sits in | The chunk is a flattened pharmacokinetics table (*"…ritonavir 100 mg BID b, 14 days 0.99 0.94 # See Section 7…"*) with the sentence at its end; the same sentence embedded without the table rows | **Confirmed:** ranks **1st** (score 0.898 alone, 0.864 with the table caption) |
+
+The graph did not help either: interactions were extracted only from drug-interaction sections, and this fact sits in clinical pharmacology; and the question says "affect", not "interact", so no relation type was inferred.
+
+**Root cause.** Chunking: table rows flattened into text dominate the embedding of a chunk, so a prose sentence inside it cannot be found by meaning. About 5% of chunks are table-heavy (more than a quarter of tokens numeric; 684 of 14,131, most in adverse reactions).
+
+**Corrective action (planned for v1.1, not in v1.0).** Table-aware chunking in Silver: split runs of table rows from prose sentences so each prose sentence lands in a prose chunk. It changes chunk IDs, so the change propagates: Silver → Gold embeddings → knowledge-graph extraction (edges reference chunk IDs) → golden-set gold passages (remapped by text) → full re-evaluation and a new release validation. **Interim control (in v1.0):** the failure mode is a refusal, not a fabricated answer; the guardrails hold any answer that is not grounded in a cited passage.
+
 ## Guardrails and human review
 
 Every answer passes computed checks before it reaches a user ([`src/generation/guardrails.py`](src/generation/guardrails.py)). Refusals are released; an answer is **held for human review** and written to the Delta table `review_queue` ([`src/generation/hitl.py`](src/generation/hitl.py)) if it has no valid citation, an invalid citation, a sentence poorly grounded in the passage it cites, a citation to another drug's label for a single-drug question, draws on two or more drug labels (multi-hop answers were the weakest and least consistent in evaluation), or the question reads like a single-patient decision. The grounding threshold (0.6) was calibrated against the validated judge ([`guardrail_calibration.json`](data/eval/guardrail_calibration.json)): 0.7 held twice as many correct answers without catching more wrong ones. On the golden set, the release configuration releases an answer for 54% of answerable questions and holds the rest; **no released answer was judged incorrect**, and every answer the judge rated incorrect was held. The cost of that safety is review workload, mostly multi-hop answers.
