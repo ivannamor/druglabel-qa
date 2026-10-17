@@ -4,7 +4,7 @@
 
 ## Purpose of this repo
 
-Portfolio project built in ~6 days, set in **pharma / life sciences (GxP-regulated)** AI engineering. It covers: LLM/RAG solutions, LLM evaluation, Databricks, MLflow, Neo4j / knowledge graphs, Langfuse, and GxP-style validation, traceability and audit readiness.
+AI engineering project set in **pharma / life sciences (GxP-regulated)**. It covers: LLM/RAG solutions, LLM evaluation, Databricks, MLflow, Neo4j / knowledge graphs, Langfuse, and GxP-style validation, traceability and audit readiness.
 
 **Priorities, in order:**
 1. Something small that runs end to end beats something ambitious and half-finished.
