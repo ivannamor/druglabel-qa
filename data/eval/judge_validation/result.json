@@ -1,0 +1,45 @@
+{
+  "agreement": 0.9,
+  "threshold": 0.85,
+  "passed": true,
+  "n": 20,
+  "grader": "Ivan Namor",
+  "graded_on": "2026-10-17",
+  "judge_model": "claude-haiku-5-5",
+  "judge_prompt_version": "judge_v1",
+  "confusion_human_x_judge": {
+    "correct": {
+      "correct": 8,
+      "partial": 1,
+      "incorrect": 0
+    },
+    "partial": {
+      "correct": 0,
+      "partial": 9,
+      "incorrect": 0
+    },
+    "incorrect": {
+      "correct": 0,
+      "partial": 1,
+      "incorrect": 1
+    }
+  },
+  "disagreements": [
+    {
+      "sample_id": "J-02",
+      "item_id": "GS-032",
+      "config": "graph_answer_v1_r1",
+      "human": "partial",
+      "judge_correctness": "incorrect",
+      "notes": "Amiodarone: missing the mechanism (reduced enterohepatic circulation, increased elimination, reduced half-life). Digoxin: missing \u201cmeasure serum digoxin before initiating\u201d. Also, the expected answer seems not coherent with the question, as it implies the that the names of the drugs are already stated in the question. Probably the result of the previous question change, when we removed the names of the drugs, but we kept the question. This problem is present in other answers too."
+    },
+    {
+      "sample_id": "J-15",
+      "item_id": "GS-012",
+      "config": "vector_answer_v2_r1",
+      "human": "partial",
+      "judge_correctness": "correct",
+      "notes": "Missing \u201canother anticoagulant should be used\u201d and the ENGAGE AF-TIMI 48 study name."
+    }
+  ]
+}

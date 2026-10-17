@@ -1,0 +1,3 @@
+config,questions,correct_rate,correct_or_partial_rate,faithfulness,citation_validity,cites_gold_rate,retrieval_hit_rate,false_refusal_rate,correct_refusal_rate,latency_p50_s,latency_p95_s,cost_usd_total,cost_usd_per_question,correct_rate_single_fact,correct_rate_multi_hop,robustness,consistency
+hybrid_answer_v1_r3,71.0,0.4348,0.8623,0.9258,0.9348,0.8768,0.9783,0.0217,1.0,1.04,1.732,0.537,0.0025,0.4762,0.3704,0.881,0.8451
+hybrid_answer_v2_r3,71.0,0.4203,0.8551,0.9749,1.0,0.9493,0.9783,0.0217,1.0,0.84,1.23,0.426,0.002,0.4762,0.3333,0.8333,0.8169

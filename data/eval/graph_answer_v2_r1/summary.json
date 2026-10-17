@@ -1,0 +1,18 @@
+{
+  "questions": 71.0,
+  "correct_rate": 0.2826,
+  "correct_or_partial_rate": 0.4348,
+  "faithfulness": 0.9454,
+  "citation_validity": 1.0,
+  "cites_gold_rate": 0.5,
+  "retrieval_hit_rate": 0.5217,
+  "false_refusal_rate": 0.3696,
+  "correct_refusal_rate": 1.0,
+  "latency_p50_s": 0.8,
+  "latency_p95_s": 1.38,
+  "cost_usd_total": 0.0874,
+  "cost_usd_per_question": 0.0012,
+  "correct_rate_single_fact": 0.2857,
+  "correct_rate_multi_hop": 0.2778,
+  "robustness": 0.7143
+}
