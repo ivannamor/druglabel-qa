@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "note": "Set after the exploratory evaluation of Day 4 (development testing), before the formal validation run.",
+  "release_configuration": {"retrieval_mode": "hybrid", "answer_prompt": "answer_v2", "repeats": 3},
+  "TC-01": {
+    "faithfulness": [">=", 0.95],
+    "citation_validity": [">=", 0.99],
+    "cites_gold_rate": [">=", 0.90],
+    "retrieval_hit_rate": [">=", 0.90],
+    "correct_or_partial_rate": [">=", 0.75],
+    "released_incorrect_rate": ["<=", 0.05],
+    "correct_refusal_rate": [">=", 0.95],
+    "false_refusal_rate": ["<=", 0.10],
+    "consistency": [">=", 0.75],
+    "robustness": [">=", 0.75]
+  },
+  "TC-12": {"agreement": [">=", 0.85]}
+}
