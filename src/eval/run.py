@@ -7,7 +7,9 @@ Per question it records the answer, status, citations, latency, tokens and cost,
 - citation of a gold passage (computed): a cited passage is a gold passage or a copy of one
   (same drug, same text or near-identical);
 - retrieval hit (computed): a gold passage, or a copy, is among the retrieved passages;
-- correctness and faithfulness (judged, `src/eval/judge.py`).
+- correctness and faithfulness (judged, `src/eval/judge.py`);
+- guardrail outcome (computed, `src/generation/guardrails.py`): released or held for review, and how
+  many released answers were judged incorrect.
 Repeats (`--repeats 3`) measure consistency; paraphrased items (`paraphrase_of`) measure robustness.
 
 Every configuration is one MLflow run (parameters, metrics, per-question results); LLM responses and
@@ -34,6 +36,7 @@ import pandas as pd
 
 from src.eval.judge import JUDGE_PROMPT_VERSION, correctness, faithfulness, judge
 from src.generation.answer import answer
+from src.generation.guardrails import check
 from src.generation.llm import cost_usd
 from src.retrieval.vector import get_retriever
 from src.settings import get_settings
@@ -95,6 +98,8 @@ def _evaluate(item: dict, repeat: int) -> dict:
         "llm_latency_s": a.llm.latency_s, "cost_usd": cost_usd(a.llm.model, a.llm.input_tokens, a.llm.output_tokens),
         "trace_id": langfuse().get_current_trace_id(),
     }
+    guard = check(item["question"], a)  # what a user would get: released, or held for human review
+    row.update({"released": guard.released, "guard_reasons": guard.reasons, "grounding": guard.grounding})
     if expected in REFUSALS:
         row["refusal_correct"] = a.status == expected
         row["correctness"] = "correct" if a.status == expected else "incorrect"
@@ -117,6 +122,12 @@ def _evaluate(item: dict, repeat: int) -> dict:
     return row
 
 
+def released_incorrect(rows: pd.DataFrame) -> float:
+    """Share of released (not held) answers that the judge rated incorrect: what reaches a user wrongly."""
+    released = rows[rows["released"] & (rows["status"] == "answered")]
+    return (released["correctness"] == "incorrect").mean() if len(released) else 0.0
+
+
 def summarize(rows: pd.DataFrame) -> dict[str, float]:
     ans = rows[rows["expected_behavior"] == "answer"]
     una = rows[rows["expected_behavior"] != "answer"]
@@ -130,6 +141,9 @@ def summarize(rows: pd.DataFrame) -> dict[str, float]:
         "cites_gold_rate": original["cites_gold"].mean(),
         "retrieval_hit_rate": original["retrieval_hit"].mean(),
         "false_refusal_rate": original["false_refusal"].mean(),
+        # guardrails: share of answerable questions answered and released, and released answers judged wrong
+        "release_rate": (original["released"] & (original["status"] == "answered")).mean(),
+        "released_incorrect_rate": released_incorrect(original),
         "correct_refusal_rate": una["refusal_correct"].mean() if len(una) else float("nan"),
         "latency_p50_s": rows["llm_latency_s"].median(),
         "latency_p95_s": rows["llm_latency_s"].quantile(0.95),

@@ -1,0 +1,50 @@
+{
+  "min_grounding": 0.6,
+  "threshold_table": [
+    {
+      "threshold": 0.3,
+      "unsupported_caught": 0.056,
+      "supported_held": 0.032
+    },
+    {
+      "threshold": 0.4,
+      "unsupported_caught": 0.074,
+      "supported_held": 0.036
+    },
+    {
+      "threshold": 0.5,
+      "unsupported_caught": 0.278,
+      "supported_held": 0.036
+    },
+    {
+      "threshold": 0.6,
+      "unsupported_caught": 0.481,
+      "supported_held": 0.087
+    },
+    {
+      "threshold": 0.7,
+      "unsupported_caught": 0.722,
+      "supported_held": 0.179
+    },
+    {
+      "threshold": 0.8,
+      "unsupported_caught": 0.833,
+      "supported_held": 0.357
+    }
+  ],
+  "routing_preview": {
+    "answerable_items": 60,
+    "released": 36,
+    "released_incorrect": 2,
+    "held_incorrect": 7,
+    "held_correct": 6,
+    "reasons": {
+      "multi_drug": 21,
+      "low_grounding": 8,
+      "wrong_drug": 2,
+      "patient_specific_wording": 1,
+      "not_in_labels": 1,
+      "patient_specific": 1
+    }
+  }
+}
